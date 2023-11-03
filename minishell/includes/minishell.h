@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/02 19:43:52 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/03 16:38:57 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 # define YELLOW "\033[33m"
 # define PINK "\033[38;2;255;105;180m"
 # define ORANGE "\033[38;2;255;105;280m"
+# define RESET "\x1B[0m"
+# define PROMPT "\001\033[38;2;255;105;180m\002Candy_$hell> \001\033[33m\002"
 
 # include <string.h>
 # include <stdlib.h>
@@ -40,8 +42,6 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <signal.h>
-
-
 
 typedef enum e_tokens
 {
@@ -89,10 +89,10 @@ typedef struct s_cmd
 }	t_cmd;
 
 // LEXER
-void 			print_lexer(t_lexer **head);
+void			print_lexer(t_lexer **head);
 void			free_lexer_list(t_lexer **head);
 t_lexer			*ft_lexer(char *line);
-char			*ft_epur_str(char* str);
+char			*ft_epur_str(char *str);
 int				is_wspace(char c);
 int				ft_cmd_count(char *str);
 
@@ -106,7 +106,6 @@ int				do_unset(char **cmd_tab, t_env **env);
 void			print_err(char *invalid_cmd, char *cmd_name);
 char			**ft_split_value(char *var);
 int				assign_or_append(char *env_var);
-
 
 // ENV_FUNCTIONS
 

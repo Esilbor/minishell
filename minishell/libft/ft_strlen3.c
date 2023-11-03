@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:34:43 by bbresil           #+#    #+#             */
-/*   Updated: 2023/10/29 17:35:06 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/03 15:55:32 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ ssize_t	ft_strlen3(const char *s)
 	ssize_t	i;
 
 	i = 0;
-	while (s[i])
+	while (s && s[i])
 		i++;
 	return (i);
 }

@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 15:14:20 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/02 16:55:49 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/03 11:11:05 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -323,7 +323,7 @@ t_lexer	*ft_lexer(char *line)
 		free_lexer_list(&lexer_list);
 		return (NULL);
 	}
-	print_lexer(&lexer_list);
+	// print_lexer(&lexer_list);
 	free(epur_line);
 	return (lexer_list);
 }

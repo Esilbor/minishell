@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:06:41 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/02 16:55:13 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/03 17:39:17 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	sigint_handler(int signum)
 {
 	(void)signum; // Avoid compiler warning for unused variable
-	ft_printf(PINK"\nCandy_Shell> "YELLOW);
+	ft_printf("\001"PINK"\002""\nCandy_Shell> ""\001"YELLOW"\002");
 }
 
 void	sigquit_handler(int signum)
@@ -65,7 +65,7 @@ void	ft_handle_signals(void)
 void	ft_quit_shell(t_env *envb)
 {
 	rl_clear_history();
-	ft_printf("exit\n"WHITE);
+	ft_printf("exit\n"RESET);
 	ft_free_env_lst(envb);
 }
 
@@ -82,7 +82,7 @@ int	shell_loop(t_env *envb)
 	char	*input;
 	char	**cmd_tab;
 
-	input = readline(PINK"Candy_$hell> "YELLOW);
+	input = readline(PROMPT);
 	if (input)
 	{
 		lexer = ft_lexer(input);
