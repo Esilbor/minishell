@@ -1,0 +1,11 @@
+NOV 7
+- prompt changes according to $?
+- update lexer lost first word when > echo>text
+- $VAR  VAR is now in its own node of type DOLLAR
+- lexer is being expanded
+- working on expanding dquotes
+
+
+
+
+BEWARE : if candy_shell is in infinite loop due to program error ctrl+D does not work

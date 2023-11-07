@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 20:27:54 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/03 16:19:50 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/07 15:10:15 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,19 @@
 //return the env_node matching the str or NULL if no match
 t_env	*get_env_node(t_env *lst, char *str)
 {
+	size_t	str_len;
+
+	str_len = ft_strlen(str);
 	while (lst)
 	{
-		if (ft_strncmp(lst->var_str, str, ft_strlen(str)) == 0)
+		if (!ft_strncmp(lst->var_str, str, ft_strlen(str)) && lst->var_str[str_len] == '=')
 			return (lst);
 		else
 			lst = lst->next;
 	}
 	return (NULL);
 }
+
 
 // return 0 for assign, 1 for append or -1 if no equal sign
 int	assign_or_append(char *env_var)

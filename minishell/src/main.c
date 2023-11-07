@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:06:41 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/03 17:39:17 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/07 18:16:50 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,13 +82,17 @@ int	shell_loop(t_env *envb)
 	char	*input;
 	char	**cmd_tab;
 
-	input = readline(PROMPT);
+	// input = readline(PROMPT);
+	input = ft_prompt(envb);
 	if (input)
 	{
 		lexer = ft_lexer(input);
 		if (!lexer)
 			return (add_history(input), 1);
 		add_history(input);
+		// ft_parser(lexer);
+		ft_expander(&lexer, envb);
+		print_lexer(&lexer);
 		cmd_tab = ft_split(input, ' '); //split the prompt input
 		do_builtins(cmd_tab, &envb);
 		free_shell(cmd_tab, lexer, input);

@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 15:14:20 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/03 11:11:05 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/07 18:16:44 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,9 @@ int ft_cmd_count(char *str)
 
 static int  is_quote(char c)
 {
-    if (c == '\'' || c == '\"')
-        return (1);
-    return (0);
+	if (c == '\'' || c == '\"')
+		return (1);
+	return (0);
 }
 
 
@@ -100,25 +100,25 @@ char	*ft_epur_str(char *str)
 
 t_tokens is_spec_char(char *c)
 {
-	if (*c == 124)
+	if (*c == '|')
 		return (PIPE);
-	else if (*c == 36)
+	else if (*c == '$')
 		return (DOLLAR);
-	else if (*c == 60)
+	else if (*c == '<')
 	{
-		if (*(c + 1) == 60)
+		if (*(c + 1) == '<')
 			return (LESS_LESS);
 		return (LESS);
 	}
-	else if (*c == 62)
+	else if (*c == '>')
 	{
-		if (*(c + 1) == 62)
+		if (*(c + 1) == '>')
 			return (GREAT_GREAT);
 		return (GREAT);
 	}
-	else if (*c == 22)
+	else if (*c == '"')
 		return (DQUOTE);
-	else if (*c == 27)
+	else if (*c == '\'')
 		return (SQUOTE);
 	return (WORD);
 }
@@ -217,6 +217,11 @@ void	handle_spec_chars(char *cmd_line, int *j, t_lexer **head)
 		free(tmp);
 		*j += 2;
 	}
+	else if (is_spec_char(&cmd_line[*j]) == DOLLAR && cmd_line[*j + 1] && cmd_line[*j + 1] != ' ')
+	{
+		(*j)++;
+		handle_dollar(cmd_line, j, head);
+	}
 	else
 	{
 		tmp = ft_strndup(&cmd_line[*j], 1);
@@ -225,6 +230,25 @@ void	handle_spec_chars(char *cmd_line, int *j, t_lexer **head)
 		(*j)++;
 	}
 }
+
+void	handle_dollar(char *cmd_line, int *i, t_lexer **head)
+{
+	int		j;
+	char	*tmp;
+
+	j = *i;
+	while (cmd_line[j] && !is_spec_char(&cmd_line[j]) && cmd_line[j] != ' ')
+		j++;
+
+	if (j > *i)
+	{
+		tmp = ft_strndup(&cmd_line[*i], j - *i);
+		ft_add_lex_node(head, tmp, EXPAND);
+		free(tmp);
+	}
+	*i = j;
+}
+
 void	handle_words_spec_char(char *cmd_line, int *i, t_lexer **head)
 {
 	int		j;
@@ -233,14 +257,17 @@ void	handle_words_spec_char(char *cmd_line, int *i, t_lexer **head)
 	j = *i;
 	while (cmd_line[j] && !is_spec_char(&cmd_line[j]) && cmd_line[j] != ' ')
 		j++;
-	if (cmd_line[j] == ' ' || cmd_line[j] == '\0')
+
+	if (j > *i)
 	{
 		tmp = ft_strndup(&cmd_line[*i], j - *i);
 		ft_add_lex_node(head, tmp, WORD);
 		free(tmp);
 	}
-	else if (is_spec_char(&cmd_line[j]))
+	else
+	{
 		handle_spec_chars(cmd_line, &j, head);
+	}
 	*i = j;
 }
 
@@ -294,6 +321,10 @@ char	*print_token(t_tokens token)
 		return ("DQUOTE");
 	else if(token == SQUOTE)
 		return ("SQUOTE");
+	else if(token == EXPAND)
+		return ("EXPAND");
+	else if(token == LIMITER)
+		return ("LIMITER");
 	return ("ERROR");
 }
 
@@ -317,6 +348,9 @@ t_lexer	*ft_lexer(char *line)
 
 	lexer_list = NULL;
 	epur_line = ft_epur_str(line);
+	// ft_putstr_fd("epur_line = ", 1); //remove
+	// ft_putstr_fd(epur_line, 1);
+	// ft_putstr_fd("\n", 1);
 	if (ft_fill_lexer(&lexer_list, epur_line))
 	{
 		free (epur_line);

@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/03 16:38:57 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/07 20:02:18 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,10 @@
 # define ORANGE "\033[38;2;255;105;280m"
 # define RESET "\x1B[0m"
 # define PROMPT "\001\033[38;2;255;105;180m\002Candy_$hell> \001\033[33m\002"
+# define PROMPT1 "\001\033[38;2;255;105;280m\0021_Candy_$hell> \001\033[35m\002"
+# define PROMPT2 "\001\033[35m\0022_Candy_$hell> \001\033[34m\002"
+# define PROMPT3 "\001\033[92m\002Candy_$hell?> \001\033[34m\002"
+
 
 # include <string.h>
 # include <stdlib.h>
@@ -57,6 +61,7 @@ typedef enum e_tokens
 	INPUT,
 	OUTPUT,
 	LIMITER,
+	EXPAND,
 }	t_tokens;
 
 typedef struct s_lexer
@@ -89,6 +94,8 @@ typedef struct s_cmd
 }	t_cmd;
 
 // LEXER
+void			handle_words_spec_char(char *cmd_line, int *i, t_lexer **head);
+void			handle_dollar(char *cmd_line, int *i, t_lexer **head);
 void			print_lexer(t_lexer **head);
 void			free_lexer_list(t_lexer **head);
 t_lexer			*ft_lexer(char *line);
@@ -96,6 +103,12 @@ char			*ft_epur_str(char *str);
 int				is_wspace(char c);
 int				ft_cmd_count(char *str);
 
+
+// EXPAND
+
+void			ft_expander(t_lexer **lexer, t_env *envb);
+t_lexer			*expand_node(t_lexer **lexer, t_lexer *lst, t_env *envb);
+void 			expand_dquote(/* t_lexer **lexer, */ t_lexer *lst/* , t_env *envb */);
 // BUILT-INS
 
 int				do_pwd(char **cmd_tab, t_env **envb);
@@ -109,6 +122,7 @@ int				assign_or_append(char *env_var);
 
 // ENV_FUNCTIONS
 
+char			*ft_prompt(t_env *envb);
 t_env			**dup_env(t_env **env);
 t_env			*ft_last_env_node(t_env *node);
 void			ft_add_env_node(t_env **env, char *varp);
