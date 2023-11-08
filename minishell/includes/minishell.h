@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/07 20:02:18 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/08 13:07:36 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ int				ft_cmd_count(char *str);
 
 void			ft_expander(t_lexer **lexer, t_env *envb);
 t_lexer			*expand_node(t_lexer **lexer, t_lexer *lst, t_env *envb);
-void 			expand_dquote(/* t_lexer **lexer, */ t_lexer *lst/* , t_env *envb */);
+t_lexer			*expand_dquote(/* t_lexer **lexer, */ t_lexer *lst, t_env *envb);
 // BUILT-INS
 
 int				do_pwd(char **cmd_tab, t_env **envb);
@@ -128,6 +128,7 @@ t_env			*ft_last_env_node(t_env *node);
 void			ft_add_env_node(t_env **env, char *varp);
 void			ft_fill_env(t_env **env, char **envp);
 void			print_env(t_env **head);
+char			*get_env_value(t_env *envb, char **str);
 t_env			*get_env_node(t_env *lst, char *str);
 t_env			*get_env(char **envp);
 void			ft_remove_env_node(t_env **head, char *varp);

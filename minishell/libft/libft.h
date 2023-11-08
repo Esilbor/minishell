@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:53:40 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/01 12:07:36 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/08 12:03:02 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,4 +77,6 @@ int			ft_strcmp(const char *s1, const char *s2);
 int			ft_strccmp(const char *s1, char c);
 ssize_t		ft_strlen3(const char *s);
 bool		ft_is_c(char c, char d);
+char		*ft_strccpy(char *str, char c);
+
 #endif

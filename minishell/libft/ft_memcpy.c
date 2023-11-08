@@ -6,12 +6,13 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 09:37:04 by bbresil           #+#    #+#             */
-/*   Updated: 2022/12/05 18:38:07 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/08 11:31:20 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+//Copies `n` bytes from `src` to `dest`, returns `dest`, NULL if both are NULL
 void	*ft_memcpy(void *dest, const void *src, size_t n)
 {
 	size_t		i;

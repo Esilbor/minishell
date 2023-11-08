@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:36:38 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/07 20:33:40 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/08 13:39:23 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,57 +62,95 @@ t_lexer	*expand_node(t_lexer **lexer, t_lexer *lst, t_env *envb)
 	return (lst);
 }
 
-char	*extract_var(char *tmp)
+//Extracts substring from `str` until space, $, or ", sets `ptr` to remainder.
+char	*extract_var(char *str, char **ptr)
 {
 	char	*var;
-	int		i;
-	int		j;
+	size_t		i;
+	size_t		j;
 
 	i = 0;
 	j = 0;
 	var = NULL;
-	while (tmp[i] && tmp[i] != ' ' && tmp[i] != '$')
+	while (str[i] && str[i] != ' ' && str[i] != '$' && str[i] != '\"')
 		i++;
-	var = malloc(sizeof(char) * i);
-	while (j < i)
-	{
-		var[j] = tmp[j];
-		i++;
-	}
-	var[i] = '\0';
-	printf("var= %s\n", var);
+	*ptr = &str[i];
+	var = malloc(sizeof(char) * i + 1);
+	ft_strlcpy(var, str, i + 1);
 	return (var);
 }
 
-void	expand_dquote(/* t_lexer **lexer, */ t_lexer *lst /* , t_env *envb */)
+//Searches `envb` for `*str`, replaces `*str` with env value,
+//or NULL if not found.
+char	*get_env_value(t_env *envb, char **str)
+{
+	size_t	str_len;
+
+	str_len = ft_strlen(*str);
+	while (envb)
+	{
+		if (!ft_strncmp(envb->var_str, *str, str_len)
+			&& envb->var_str[str_len] == '=')
+		{
+			free (*str);
+			*str = ft_strdup(&envb->var_str[str_len + 1]);
+			if (!(*str))
+				return (NULL);
+			return (*str);
+		}
+		else
+			envb = envb->next;
+	}
+	return (NULL);
+}
+
+t_lexer	*expand_dquote(/* t_lexer **lexer, */ t_lexer *lst , t_env *envb)
 {
 	char	*tmp;
 	char	*var;
+	char	*new_str;
+	char	*tmp_str;
+	char	*ptr;
+
+	ptr = NULL;
 	tmp = ft_strchr(lst->word, '$');
 	if (tmp && (tmp + 1) && *(tmp + 1) != ' ')
 	{
-		printf
-		var = extract_var(tmp + 1);
+		//"this is $USER"
+		var = extract_var(tmp + 1, &ptr); //get USER and set ptr to the remainder so "
+		tmp_str = ft_strccpy(lst->word, '$');//copies everthing before $ "this is \0
+		get_env_value(envb, &var); //updates USER into bbresil
+		new_str = ft_strjoin(tmp_str, var); //join "this is \0 with bbresil
+		free (var);
+		free (tmp_str);
+		if (ptr)
+			tmp_str = ft_strjoin(new_str, ptr);// "this is bbresil"
+		free (lst->word);
+		lst->word = ft_strdup(tmp_str);
+		free (tmp_str);
 	}
+	return (lst);
 }
 
 // replace the value of expand nodes to the matching environment value
 void	ft_expander(t_lexer **lexer, t_env *envb)
 {
 	t_lexer	*lst;
-	// t_env	*var;
-	// char	*tmp;
+	char	*tmp;
 
 	lst = *lexer;
-	// var = NULL;
 	while (lst)
 	{
 		if (lst->type == EXPAND)
 			lst = expand_node(lexer, lst, envb);
 		else if (lst->type == DQUOTE)
 		{
-			/* lst = */expand_dquote(/* lexer,  */lst/* , envb */);
+			tmp = ft_strchr(lst->word, '$');
+			while (tmp/*  && (tmp + 1) && *(tmp + 1) != ' ' && *(tmp + 1) != '\"' */)
+				lst = expand_dquote(lst, envb);
 		}
 		lst = lst->next;
 	}
 }
+
+/// ISSUES "this is $USER$USER $"

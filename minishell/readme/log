@@ -9,3 +9,5 @@ NOV 7
 
 
 BEWARE : if candy_shell is in infinite loop due to program error ctrl+D does not work
+
+pwd : update PWD et OLDPWD
