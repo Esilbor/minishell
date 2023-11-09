@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:36:38 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/08 13:39:23 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/09 11:28:05 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,9 +99,13 @@ char	*get_env_value(t_env *envb, char **str)
 			return (*str);
 		}
 		else
+		{
 			envb = envb->next;
+		}
 	}
-	return (NULL);
+	free (*str);
+	*str = NULL;
+	return (*str);
 }
 
 t_lexer	*expand_dquote(/* t_lexer **lexer, */ t_lexer *lst , t_env *envb)
@@ -114,20 +118,28 @@ t_lexer	*expand_dquote(/* t_lexer **lexer, */ t_lexer *lst , t_env *envb)
 
 	ptr = NULL;
 	tmp = ft_strchr(lst->word, '$');
-	if (tmp && (tmp + 1) && *(tmp + 1) != ' ')
+	if (tmp && (tmp + 1) && *(tmp + 1) != ' ' && *(tmp + 1) != '"')
 	{
 		//"this is $USER"
 		var = extract_var(tmp + 1, &ptr); //get USER and set ptr to the remainder so "
 		tmp_str = ft_strccpy(lst->word, '$');//copies everthing before $ "this is \0
 		get_env_value(envb, &var); //updates USER into bbresil
-		new_str = ft_strjoin(tmp_str, var); //join "this is \0 with bbresil
-		free (var);
+		if (var)
+		{
+			new_str = ft_strjoin(tmp_str, var); //join "this is \0 with bbresil
+			free (var);
+		}
+		else
+			new_str = ft_strdup(tmp_str);
 		free (tmp_str);
 		if (ptr)
 			tmp_str = ft_strjoin(new_str, ptr);// "this is bbresil"
 		free (lst->word);
+		free (new_str);
 		lst->word = ft_strdup(tmp_str);
 		free (tmp_str);
+		if (ft_strchr(lst->word, '$'))
+			lst = expand_dquote(lst, envb); // RECURSIVITÉ
 	}
 	return (lst);
 }
@@ -146,11 +158,9 @@ void	ft_expander(t_lexer **lexer, t_env *envb)
 		else if (lst->type == DQUOTE)
 		{
 			tmp = ft_strchr(lst->word, '$');
-			while (tmp/*  && (tmp + 1) && *(tmp + 1) != ' ' && *(tmp + 1) != '\"' */)
-				lst = expand_dquote(lst, envb);
+			lst = expand_dquote(lst, envb);
 		}
 		lst = lst->next;
 	}
 }
 
-/// ISSUES "this is $USER$USER $"
