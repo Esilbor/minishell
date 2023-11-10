@@ -14,7 +14,7 @@ ft_memchr.c ft_calloc.c ft_strdup.c ft_substr.c ft_strncmp.c ft_strjoin.c ft_str
 ft_itoa.c ft_putchar_fd.c ft_strmapi.c ft_striteri.c ft_putstr_fd.c ft_putendl_fd.c \
 ft_putnbr_fd.c ft_split.c ft_atol.c ft_free_tab.c ft_free_n_tab.c ft_strndup.c \
 ft_tab_len.c ft_strcmp.c ft_strccmp.c ft_strlen3.c\
-$(FT_PRINTF_PATH)ft_printf.c ft_is_c.c ft_strsjoin.c ft_strccpy.c\
+$(FT_PRINTF_PATH)ft_printf.c ft_is_c.c ft_strsjoin.c ft_strccpy.c ft_strpcpy.c\
 
 OBJ_DIR = ./obj/
 FT_PRINTF_NAME = libftprintf.a

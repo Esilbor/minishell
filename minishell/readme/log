@@ -11,3 +11,30 @@ NOV 7
 BEWARE : if candy_shell is in infinite loop due to program error ctrl+D does not work
 
 pwd : update PWD et OLDPWD
+
+
+
+ATTENTION
+
+|	doit être précédé et suivie d'un WORD
+>	doit être suivie d'un WORD
+<	doit être suivie d'un WORD
+>>	doit être suivie d'un WORD
+<<	doit être suivie d'un WORD
+
+configurations impossibles: (A CHECKER)
+
+
+[PIPE][PIPE]
+[PIPE][LESS]
+[PIPE][LESS_LESS]
+[PIPE][GREAT]
+[PIPE][GREAT_GREAT]
+[LESS][LESS]
+[LESS][GREAT]
+[LESS][PIPE]
+[LESS_LESS][LESS_LESS]
+[LESS_LESS][PIPE]
+[LESS_LESS][GREAT_GREAT]
+
+

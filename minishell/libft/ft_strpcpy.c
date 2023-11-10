@@ -1,32 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strccpy.c                                       :+:      :+:    :+:   */
+/*   ft_strpcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/08 11:35:44 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/10 16:18:26 by bbresil          ###   ########.fr       */
+/*   Created: 2023/11/10 11:01:59 by bbresil           #+#    #+#             */
+/*   Updated: 2023/11/10 11:22:10 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-
-//copies str until c is encountered and return the new string
-char	*ft_strccpy(char *str, char c)
+// Copies substring of str up to ptr, returns new string, NULL if ptr not in str
+char	*ft_strpcpy(char *str, char *ptr)
 {
 	char	*new_str;
 	int		i;
+	int		j;
 
-	new_str = NULL;
+	if (!ptr)
+		return (NULL);
 	i = 0;
-	while (str && str[i] && str[i] != c)
-		i++;
-	new_str = (char *)malloc(sizeof(char) * (i + 1));
+	j = 0;
+	while (str && str[j] && &str[j] != ptr)
+		j++;
+	if (!str || &str[j] != ptr)
+		return (NULL);
+	new_str = (char *)malloc(sizeof(char) * (j + 1));
 	if (!new_str)
 		return (NULL);
 	i = 0;
-	while (str && str[i] && str[i] != c)
+	while (i < j)
 	{
 		new_str[i] = str[i];
 		i++;
@@ -34,3 +38,4 @@ char	*ft_strccpy(char *str, char c)
 	new_str[i] = '\0';
 	return (new_str);
 }
+

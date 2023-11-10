@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 19:28:16 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/08 10:58:08 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/10 16:18:48 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,4 +26,3 @@ int	ft_strccmp(const char *s1, char c)
 		return (0);
 	return (1);
 }
-

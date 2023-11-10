@@ -6,17 +6,17 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 14:14:32 by bbresil           #+#    #+#             */
-/*   Updated: 2023/10/26 14:20:59 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/10 16:17:59 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
 //duplicate s until len and return the duplicated char *
-char *ft_strndup(const char *s, int len)
+char	*ft_strndup(const char *s, int len)
 {
-	char *str;
-	int i;
+	char	*str;
+	int		i;
 
 	str = malloc(sizeof(*str) * len + 1);
 	if (!str)

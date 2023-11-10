@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 19:51:29 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/02 14:47:41 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/10 16:22:34 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,13 +70,13 @@ t_env	**dup_env(t_env **env)
 	if (!dup)
 	{
 		ft_putstr_fd(strerror(errno), 2);
-		return ( NULL);
+		return (NULL);
 	}
 	*dup = NULL;
 	while (lst)
 	{
 		ft_add_env_node(dup, lst->var_str);
-		lst =lst->next;
+		lst = lst->next;
 	}
 	return (dup);
 }

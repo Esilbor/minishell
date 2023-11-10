@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   do_cd.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/10 16:21:34 by bbresil           #+#    #+#             */
+/*   Updated: 2023/11/10 16:21:37 by bbresil          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
-int     do_cd(char **str, t_env **envb)
+int	do_cd(char **str, t_env **envb)
 {
-	char   *tmp;
+	char	*tmp;
 
 	tmp = getcwd(NULL, 0);
 	if (str[1] == NULL)
