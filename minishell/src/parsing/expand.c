@@ -6,14 +6,13 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:36:38 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/12 16:10:12 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/12 17:10:44 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-
-t_lexer *ft_remove_lex_node(t_lexer **lexer, t_lexer *node_to_remove)
+t_lexer	*ft_remove_lex_node(t_lexer **lexer, t_lexer *node_to_remove)
 {
 	t_lexer	*current;
 	t_lexer	*prev;
@@ -65,7 +64,7 @@ t_lexer	*expand_node(t_lexer **lexer, t_lexer *lst, t_env *envb)
 //Extracts substring from `str` until space, $, or ", sets `ptr` to remainder.
 char	*extract_var(char *str, char **ptr)
 {
-	char	*var;
+	char		*var;
 	size_t		i;
 	size_t		j;
 
@@ -123,29 +122,21 @@ char	*dol_to_expand(char *str)
 	return (NULL);
 }
 
-t_lexer	*expand_dquote(char *tmp, t_lexer *node , t_env *envb)
+t_lexer	*expand_dquote(char *tmp, t_lexer *node, t_env *envb)
 {
-	// char	*tmp;
 	char	*var;
 	char	*new_str;
 	char	*tmp_str;
 	char	*ptr;
 
-	// ptr = NULL;
-	// tmp = ft_strchr(node->word, '$');
-	// if (tmp && (tmp + 1) && *(tmp + 1) != ' ' && *(tmp + 1) != '"')
-	// {
-		//"this is $USER"
 	var = extract_var(tmp + 1, &ptr); //get USER and set ptr to the remainder so "
 	tmp_str = ft_strpcpy(node->word, tmp);//copies everthing before $ "this is \0
 	get_env_value(envb, &var); //updates USER into bbresil
 	if (var)
-	{
 		new_str = ft_strjoin(tmp_str, var); //join "this is \0 with bbresil
-		free (var);
-	}
 	else
 		new_str = ft_strdup(tmp_str);
+	free (var); // if var is NULL nothing will occur :)
 	free (tmp_str);
 	if (ptr)
 		tmp_str = ft_strjoin(new_str, ptr);// "this is bbresil"
@@ -153,15 +144,9 @@ t_lexer	*expand_dquote(char *tmp, t_lexer *node , t_env *envb)
 	free (new_str);
 	node->word = ft_strdup(tmp_str);
 	free (tmp_str);
-	if ((tmp = dol_to_expand(node->word)))
-	{
+	tmp = dol_to_expand(node->word);
+	if (tmp)
 		node = expand_dquote(tmp, node, envb); // RECURSIVITÉ
-	}
-	// }
-	// else if(tmp && (tmp + 1) && *(tmp + 1) == ' ')
-	// {
-
-	// }
 	return (node);
 }
 
@@ -178,10 +163,17 @@ void	ft_expander(t_lexer **lexer, t_env *envb)
 			lst = expand_node(lexer, lst, envb);
 		else if (lst->type == DQUOTE)
 		{
-			if ((tmp = dol_to_expand(lst->word)))
+			tmp = dol_to_expand(lst->word);
+			if (tmp)
 				lst = expand_dquote(tmp, lst, envb);
 		}
 		lst = lst->next;
 	}
 }
 
+// ATTENTION
+// Candy_$hell> "$ it's me $USER$ [$$]"
+// ["$ it's me bbresil$ ["__DQUOTE__]
+// WHILE BASH =
+// >> echo "$ it's me $USER$ [$$]"
+// >> $ it's me bbresil$ [379970]
