@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:36:38 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/09 11:28:05 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/12 16:10:12 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,40 +108,61 @@ char	*get_env_value(t_env *envb, char **str)
 	return (*str);
 }
 
-t_lexer	*expand_dquote(/* t_lexer **lexer, */ t_lexer *lst , t_env *envb)
+//return a pointer to a dollar to expand or NULL if none
+char	*dol_to_expand(char *str)
 {
-	char	*tmp;
+	int	i;
+
+	i = 0;
+	while (str[i] && str[i + 1])
+	{
+		if (str[i] == '$' && (str[i + 1]) != ' ' && str[i + 1] != '"' && str[i + 1] != '\'')
+			return (&str[i]);
+		i ++;
+	}
+	return (NULL);
+}
+
+t_lexer	*expand_dquote(char *tmp, t_lexer *node , t_env *envb)
+{
+	// char	*tmp;
 	char	*var;
 	char	*new_str;
 	char	*tmp_str;
 	char	*ptr;
 
-	ptr = NULL;
-	tmp = ft_strchr(lst->word, '$');
-	if (tmp && (tmp + 1) && *(tmp + 1) != ' ' && *(tmp + 1) != '"')
-	{
+	// ptr = NULL;
+	// tmp = ft_strchr(node->word, '$');
+	// if (tmp && (tmp + 1) && *(tmp + 1) != ' ' && *(tmp + 1) != '"')
+	// {
 		//"this is $USER"
-		var = extract_var(tmp + 1, &ptr); //get USER and set ptr to the remainder so "
-		tmp_str = ft_strccpy(lst->word, '$');//copies everthing before $ "this is \0
-		get_env_value(envb, &var); //updates USER into bbresil
-		if (var)
-		{
-			new_str = ft_strjoin(tmp_str, var); //join "this is \0 with bbresil
-			free (var);
-		}
-		else
-			new_str = ft_strdup(tmp_str);
-		free (tmp_str);
-		if (ptr)
-			tmp_str = ft_strjoin(new_str, ptr);// "this is bbresil"
-		free (lst->word);
-		free (new_str);
-		lst->word = ft_strdup(tmp_str);
-		free (tmp_str);
-		if (ft_strchr(lst->word, '$'))
-			lst = expand_dquote(lst, envb); // RECURSIVITÉ
+	var = extract_var(tmp + 1, &ptr); //get USER and set ptr to the remainder so "
+	tmp_str = ft_strpcpy(node->word, tmp);//copies everthing before $ "this is \0
+	get_env_value(envb, &var); //updates USER into bbresil
+	if (var)
+	{
+		new_str = ft_strjoin(tmp_str, var); //join "this is \0 with bbresil
+		free (var);
 	}
-	return (lst);
+	else
+		new_str = ft_strdup(tmp_str);
+	free (tmp_str);
+	if (ptr)
+		tmp_str = ft_strjoin(new_str, ptr);// "this is bbresil"
+	free (node->word);
+	free (new_str);
+	node->word = ft_strdup(tmp_str);
+	free (tmp_str);
+	if ((tmp = dol_to_expand(node->word)))
+	{
+		node = expand_dquote(tmp, node, envb); // RECURSIVITÉ
+	}
+	// }
+	// else if(tmp && (tmp + 1) && *(tmp + 1) == ' ')
+	// {
+
+	// }
+	return (node);
 }
 
 // replace the value of expand nodes to the matching environment value
@@ -157,8 +178,8 @@ void	ft_expander(t_lexer **lexer, t_env *envb)
 			lst = expand_node(lexer, lst, envb);
 		else if (lst->type == DQUOTE)
 		{
-			tmp = ft_strchr(lst->word, '$');
-			lst = expand_dquote(lst, envb);
+			if ((tmp = dol_to_expand(lst->word)))
+				lst = expand_dquote(tmp, lst, envb);
 		}
 		lst = lst->next;
 	}

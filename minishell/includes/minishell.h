@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/10 16:59:30 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/12 15:29:14 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ int				ft_cmd_count(char *str);
 
 void			ft_expander(t_lexer **lexer, t_env *envb);
 t_lexer			*expand_node(t_lexer **lexer, t_lexer *lst, t_env *envb);
-t_lexer			*expand_dquote(t_lexer *lst, t_env *envb);
+t_lexer			*expand_dquote(char *tmp, t_lexer *lst, t_env *envb);
 // char			*expand_env_variable(char *word, t_env *envb);
 
 // BUILT-INS
