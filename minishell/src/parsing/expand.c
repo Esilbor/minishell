@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:36:38 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/12 17:10:44 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/12 19:41:22 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,8 @@ char	*extract_var(char *str, char **ptr)
 	i = 0;
 	j = 0;
 	var = NULL;
-	while (str[i] && str[i] != ' ' && str[i] != '$' && str[i] != '\"')
+	// while (str[i] && str[i] != ' ' && str[i] != '$' && str[i] != '\"'  && str[i] != '\'')
+	while (str[i] && (ft_isalnum(str[i]) || str[i] == '_' || str[i] == '?'))
 		i++;
 	*ptr = &str[i];
 	var = malloc(sizeof(char) * i + 1);
@@ -150,6 +151,17 @@ t_lexer	*expand_dquote(char *tmp, t_lexer *node, t_env *envb)
 	return (node);
 }
 
+t_lexer	*clean_dquotes(t_lexer *node)
+{
+	char	*new_str;
+
+	new_str = ft_strndup(&node->word[1], ft_strlen2(node->word) - 2);
+	free (node->word);
+	node->word = new_str;
+	node->type = WORD; // might be too soon??
+	return (node);
+}
+
 // replace the value of expand nodes to the matching environment value
 void	ft_expander(t_lexer **lexer, t_env *envb)
 {
@@ -166,14 +178,11 @@ void	ft_expander(t_lexer **lexer, t_env *envb)
 			tmp = dol_to_expand(lst->word);
 			if (tmp)
 				lst = expand_dquote(tmp, lst, envb);
+			lst = clean_dquotes(lst); // remove initial and final "
 		}
 		lst = lst->next;
 	}
 }
 
-// ATTENTION
-// Candy_$hell> "$ it's me $USER$ [$$]"
-// ["$ it's me bbresil$ ["__DQUOTE__]
-// WHILE BASH =
-// >> echo "$ it's me $USER$ [$$]"
-// >> $ it's me bbresil$ [379970]
+// Candy_$hell> echo "this $$$$$$$$$$$?"
+// [echo__WORD__][this 0__DQUOTE__]
