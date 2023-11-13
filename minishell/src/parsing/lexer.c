@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 15:14:20 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/07 18:16:44 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/13 19:24:32 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -341,6 +341,41 @@ void print_lexer(t_lexer **head)
 	ft_printf("\n");
 }
 
+t_lexer	*syntax_error(t_lexer *lexer, t_lexer **lexer_head)
+{
+	ft_putstr_fd("syntax error near unexpected token '", 2);
+	ft_putstr_fd(lexer->word, 2);
+	ft_putstr_fd("'\n", 2);
+	free_lexer_list(lexer_head);
+	return (NULL);
+}
+
+t_lexer	*check_valid_input(t_lexer **lexer_head)
+{
+	t_lexer	*lexer;
+	int		i;
+
+	lexer = *lexer_head;
+	i = 0;
+	if (!lexer)
+		return (NULL);
+	while (lexer)
+	{
+		if (lexer->type >= 1 && lexer->type <= 5 && lexer->next)
+		{
+			if (i == 0 && (lexer->next->type >= 1 && lexer->next->type < 5))
+				return (syntax_error(lexer, lexer_head));
+		}
+		else if (lexer->type == LESS_LESS && (!lexer->next || lexer->next->type != WORD))
+			return (syntax_error(lexer, lexer_head));
+		if (!lexer->next && lexer->type && lexer->type <= 5)
+			return (syntax_error(lexer, lexer_head));
+		i++;
+		lexer = lexer->next;
+	}
+	return (*lexer_head);
+}
+
 t_lexer	*ft_lexer(char *line)
 {
 	t_lexer *lexer_list;
@@ -348,9 +383,6 @@ t_lexer	*ft_lexer(char *line)
 
 	lexer_list = NULL;
 	epur_line = ft_epur_str(line);
-	// ft_putstr_fd("epur_line = ", 1); //remove
-	// ft_putstr_fd(epur_line, 1);
-	// ft_putstr_fd("\n", 1);
 	if (ft_fill_lexer(&lexer_list, epur_line))
 	{
 		free (epur_line);
@@ -359,5 +391,5 @@ t_lexer	*ft_lexer(char *line)
 	}
 	// print_lexer(&lexer_list);
 	free(epur_line);
-	return (lexer_list);
+	return (check_valid_input(&lexer_list));
 }

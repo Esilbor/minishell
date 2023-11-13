@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/12 19:36:10 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/13 19:27:56 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ typedef enum e_tokens
 	PIPE,
 	LESS,
 	GREAT,
-	LESS_LESS,
 	GREAT_GREAT,
+	LESS_LESS,
 	DOLLAR,
 	DQUOTE,
 	SQUOTE,
@@ -68,7 +68,7 @@ typedef struct s_lexer
 {
 	char			*word;
 	t_tokens		type;
-	// int			i;
+	// int			index;
 	struct s_lexer	*next;
 	struct s_lexer	*prev;
 }	t_lexer;
@@ -81,15 +81,13 @@ typedef struct s_env
 
 typedef struct s_cmd
 {
-	int				index;
-	char			**cmd;
-	char			*eof;
-	char			*heredoc_path;
-	char			*input_redir;
-	char			*output_redir;
-	int				fd_out;
-	struct s_cmd	*next;
-	struct s_cmd	*prev;
+	int		index;
+	char	**cmd;
+	char	*eof;
+	bool	append;
+	char	*heredoc_path;
+	char	*input_redir; // le dernier input de la commande
+	char	**output_redir; // liste des output a creer mais ecrire dans le dernier
 
 }	t_cmd;
 
@@ -102,7 +100,8 @@ t_lexer			*ft_lexer(char *line);
 char			*ft_epur_str(char *str);
 int				is_wspace(char c);
 int				ft_cmd_count(char *str);
-
+t_lexer			*syntax_error(t_lexer *lexer, t_lexer **lexer_head);
+t_lexer			*check_valid_input(t_lexer **lexer_head);
 
 // EXPAND
 

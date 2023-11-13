@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:36:38 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/12 19:41:22 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/12 19:58:39 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,6 +182,7 @@ void	ft_expander(t_lexer **lexer, t_env *envb)
 		}
 		lst = lst->next;
 	}
+	// check_valid_input(lexer); // work on invalid cases
 }
 
 // Candy_$hell> echo "this $$$$$$$$$$$?"
