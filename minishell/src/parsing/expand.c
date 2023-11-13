@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:36:38 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/13 21:41:17 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/13 22:42:40 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,26 +162,44 @@ t_lexer	*clean_quotes(t_lexer *node)
 	return (node);
 }
 
-// void	clean_lexer2(t_lexer **lexer)
-// {
-// 	t_lexer *lex;
+void	clean_lexer3(t_lexer **lexer)
+{
+	t_lexer *lex;
 
-// 	lex = *lexer;
-// 	while (lex && lex->next)
-// 	{
-// 		if (lex->type == LESS_LESS && lex->next->type == WORD)
-// 		{
-// 			lex = ft_remove_lex_node(lexer, lex);
-// 			lex->type = LIMITER;
-// 		}
-// 		else if (lex->type == GREAT_GREAT && lex->next->type == WORD)
-// 		{
-// 			lex = ft_remove_lex_node(lexer, lex);
-// 			lex->type = APPEND;
-// 		}
-// 		lex = lex->next;
-// 	}
-// }
+	lex = *lexer;
+	while (lex)
+	{
+		if (lex->type == LESS_LESS || lex->type == LESS || lex->type == GREAT || lex->type == GREAT_GREAT)
+		{
+			lex = ft_remove_lex_node(lexer, lex);
+		}
+		lex = lex->next;
+	}
+}
+
+void	clean_lexer2(t_lexer **lexer)
+{
+	t_lexer *lex;
+
+	lex = *lexer;
+	while (lex && lex->next)
+	{
+		if (lex->type == LESS_LESS && lex->next->type == WORD)
+		{
+			// lex = ft_remove_lex_node(lexer, lex);
+			lex = lex->next;
+			lex->type = LIMITER;
+		}
+		else if (lex->type == GREAT_GREAT && lex->next->type == WORD)
+		{
+			// lex = ft_remove_lex_node(lexer, lex);
+			lex = lex->next;
+			lex->type = APPEND;
+		}
+		lex = lex->next;
+	}
+	clean_lexer3(lexer);
+}
 
 void	clean_lexer(t_lexer **lexer)
 {
@@ -199,18 +217,19 @@ void	clean_lexer(t_lexer **lexer)
 	{
 		if (lex->type == LESS && lex->next->type == WORD)
 		{
-			lex = ft_remove_lex_node(lexer, lex);
+			// lex = ft_remove_lex_node(lexer, lex);
 			lex = lex->next;
 			lex->type = INPUT;
 		}
 		else if (lex->type == GREAT && lex->next->type == WORD)
 		{
-			lex = ft_remove_lex_node(lexer, lex);
+			// lex = ft_remove_lex_node(lexer, lex);
+			lex = lex->next;
 			lex->type = OUTPUT;
 		}
 		lex = lex->next;
 	}
-	// clean_lexer2(lexer);
+	clean_lexer2(lexer);
 }
 
 // replace the value of expand nodes to the matching environment value
