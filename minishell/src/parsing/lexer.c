@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 15:14:20 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/13 19:24:32 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/13 21:27:54 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -301,7 +301,7 @@ int	ft_fill_lexer(t_lexer **lexer_lst, char *cmd_line)
 	return (0);
 }
 
-char	*print_token(t_tokens token)
+char	*print_token(t_tokens token) // A SUPPRIMER
 {
 	if (token == WORD)
 		return ("WORD");
@@ -325,6 +325,12 @@ char	*print_token(t_tokens token)
 		return ("EXPAND");
 	else if(token == LIMITER)
 		return ("LIMITER");
+	else if(token == INPUT)
+		return ("INPUT");
+	else if(token == OUTPUT)
+		return ("OUTPUT");
+	else if(token == APPEND)
+		return ("APPEND");
 	return ("ERROR");
 }
 
@@ -335,7 +341,7 @@ void print_lexer(t_lexer **head)
 	lst = *head;
 	while (lst)
 	{
-		ft_printf(WHITE"["CYAN"%s" PURPLE"__%s__" WHITE"]", lst->word, print_token(lst->type));
+		ft_printf(WHITE"["CYAN"%s" GREEN"__%s__" WHITE"]", lst->word, print_token(lst->type));
 		lst = lst->next;
 	}
 	ft_printf("\n");
@@ -375,6 +381,7 @@ t_lexer	*check_valid_input(t_lexer **lexer_head)
 	}
 	return (*lexer_head);
 }
+
 
 t_lexer	*ft_lexer(char *line)
 {

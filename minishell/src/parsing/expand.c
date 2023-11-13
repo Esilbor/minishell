@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:36:38 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/12 19:58:39 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/13 21:41:17 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ t_lexer	*expand_dquote(char *tmp, t_lexer *node, t_env *envb)
 	return (node);
 }
 
-t_lexer	*clean_dquotes(t_lexer *node)
+t_lexer	*clean_quotes(t_lexer *node)
 {
 	char	*new_str;
 
@@ -160,6 +160,57 @@ t_lexer	*clean_dquotes(t_lexer *node)
 	node->word = new_str;
 	node->type = WORD; // might be too soon??
 	return (node);
+}
+
+// void	clean_lexer2(t_lexer **lexer)
+// {
+// 	t_lexer *lex;
+
+// 	lex = *lexer;
+// 	while (lex && lex->next)
+// 	{
+// 		if (lex->type == LESS_LESS && lex->next->type == WORD)
+// 		{
+// 			lex = ft_remove_lex_node(lexer, lex);
+// 			lex->type = LIMITER;
+// 		}
+// 		else if (lex->type == GREAT_GREAT && lex->next->type == WORD)
+// 		{
+// 			lex = ft_remove_lex_node(lexer, lex);
+// 			lex->type = APPEND;
+// 		}
+// 		lex = lex->next;
+// 	}
+// }
+
+void	clean_lexer(t_lexer **lexer)
+{
+	t_lexer *lex;
+
+	lex = *lexer;
+	while (lex)
+	{
+		if (lex->type == SQUOTE)
+			lex = clean_quotes(lex);
+		lex = lex->next;
+	}
+	lex = *lexer;
+	while (lex && lex->next)
+	{
+		if (lex->type == LESS && lex->next->type == WORD)
+		{
+			lex = ft_remove_lex_node(lexer, lex);
+			lex = lex->next;
+			lex->type = INPUT;
+		}
+		else if (lex->type == GREAT && lex->next->type == WORD)
+		{
+			lex = ft_remove_lex_node(lexer, lex);
+			lex->type = OUTPUT;
+		}
+		lex = lex->next;
+	}
+	// clean_lexer2(lexer);
 }
 
 // replace the value of expand nodes to the matching environment value
@@ -178,11 +229,11 @@ void	ft_expander(t_lexer **lexer, t_env *envb)
 			tmp = dol_to_expand(lst->word);
 			if (tmp)
 				lst = expand_dquote(tmp, lst, envb);
-			lst = clean_dquotes(lst); // remove initial and final "
+			lst = clean_quotes(lst); // remove initial and final "
 		}
 		lst = lst->next;
 	}
-	// check_valid_input(lexer); // work on invalid cases
+	clean_lexer(lexer);
 }
 
 // Candy_$hell> echo "this $$$$$$$$$$$?"

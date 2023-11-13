@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/13 19:27:56 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/13 21:26:41 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ typedef enum e_tokens
 	OUTPUT,
 	LIMITER,
 	EXPAND,
+	APPEND,
 }	t_tokens;
 
 typedef struct s_lexer
@@ -111,7 +112,7 @@ char			*extract_var(char *str, char **ptr);
 char			*get_env_value(t_env *envb, char **str);
 char			*dol_to_expand(char *str);
 t_lexer			*expand_dquote(char *tmp, t_lexer *lst, t_env *envb);
-t_lexer			*clean_dquotes(t_lexer *node);
+t_lexer			*clean_quotes(t_lexer *node);
 void			ft_expander(t_lexer **lexer, t_env *envb);
 
 
