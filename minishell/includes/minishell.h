@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/14 19:55:38 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/15 22:46:03 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,8 @@ typedef struct s_env
 
 typedef struct s_cmd
 {
-	int		index;
-	char	**cmd;
+	int		index;//
+	char	**cmd; //
 	char	**eof; //DEMANDER A ADRIANO SI CHAR * ou CHAR **
 	bool	append;
 	char	*heredoc_path;
@@ -121,7 +121,7 @@ int				count_cmd(t_lexer *lex);
 t_cmd			**init_cmd_struct(t_lexer **lexer);
 int				token_nb(t_lexer **lexer, t_tokens token);
 t_cmd			**command_builder(t_lexer **lexer);
-t_cmd			**fill_cmd_tab(t_lexer **lexer, t_cmd **cmd_struct_tab);
+t_cmd			**fill_cmd_tab(t_lexer *lex, t_cmd **cmd_struct_tab, int cmd_nb, int tok_nb);
 void			free_cmd_struct_tab(t_cmd **cmd_struct_tab);
 
 // BUILT-INS

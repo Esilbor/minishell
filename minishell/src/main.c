@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:06:41 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/14 20:13:57 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/15 20:41:01 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ void	free_cmd_struct_tab(t_cmd **cmd_struct_tab)
 		{
 			if (cmd_struct_tab[i]->cmd)
 				ft_free_tab((void **)cmd_struct_tab[i]->cmd);
+			// ft_free_tab((void **)cmd_struct_tab[i]);
 			if (cmd_struct_tab[i]->eof)
 				ft_free_tab((void **)cmd_struct_tab[i]->eof);
 			if (cmd_struct_tab[i]->input_redir)
@@ -94,6 +95,29 @@ void	free_cmd_struct_tab(t_cmd **cmd_struct_tab)
 		ft_free_tab((void **)cmd_struct_tab);
 	}
 }
+
+/****chatgpt version*/
+// void free_cmd_struct_tab(t_cmd **cmd_struct_tab) {
+//     int i;
+
+//     if (cmd_struct_tab) {
+//         for (i = 0; cmd_struct_tab[i]; i++) {
+//             if (cmd_struct_tab[i]->cmd)
+//                 ft_free_tab((void **)cmd_struct_tab[i]->cmd);
+//             // Free other dynamically allocated members of cmd_struct_tab[i] here, if any
+//             // Example:
+//             // if (cmd_struct_tab[i]->eof)
+//             //     ft_free_tab((void **)cmd_struct_tab[i]->eof);
+//             // ...
+
+//             // Directly free cmd_struct_tab[i]
+//             free(cmd_struct_tab[i]);
+//         }
+//         // After freeing each cmd_struct_tab[i], free the cmd_struct_tab
+//         free(cmd_struct_tab);
+//     }
+// }
+
 
 void	free_shell(char **cmd_tab, t_lexer *lexer, char *input, t_cmd **cmd_struct_tab)
 {
