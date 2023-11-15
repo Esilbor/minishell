@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:36:38 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/13 22:42:40 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/14 12:07:40 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,7 @@ t_lexer	*clean_quotes(t_lexer *node)
 	return (node);
 }
 
+//Processes lexer tokens, removing << < > and >> types from the list.
 void	clean_lexer3(t_lexer **lexer)
 {
 	t_lexer *lex;
@@ -169,7 +170,8 @@ void	clean_lexer3(t_lexer **lexer)
 	lex = *lexer;
 	while (lex)
 	{
-		if (lex->type == LESS_LESS || lex->type == LESS || lex->type == GREAT || lex->type == GREAT_GREAT)
+		if (lex->type == LESS_LESS || lex->type == LESS
+			|| lex->type == GREAT || lex->type == GREAT_GREAT)
 		{
 			lex = ft_remove_lex_node(lexer, lex);
 		}
@@ -177,6 +179,7 @@ void	clean_lexer3(t_lexer **lexer)
 	}
 }
 
+//Processes lexer tokens, setting limiter and append types.
 void	clean_lexer2(t_lexer **lexer)
 {
 	t_lexer *lex;
@@ -201,6 +204,7 @@ void	clean_lexer2(t_lexer **lexer)
 	clean_lexer3(lexer);
 }
 
+//Processes lexer tokens, cleaning quotes and setting input/output types.
 void	clean_lexer(t_lexer **lexer)
 {
 	t_lexer *lex;
@@ -217,13 +221,11 @@ void	clean_lexer(t_lexer **lexer)
 	{
 		if (lex->type == LESS && lex->next->type == WORD)
 		{
-			// lex = ft_remove_lex_node(lexer, lex);
 			lex = lex->next;
 			lex->type = INPUT;
 		}
 		else if (lex->type == GREAT && lex->next->type == WORD)
 		{
-			// lex = ft_remove_lex_node(lexer, lex);
 			lex = lex->next;
 			lex->type = OUTPUT;
 		}

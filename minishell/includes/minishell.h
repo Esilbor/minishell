@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/13 21:26:41 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/14 19:55:38 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,10 @@ typedef struct s_cmd
 {
 	int		index;
 	char	**cmd;
-	char	*eof;
+	char	**eof; //DEMANDER A ADRIANO SI CHAR * ou CHAR **
 	bool	append;
 	char	*heredoc_path;
-	char	*input_redir; // le dernier input de la commande
+	char	**input_redir; // le dernier input de la commande
 	char	**output_redir; // liste des output a creer mais ecrire dans le dernier
 
 }	t_cmd;
@@ -115,6 +115,14 @@ t_lexer			*expand_dquote(char *tmp, t_lexer *lst, t_env *envb);
 t_lexer			*clean_quotes(t_lexer *node);
 void			ft_expander(t_lexer **lexer, t_env *envb);
 
+// COMMAND BUILDER
+
+int				count_cmd(t_lexer *lex);
+t_cmd			**init_cmd_struct(t_lexer **lexer);
+int				token_nb(t_lexer **lexer, t_tokens token);
+t_cmd			**command_builder(t_lexer **lexer);
+t_cmd			**fill_cmd_tab(t_lexer **lexer, t_cmd **cmd_struct_tab);
+void			free_cmd_struct_tab(t_cmd **cmd_struct_tab);
 
 // BUILT-INS
 
@@ -154,5 +162,9 @@ void			ft_handle_signals(void);
 void			init_colors(char **colors);
 // char			*ft_rand_col(void);
 unsigned int	ft_rand(void);
+
+// PRINT
+
+void			ft_print_struct_tab(t_cmd	**struct_tab);
 
 #endif
