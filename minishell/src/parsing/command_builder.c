@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 12:12:12 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/16 23:02:08 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/17 00:03:52 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@ int	count_cmd(t_lexer *lex)
 	}
 	return (i);
 }
-
-// A VOIR STRUCT VS STUCTURE !!!
 
 t_cmd	**init_cmd_struct(t_lexer **lexer)
 {
@@ -194,13 +192,5 @@ t_cmd	**command_builder(t_lexer **lexer)
 	fill_input_tab(*lexer, cmd_struct_tab, cmd_nb, tok_nb);
 	fill_output_tab(*lexer, cmd_struct_tab, cmd_nb, tok_nb);
 	ft_print_struct_tab(cmd_struct_tab); // IMPRIMER LES TABLEAUX DE COMMANDE
-	// ft_printf("VERIF OK\n");
-	// ft_print_tab((void **)cmd_struct_tab[1]->output_redir, "verif_output");
-
 	return (cmd_struct_tab);
 }
-
-// Il se passe quelque chose de tres etrange, si le TYPE n'est pas present dans
-// la cmd[n] elle ne sera plus jamais rempli pour les autres cmd suivantes
-
-// Candy_$hell> >file1 SEGFAULT
