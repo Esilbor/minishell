@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:06:41 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/15 20:41:01 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/16 21:11:54 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,8 +145,12 @@ int	shell_loop(t_env *envb)
 		add_history(input);
 		// ft_parser(lexer);
 		ft_expander(&lexer, envb);
-		print_lexer(&lexer);
+		print_lexer(&lexer); ///
 		cmd_struct_tab = command_builder(&lexer);
+
+
+
+		
 		cmd_tab = ft_split(input, ' '); //split the prompt input
 		do_builtins(cmd_tab, &envb);
 		free_shell(cmd_tab, lexer, input, cmd_struct_tab);

@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 15:14:20 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/13 21:27:54 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/16 23:30:11 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,11 +98,36 @@ char	*ft_epur_str(char *str)
 	return (epur_str);
 }
 
+t_tokens is_spec_char2(char *c)
+{
+	if (*c == '|')
+		return (PIPE);
+	// else if (*c == '$') // EXPAND
+	// 	return (DOLLAR);
+	else if (*c == '<')
+	{
+		if (*(c + 1) == '<')
+			return (LESS_LESS);
+		return (LESS);
+	}
+	else if (*c == '>')
+	{
+		if (*(c + 1) == '>')
+			return (GREAT_GREAT);
+		return (GREAT);
+	}
+	else if (*c == '"')
+		return (DQUOTE);
+	else if (*c == '\'')
+		return (SQUOTE);
+	return (WORD);
+}
+
 t_tokens is_spec_char(char *c)
 {
 	if (*c == '|')
 		return (PIPE);
-	else if (*c == '$')
+	else if (*c == '$') // EXPAND
 		return (DOLLAR);
 	else if (*c == '<')
 	{
@@ -217,9 +242,11 @@ void	handle_spec_chars(char *cmd_line, int *j, t_lexer **head)
 		free(tmp);
 		*j += 2;
 	}
-	else if (is_spec_char(&cmd_line[*j]) == DOLLAR && cmd_line[*j + 1] && cmd_line[*j + 1] != ' ')
+	// EXPAND
+	else if (is_spec_char(&cmd_line[*j]) == DOLLAR && cmd_line[*j + 1]
+		&& cmd_line[*j + 1] != ' ')
 	{
-		(*j)++;
+		// (*j)++;
 		handle_dollar(cmd_line, j, head);
 	}
 	else
@@ -237,7 +264,7 @@ void	handle_dollar(char *cmd_line, int *i, t_lexer **head)
 	char	*tmp;
 
 	j = *i;
-	while (cmd_line[j] && !is_spec_char(&cmd_line[j]) && cmd_line[j] != ' ')
+	while (cmd_line[j] && !is_spec_char2(&cmd_line[j]) && cmd_line[j] != ' ')
 		j++;
 
 	if (j > *i)
@@ -337,11 +364,32 @@ char	*print_token(t_tokens token) // A SUPPRIMER
 void print_lexer(t_lexer **head)
 {
 	t_lexer *lst;
+	int		i;
 
 	lst = *head;
+	i = 0;
+	ft_printf("\n\n");
+	ft_printf(WHITE"CMD[%d] = ",i++);
 	while (lst)
 	{
-		ft_printf(WHITE"["CYAN"%s" GREEN"__%s__" WHITE"]", lst->word, print_token(lst->type));
+		if (lst->type == WORD)
+			ft_printf(GREEN"[%s__WORD__]"RESET, lst->word);
+		else if (lst->type == PIPE)
+		{
+			ft_printf(PINK"[%s__PIPE__]"RESET, lst->word);
+			ft_printf("\n\n");
+			ft_printf(WHITE"CMD[%d] = ",i++);
+		}
+		else if (lst->type == LIMITER)
+			ft_printf(BLUE"[%s__LIMITER__]"RESET, lst->word);
+		else if (lst->type == INPUT)
+			ft_printf(CYAN"[%s__INPUT__]"RESET, lst->word);
+		else if (lst->type == OUTPUT)
+			ft_printf(YELLOW"[%s__OUTPUT__]"RESET, lst->word);
+		else if (lst->type == APPEND)
+			ft_printf(YELLOW"[%s__APPEND__]"RESET, lst->word);
+		else if (lst)
+			ft_printf(RED"[%s__%s]"RESET, lst->word, print_token(lst->type));
 		lst = lst->next;
 	}
 	ft_printf("\n");
@@ -367,12 +415,15 @@ t_lexer	*check_valid_input(t_lexer **lexer_head)
 		return (NULL);
 	while (lexer)
 	{
+		// if (!lexer->type && lexer->word[0] == '/' && (lexer->word[1] == ' ' || !lexer->word[1]))
+		// 	return (ft_putstr_fd("/: is a directory\n", 2), NULL);
 		if (lexer->type >= 1 && lexer->type <= 5 && lexer->next)
 		{
-			if (i == 0 && (lexer->next->type >= 1 && lexer->next->type < 5))
+			if (i == 0 || (lexer->next->type >= 1 && lexer->next->type < 5))
 				return (syntax_error(lexer, lexer_head));
 		}
-		else if (lexer->type == LESS_LESS && (!lexer->next || lexer->next->type != WORD))
+		else if (lexer->type == LESS_LESS
+			&& (!lexer->next || lexer->next->type != WORD))
 			return (syntax_error(lexer, lexer_head));
 		if (!lexer->next && lexer->type && lexer->type <= 5)
 			return (syntax_error(lexer, lexer_head));

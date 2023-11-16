@@ -6,11 +6,10 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 16:43:35 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/15 12:13:55 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/16 20:50:45 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "../ft_printf/ft_printf.h"
 #include "libft.h"
 
 void	ft_print_tab(void **tab, char *tab_name)

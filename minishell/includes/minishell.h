@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/15 22:46:03 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/16 21:58:58 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ char			*dol_to_expand(char *str);
 t_lexer			*expand_dquote(char *tmp, t_lexer *lst, t_env *envb);
 t_lexer			*clean_quotes(t_lexer *node);
 void			ft_expander(t_lexer **lexer, t_env *envb);
+t_lexer			*expand_node2(char *tmp, t_lexer *node, t_env *envb);
 
 // COMMAND BUILDER
 

@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:36:38 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/14 12:07:40 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/16 23:06:34 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,39 @@ char	*dol_to_expand(char *str)
 	return (NULL);
 }
 
+t_lexer	*expand_node2(char *tmp, t_lexer *node, t_env *envb)
+{
+	char	*var;
+	char	*new_str;
+	char	*tmp_str;
+	char	*ptr;
+
+	var = extract_var(tmp + 1, &ptr); //get USER and set ptr to the remainder so "
+	ft_printf("VAR == %s\n", var);
+	tmp_str = ft_strpcpy(node->word, tmp);//copies everthing before $ "this is \0
+
+
+
+	ft_printf("TMP_STR == %s\n", tmp_str);
+	get_env_value(envb, &var); //updates USER into bbresil
+	if (var)
+		new_str = ft_strjoin(tmp_str, var); //join "this is \0 with bbresil
+	else
+		new_str = ft_strdup(tmp_str);
+	free (var); // if var is NULL nothing will occur :)
+	free (tmp_str);
+	if (ptr)
+		tmp_str = ft_strjoin(new_str, ptr);// "this is bbresil"
+	free (node->word);
+	free (new_str);
+	node->word = ft_strdup(tmp_str);
+	free (tmp_str);
+	tmp = dol_to_expand(node->word);
+	if (tmp)
+		node = expand_node2(tmp, node, envb); // RECURSIVITÉ
+	return (node);
+}
+
 t_lexer	*expand_dquote(char *tmp, t_lexer *node, t_env *envb)
 {
 	char	*var;
@@ -189,13 +222,11 @@ void	clean_lexer2(t_lexer **lexer)
 	{
 		if (lex->type == LESS_LESS && lex->next->type == WORD)
 		{
-			// lex = ft_remove_lex_node(lexer, lex);
 			lex = lex->next;
 			lex->type = LIMITER;
 		}
 		else if (lex->type == GREAT_GREAT && lex->next->type == WORD)
 		{
-			// lex = ft_remove_lex_node(lexer, lex);
 			lex = lex->next;
 			lex->type = APPEND;
 		}
@@ -243,14 +274,18 @@ void	ft_expander(t_lexer **lexer, t_env *envb)
 	lst = *lexer;
 	while (lst)
 	{
-		if (lst->type == EXPAND)
-			lst = expand_node(lexer, lst, envb);
-		else if (lst->type == DQUOTE)
+		if (lst->type == DQUOTE) // make a duplicate for EXPAND type
 		{
 			tmp = dol_to_expand(lst->word);
 			if (tmp)
 				lst = expand_dquote(tmp, lst, envb);
 			lst = clean_quotes(lst); // remove initial and final "
+		}
+		else if (lst->type == EXPAND) // make a duplicate for EXPAND type
+		{
+			tmp = dol_to_expand(lst->word);
+			if (tmp)
+				lst = expand_node2(tmp, lst, envb);
 		}
 		lst = lst->next;
 	}
