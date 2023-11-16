@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:36:38 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/16 23:06:34 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/17 00:14:21 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,12 +131,7 @@ t_lexer	*expand_node2(char *tmp, t_lexer *node, t_env *envb)
 	char	*ptr;
 
 	var = extract_var(tmp + 1, &ptr); //get USER and set ptr to the remainder so "
-	ft_printf("VAR == %s\n", var);
 	tmp_str = ft_strpcpy(node->word, tmp);//copies everthing before $ "this is \0
-
-
-
-	ft_printf("TMP_STR == %s\n", tmp_str);
 	get_env_value(envb, &var); //updates USER into bbresil
 	if (var)
 		new_str = ft_strjoin(tmp_str, var); //join "this is \0 with bbresil
@@ -294,3 +289,18 @@ void	ft_expander(t_lexer **lexer, t_env *envb)
 
 // Candy_$hell> echo "this $$$$$$$$$$$?"
 // [echo__WORD__][this 0__DQUOTE__]
+
+/*
+Candy_$hell> $YUY
+
+
+CMD[0] = [__EXPAND]
+
+********index = 0 ********
+
+
+CMD[0]
+cmd[0] =
+
+***************
+*/
