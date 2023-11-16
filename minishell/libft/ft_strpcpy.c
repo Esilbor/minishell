@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 11:01:59 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/10 11:22:10 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/16 23:40:35 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,3 @@ char	*ft_strpcpy(char *str, char *ptr)
 	new_str[i] = '\0';
 	return (new_str);
 }
-

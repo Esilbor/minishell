@@ -6,13 +6,13 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:34:17 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/10 10:34:02 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/16 23:41:12 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-// Copies string 'src' to 'dst' up to 'size - 1' characters, then null-terminates.
+// Copies string 'src' to 'dst' up to 'size - 1' characters & \0 terminate
 size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 {
 	size_t	i;
