@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:53:40 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/10 11:38:56 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/14 16:45:41 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,5 +79,6 @@ ssize_t		ft_strlen3(const char *s);
 bool		ft_is_c(char c, char d);
 char		*ft_strccpy(char *str, char c);
 char		*ft_strpcpy(char *str, char *ptr);
+void		ft_print_tab(void **tab, char *tab_name);
 
 #endif
