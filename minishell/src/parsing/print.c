@@ -12,6 +12,7 @@
 
 #include "../../includes/minishell.h"
 
+// Print the contents of the struct_tab array
 void ft_print_struct_tab(t_cmd **struct_tab)
 {
 	int i;

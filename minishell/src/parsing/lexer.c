@@ -26,30 +26,12 @@ void free_lexer_list(t_lexer **head)
 }
 
 
-
+// return 1 if c is a space or a tab else 0
 int is_wspace(char c)
 {
 	if (c == ' ' || c == '\t')
 		return (1);
 	return (0);
-}
-
-int ft_cmd_count(char *str)
-{
-	int i;
-	int count;
-
-	i = 0;
-	count = 0;
-	if (!str)
-		return (0);
-	while (str[i])
-	{
-		if (str[i] == '|')
-			count++;
-		i++;
-	}
-	return (count);
 }
 
 static int  is_quote(char c)
@@ -59,7 +41,7 @@ static int  is_quote(char c)
 	return (0);
 }
 
-
+// Cleans string 'str', removing extra spaces and handling quotes (to be reduced)
 char	*ft_epur_str(char *str)
 {
 	int		i;
@@ -98,12 +80,11 @@ char	*ft_epur_str(char *str)
 	return (epur_str);
 }
 
+// Like is_spec_char2, but also recognizes $ as DOLLAR
 t_tokens is_spec_char2(char *c)
 {
 	if (*c == '|')
 		return (PIPE);
-	// else if (*c == '$') // EXPAND
-	// 	return (DOLLAR);
 	else if (*c == '<')
 	{
 		if (*(c + 1) == '<')
@@ -123,6 +104,7 @@ t_tokens is_spec_char2(char *c)
 	return (WORD);
 }
 
+// Detects shell symbols (|, <, >, quotes), defaults to WORD
 t_tokens is_spec_char(char *c)
 {
 	if (*c == '|')
@@ -174,6 +156,7 @@ void ft_add_lex_node(t_lexer **lexer, char *word, t_tokens type)
 		ft_last_lexer_node(*lexer)->next = new_node;
 }
 
+// Handles single quotes in 'cmd_line', adds to lexer list, checks for errors
 int	handle_squotes(char *cmd_line, int *i, t_lexer **head)
 {
 	int		j;
@@ -182,15 +165,11 @@ int	handle_squotes(char *cmd_line, int *i, t_lexer **head)
 	j = *i + 1;
 	while (cmd_line[j] && cmd_line[j] != '\'')
 		j++;
-	if (!cmd_line[j]) // can also just send an error msn and terminate the prog
+	if (!cmd_line[j])
 	{
 		ft_putstr_fd("Candy_$hell: syntax error: unclosed Squote\n", 2);
 		*i = j;
 		return (1);
-		// tmp = ft_strndup(&cmd_line[*i], j - *i);
-		// ft_add_lex_node(head, tmp, SQUOTE);
-		// free(tmp);
-		// *i = j;
 	}
 	else
 	{
@@ -210,15 +189,11 @@ int	handle_dquotes(char *cmd_line, int *i, t_lexer **head)
 	j = *i + 1;
 	while (cmd_line[j] && cmd_line[j] != '\"')
 		j++;
-	if (!cmd_line[j]) // can also just send an error msn and terminate the prog
+	if (!cmd_line[j])
 	{
 		ft_putstr_fd("Candy_$hell: syntax error: unclosed Dquote\n", 2);
 		*i = j;
 		return (1);
-		// tmp = ft_strndup(&cmd_line[*i], j - *i);
-		// ft_add_lex_node(head, tmp, SQUOTE);
-		// free(tmp);
-		// *i = j;
 	}
 	else
 	{
@@ -230,6 +205,7 @@ int	handle_dquotes(char *cmd_line, int *i, t_lexer **head)
 	return (0);
 }
 
+// Processes double quotes in 'cmd_line', updates lexer, handles syntax errors
 void	handle_spec_chars(char *cmd_line, int *j, t_lexer **head)
 {
 	char	*tmp;
@@ -242,13 +218,9 @@ void	handle_spec_chars(char *cmd_line, int *j, t_lexer **head)
 		free(tmp);
 		*j += 2;
 	}
-	// EXPAND
 	else if (is_spec_char(&cmd_line[*j]) == DOLLAR && cmd_line[*j + 1]
 		&& cmd_line[*j + 1] != ' ')
-	{
-		// (*j)++;
 		handle_dollar(cmd_line, j, head);
-	}
 	else
 	{
 		tmp = ft_strndup(&cmd_line[*j], 1);
@@ -258,6 +230,7 @@ void	handle_spec_chars(char *cmd_line, int *j, t_lexer **head)
 	}
 }
 
+// Handle dollar signs and variable expansion
 void	handle_dollar(char *cmd_line, int *i, t_lexer **head)
 {
 	int		j;
@@ -276,6 +249,7 @@ void	handle_dollar(char *cmd_line, int *i, t_lexer **head)
 	*i = j;
 }
 
+// Process words with special chars in cmd_line
 void	handle_words_spec_char(char *cmd_line, int *i, t_lexer **head)
 {
 	int		j;
@@ -298,7 +272,7 @@ void	handle_words_spec_char(char *cmd_line, int *i, t_lexer **head)
 	*i = j;
 }
 
-
+// Fill lexer list from cmd_line string
 int	ft_fill_lexer(t_lexer **lexer_lst, char *cmd_line)
 {
 	int		i;
@@ -404,6 +378,7 @@ t_lexer	*syntax_error(t_lexer *lexer, t_lexer **lexer_head)
 	return (NULL);
 }
 
+// Check validity of lexer tokens in the input
 t_lexer	*check_valid_input(t_lexer **lexer_head)
 {
 	t_lexer	*lexer;
@@ -433,7 +408,7 @@ t_lexer	*check_valid_input(t_lexer **lexer_head)
 	return (*lexer_head);
 }
 
-
+// Perform lexical analysis on the input line
 t_lexer	*ft_lexer(char *line)
 {
 	t_lexer *lexer_list;

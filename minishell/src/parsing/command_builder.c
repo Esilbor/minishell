@@ -12,6 +12,7 @@
 
 #include "../../includes/minishell.h"
 
+// Count the number of commands in the lexer list
 int	count_cmd(t_lexer *lex)
 {
 	int	i;
@@ -28,6 +29,7 @@ int	count_cmd(t_lexer *lex)
 	return (i);
 }
 
+// Initialize an array of command structures from lexer
 t_cmd	**init_cmd_struct(t_lexer **lexer)
 {
 	t_cmd	**cmd_struct_tab;
@@ -126,6 +128,7 @@ t_cmd	**fill_eof_tab(t_lexer *lex, t_cmd **struct_tab, int cmd_nb, int tok_nb)
 	return (struct_tab);
 }
 
+// Allocates and assigns input redirections for each command in struct_tab
 t_cmd	**fill_input_tab(t_lexer *lex, t_cmd **struct_tab, int cmd_nb, int tok_nb)
 {
 	int		i;
@@ -151,7 +154,7 @@ t_cmd	**fill_input_tab(t_lexer *lex, t_cmd **struct_tab, int cmd_nb, int tok_nb)
 	}
 	return (struct_tab);
 }
-
+// Allocates and assigns output redirections for each command in struct_tab
 t_cmd	**fill_output_tab(t_lexer *lex, t_cmd **struct_tab, int cmd_nb, int tok_nb)
 {
 	int		i;
@@ -178,6 +181,7 @@ t_cmd	**fill_output_tab(t_lexer *lex, t_cmd **struct_tab, int cmd_nb, int tok_nb
 	return (struct_tab);
 }
 
+// Builds command structures from a lexer and fills them with redirections
 t_cmd	**command_builder(t_lexer **lexer)
 {
 	t_cmd	**cmd_struct_tab;

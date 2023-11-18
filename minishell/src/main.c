@@ -12,6 +12,7 @@
 
 #include "../includes/minishell.h"
 
+// Handle SIGINT signal and print a prompt
 void	sigint_handler(int signum)
 {
 	(void)signum; // Avoid compiler warning for unused variable
@@ -23,6 +24,7 @@ void	sigquit_handler(int signum)
 	(void)signum; // This handler does nothing for SIGQUIT
 }
 
+// Execute built-in commands based on cmd_tab (to be edited)
 void	do_builtins(char **cmd_tab, t_env **envb)
 {
 	t_env	**env_dup;
@@ -81,7 +83,6 @@ void	free_cmd_struct_tab(t_cmd **cmd_struct_tab)
 		{
 			if (cmd_struct_tab[i]->cmd)
 				ft_free_tab((void **)cmd_struct_tab[i]->cmd);
-			// ft_free_tab((void **)cmd_struct_tab[i]);
 			if (cmd_struct_tab[i]->eof)
 				ft_free_tab((void **)cmd_struct_tab[i]->eof);
 			if (cmd_struct_tab[i]->input_redir)

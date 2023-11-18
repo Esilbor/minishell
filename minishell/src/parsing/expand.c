@@ -12,6 +12,7 @@
 
 #include "../../includes/minishell.h"
 
+// Remove a specified node from lexer linked list
 t_lexer	*ft_remove_lex_node(t_lexer **lexer, t_lexer *node_to_remove)
 {
 	t_lexer	*current;
@@ -39,6 +40,7 @@ t_lexer	*ft_remove_lex_node(t_lexer **lexer, t_lexer *node_to_remove)
 	return (prev);
 }
 
+// Expand lexer node for environment variable
 t_lexer	*expand_node(t_lexer **lexer, t_lexer *lst, t_env *envb)
 {
 	char	*tmp;
@@ -121,6 +123,7 @@ char	*dol_to_expand(char *str)
 	return (NULL);
 }
 
+// Recursively expand lexer node for env variables (not within quotes)
 t_lexer	*expand_node2(char *tmp, t_lexer *node, t_env *envb)
 {
 	char	*var;
@@ -149,6 +152,7 @@ t_lexer	*expand_node2(char *tmp, t_lexer *node, t_env *envb)
 	return (node);
 }
 
+// Recursively expand lexer node for env variables (within double quotes)
 t_lexer	*expand_dquote(char *tmp, t_lexer *node, t_env *envb)
 {
 	char	*var;
@@ -177,6 +181,7 @@ t_lexer	*expand_dquote(char *tmp, t_lexer *node, t_env *envb)
 	return (node);
 }
 
+// Remove quotes from lexer node and update type to WORD
 t_lexer	*clean_quotes(t_lexer *node)
 {
 	char	*new_str;
