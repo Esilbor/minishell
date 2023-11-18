@@ -73,10 +73,8 @@ void	ft_quit_shell(t_env *envb, t_cmd **cmd_struct_tab)
 void	free_cmd_struct_tab(t_cmd **cmd_struct_tab)
 {
 	int	i;
-	int	j;
 
 	i = 0;
-	j = 0;
 	if (cmd_struct_tab)
 	{
 		while (cmd_struct_tab[i])

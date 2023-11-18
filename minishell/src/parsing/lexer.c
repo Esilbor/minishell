@@ -415,11 +415,11 @@ t_lexer	*check_valid_input(t_lexer **lexer_head)
 		return (NULL);
 	while (lexer)
 	{
-		// if (!lexer->type && lexer->word[0] == '/' && (lexer->word[1] == ' ' || !lexer->word[1]))
-		// 	return (ft_putstr_fd("/: is a directory\n", 2), NULL);
+		if (lexer->type == 1 && !i)
+			return (syntax_error(lexer, lexer_head));
 		if (lexer->type >= 1 && lexer->type <= 5 && lexer->next)
 		{
-			if (i == 0 || (lexer->next->type >= 1 && lexer->next->type < 5))
+			if ((lexer->next->type >= 1 && lexer->next->type < 5))
 				return (syntax_error(lexer, lexer_head));
 		}
 		else if (lexer->type == LESS_LESS

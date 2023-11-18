@@ -66,10 +66,8 @@ char	*extract_var(char *str, char **ptr)
 {
 	char		*var;
 	size_t		i;
-	size_t		j;
 
 	i = 0;
-	j = 0;
 	var = NULL;
 	// while (str[i] && str[i] != ' ' && str[i] != '$' && str[i] != '\"'  && str[i] != '\'')
 	while (str[i] && (ft_isalnum(str[i]) || str[i] == '_' || str[i] == '?'))
