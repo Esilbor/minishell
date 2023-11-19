@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 15:14:20 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/16 23:30:11 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/19 17:41:19 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void free_lexer_list(t_lexer **head)
 	}
 }
 
-
 // return 1 if c is a space or a tab else 0
 int is_wspace(char c)
 {
@@ -34,6 +33,7 @@ int is_wspace(char c)
 	return (0);
 }
 
+// return 1 if char c is a single or double quote
 static int  is_quote(char c)
 {
 	if (c == '\'' || c == '\"')
@@ -41,46 +41,54 @@ static int  is_quote(char c)
 	return (0);
 }
 
-// Cleans string 'str', removing extra spaces and handling quotes (to be reduced)
+void	handle_non_quote(char *str, int *i, int *j, char *epur_str)
+{
+    while (str[*i] && !is_wspace(str[*i]) && !is_quote(str[*i]))
+        epur_str[(*j)++] = str[(*i)++];
+    while (is_wspace(str[*i]) && is_wspace(str[*i + 1]))
+        (*i)++;
+    if (str[*i] && str[*i + 1] && !is_quote(str[*i]) && is_wspace(str[*i]))
+        epur_str[(*j)++] = str[(*i)++];
+}
+
+
+void	handle_quote(char *str, int *i, int *j, char *epur_str)
+{
+	char quote_char;
+	
+	quote_char = str[*i];
+	epur_str[(*j)++] = str[(*i)++];
+	while (str[*i] && str[*i] != quote_char)
+		epur_str[(*j)++] = str[(*i)++];
+	if (str[*i] == quote_char)
+		epur_str[(*j)++] = str[(*i)++];
+}
+
+
 char	*ft_epur_str(char *str)
 {
-	int		i;
-	int		j;
-	char	*epur_str;
-	char	quote_char;
-
+	int	i;
+	int	j;
+	char *epur_str;
+	
 	i = 0;
 	j = 0;
-	if (!str || !(epur_str = malloc(sizeof(char) * (strlen(str) + 1))))
+	epur_str = malloc(sizeof(char) * (strlen(str) + 1));
+	if (!str || !epur_str)
 		return (NULL);
 	while (str[i])
 	{
 		while (is_wspace(str[i]) && !is_quote(str[i]))
 			i++;
 		if (is_quote(str[i]))
-		{
-			quote_char = str[i];
-			epur_str[j++] = str[i++];
-			while (str[i] && str[i] != quote_char)
-				epur_str[j++] = str[i++];
-			if (str[i] == quote_char)
-				epur_str[j++] = str[i++];
-		}
+			handle_quote(str, &i, &j, epur_str);
 		else
-		{
-			while (str[i] && !is_wspace(str[i]) && !is_quote(str[i]))
-				epur_str[j++] = str[i++];
-			while (is_wspace(str[i]) && is_wspace(str[i + 1]))
-				i++;
-			if (str[i] && str[i + 1] && !is_quote(str[i]) && is_wspace(str[i]))
-				epur_str[j++] = str[i++];
-		}
+			handle_non_quote(str, &i, &j, epur_str);
 	}
 	epur_str[j] = '\0';
 	return (epur_str);
 }
-
-// Like is_spec_char2, but also recognizes $ as DOLLAR
+// Detects shell symbols (|, <, >, quotes), defaults to WORD
 t_tokens is_spec_char2(char *c)
 {
 	if (*c == '|')
@@ -104,7 +112,7 @@ t_tokens is_spec_char2(char *c)
 	return (WORD);
 }
 
-// Detects shell symbols (|, <, >, quotes), defaults to WORD
+// Like is_spec_char2, but also recognizes $ as DOLLAR
 t_tokens is_spec_char(char *c)
 {
 	if (*c == '|')
@@ -130,6 +138,7 @@ t_tokens is_spec_char(char *c)
 	return (WORD);
 }
 
+// return the last node of the lexer
 t_lexer *ft_last_lexer_node(t_lexer *node)
 {
 	while (node && node->next)
@@ -150,7 +159,7 @@ void ft_add_lex_node(t_lexer **lexer, char *word, t_tokens type)
 	new_node->word = ft_strdup(word);
 	new_node->type = type;
 	new_node->next = NULL;
-	if (!*lexer)
+	if (*lexer == NULL)
 		*lexer = new_node;
 	else
 		ft_last_lexer_node(*lexer)->next = new_node;
@@ -224,7 +233,7 @@ void	handle_spec_chars(char *cmd_line, int *j, t_lexer **head)
 	else
 	{
 		tmp = ft_strndup(&cmd_line[*j], 1);
-		ft_add_lex_node(head, tmp, is_spec_char(&cmd_line[*j]));
+		ft_add_lex_node(head, tmp, is_spec_char2(&cmd_line[*j])); /*2*/
 		free(tmp);
 		(*j)++;
 	}
@@ -266,9 +275,7 @@ void	handle_words_spec_char(char *cmd_line, int *i, t_lexer **head)
 		free(tmp);
 	}
 	else
-	{
 		handle_spec_chars(cmd_line, &j, head);
-	}
 	*i = j;
 }
 

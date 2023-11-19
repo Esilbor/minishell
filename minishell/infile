@@ -5,7 +5,7 @@ NAME = minishell
 
 # compiler
 CC = cc
-CFLAGS = -g2 -Wall -Wextra -Werror -pthread
+CFLAGS = -g3 -Wall -Wextra -Werror -pthread
 
 # libft
 LIBFT_PATH = ./libft/

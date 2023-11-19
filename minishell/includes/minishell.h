@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/16 21:58:58 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/19 12:40:03 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ typedef struct s_lexer
 {
 	char			*word;
 	t_tokens		type;
-	// int			index;
 	struct s_lexer	*next;
 	struct s_lexer	*prev;
 }	t_lexer;
@@ -82,13 +81,14 @@ typedef struct s_env
 
 typedef struct s_cmd
 {
-	int		index;//
-	char	**cmd; //
-	char	**eof; //DEMANDER A ADRIANO SI CHAR * ou CHAR **
+	int		index;
+	char	**cmd;
+	char	**eof; 
 	bool	append;
 	char	*heredoc_path;
-	char	**input_redir; // le dernier input de la commande
-	char	**output_redir; // liste des output a creer mais ecrire dans le dernier
+	char	**input_redir;
+	// char	**output_redir;
+	t_lexer	*output; //liste chainée des output avec leur type APPEND pour >> ou OUTPUT pour >
 
 }	t_cmd;
 
@@ -101,9 +101,11 @@ void			free_lexer_list(t_lexer **head);
 t_lexer			*ft_lexer(char *line);
 char			*ft_epur_str(char *str);
 int				is_wspace(char c);
-int				ft_cmd_count(char *str);
 t_lexer			*syntax_error(t_lexer *lexer, t_lexer **lexer_head);
 t_lexer			*check_valid_input(t_lexer **lexer_head);
+t_lexer 		*ft_last_lexer_node(t_lexer *node);
+void			ft_add_lex_node(t_lexer **lexer, char *word, t_tokens type);
+
 
 // EXPAND
 
