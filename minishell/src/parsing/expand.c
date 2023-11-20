@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:36:38 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/20 21:07:50 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/11/20 23:16:52 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -255,19 +255,32 @@ void	clean_lexer2(t_lexer **lexer)
 	clean_lexer3(lexer);
 }
 
-//Processes lexer tokens, cleaning quotes and setting input/output types.
-void	clean_lexer(t_lexer **lexer)
+void	clean_squotes(t_lexer **lexer)
 {
 	t_lexer *lex;
 
 	lex = *lexer;
 	while (lex)
 	{
-		if (lex->type == SQUOTE)
+		if (lex->type == SQUOTE || lex->type == SMERGE)
 			lex = clean_quotes(lex);
 		lex = lex->next;
 	}
+}
+
+//Processes lexer tokens, cleaning quotes and setting input/output types.
+void	clean_lexer(t_lexer **lexer)
+{
+	t_lexer *lex;
+
 	lex = *lexer;
+	// while (lex)
+	// {
+	// 	if (lex->type == SQUOTE || lex->type == SMERGE)
+	// 		lex = clean_quotes(lex);
+	// 	lex = lex->next;
+	// }
+	// lex = *lexer;
 	while (lex && lex->next)
 	{
 		if (lex->type == LESS && (lex->next->type == WORD || lex->next->type == EXPAND))
@@ -308,6 +321,43 @@ void	merge_lex_nodes(t_lexer **lexer, t_tokens type)
 	}
 }
 
+void	merge_nodes(t_lexer **lexer)
+{
+	t_lexer	*lex;
+	char	*tmp;
+	char	*tmp2;
+
+	lex = *lexer;
+	while (lex && lex->next)
+	{
+		while (lex->type >= 14)
+		{
+			tmp = ft_strdup(lex->word);
+			lex = ft_remove_lex_node(lexer, lex);
+			lex = lex->next; // since ft_remove_lex_node return the previous node
+			tmp2 = ft_strdup(lex->word);
+			free (lex->word);
+			lex->word = ft_strjoin(tmp, tmp2);
+			free (tmp);
+		}
+		lex = lex->next;
+	}
+	
+}
+//finally change SQUOTES and DQUOTES into WORDS before cleaning
+void	quotes_to_words(t_lexer **lexer)
+{
+	t_lexer	*lex;
+
+	lex = *lexer;
+	while (lex)
+	{
+		if (lex->type == SQUOTE || lex->type == DQUOTE)
+			lex->type = WORD;
+		lex = lex->next;
+	}
+}
+
 // replace the value of expand nodes to the matching environment value
 void	ft_expander(t_lexer **lexer, t_env *envb)
 {
@@ -324,7 +374,7 @@ void	ft_expander(t_lexer **lexer, t_env *envb)
 				lst = expand_dquote(tmp, lst, envb);
 			lst = clean_quotes(lst); // remove initial and final "
 		}
-		else if (lst->type == EXPAND) // make a duplicate for EXPAND type need EMERGE type
+		else if (lst->type == EXPAND || lst->type == EMERGE) // make a duplicate for EXPAND type need EMERGE type
 		{
 			tmp = dol_to_expand(lst->word);
 			if (tmp)
@@ -335,9 +385,15 @@ void	ft_expander(t_lexer **lexer, t_env *envb)
 	ft_printf("before clean= ");
 	print_lexer(lexer);
 	// CLEAN QUOTES 
-	// merge_nodes(lexer)
+	clean_squotes(lexer);
+	ft_printf("after clean_squotes= ");
+	print_lexer(lexer);
+	merge_nodes(lexer);
+	ft_printf("AFTER MERGE_NODES= ");
+	print_lexer(lexer);
+	quotes_to_words(lexer);
 	clean_lexer(lexer);
-	ft_printf("after clean= ");
+	ft_printf("after clean_lexer= ");
 	print_lexer(lexer);
 }
 

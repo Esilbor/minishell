@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/20 19:32:36 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/11/20 22:49:47 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@
 # include <readline/history.h>
 # include <signal.h>
 
+// DO NOT MODIFY ORDER OF T_TOKENS
 typedef enum e_tokens
 {
 	WORD,
@@ -61,7 +62,7 @@ typedef enum e_tokens
 	INPUT,
 	OUTPUT,
 	APPEND,
-	LIMITER, // do not modify order above LIMITER
+	LIMITER,
 	EXPAND,
 	SMERGE,
 	DMERGE,
