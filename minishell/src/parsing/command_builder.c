@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_builder.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 12:12:12 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/17 00:03:52 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/19 12:44:44 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ t_cmd	**init_cmd_struct(t_lexer **lexer)
 		if (!cmd_struct_tab[i])
 			return (ft_free_tab((void **)cmd_struct_tab), NULL);
 		ft_memset(cmd_struct_tab[i], 0, sizeof(t_cmd));
+		cmd_struct_tab[i]->output = NULL;
 		i ++;
 	}
 	if (i)
@@ -155,25 +156,45 @@ t_cmd	**fill_input_tab(t_lexer *lex, t_cmd **struct_tab, int cmd_nb, int tok_nb)
 	return (struct_tab);
 }
 // Allocates and assigns output redirections for each command in struct_tab
-t_cmd	**fill_output_tab(t_lexer *lex, t_cmd **struct_tab, int cmd_nb, int tok_nb)
+// t_cmd	**fill_output_tab(t_lexer *lex, t_cmd **struct_tab, int cmd_nb, int tok_nb)
+// {
+// 	int		i;
+// 	int		j;
+
+// 	i = -1;
+// 	while (++i < cmd_nb)
+// 	{
+// 		j = 0;
+// 		tok_nb = token_nb(&lex, OUTPUT) + token_nb(&lex, APPEND);
+// 		struct_tab[i]->output_redir = malloc(sizeof(char *) * (tok_nb + 1));
+// 		if (!struct_tab[i]->output_redir)
+// 			return (ft_free_tab((void **)struct_tab), NULL);
+// 		while (lex && lex->type != PIPE)
+// 		{
+// 			if (lex->type == OUTPUT || lex->type == APPEND)
+// 				struct_tab[i]->output_redir[j++] = ft_strdup(lex->word);
+// 			struct_tab[i]->output_redir[j] = NULL;
+// 			lex = lex->next;
+// 		}
+// 		if (lex && lex->type == PIPE)
+// 			lex = lex->next;
+// 	}
+// 	return (struct_tab);
+// }
+
+t_cmd	**fill_output_lst(t_lexer *lex, t_cmd **struct_tab, int cmd_nb)
 {
-	int		i;
-	int		j;
+	int	i;
 
 	i = -1;
 	while (++i < cmd_nb)
 	{
-		j = 0;
-		tok_nb = token_nb(&lex, OUTPUT) + token_nb(&lex, APPEND);
-		struct_tab[i]->output_redir = malloc(sizeof(char *) * (tok_nb + 1));
-		if (!struct_tab[i]->output_redir)
-			return (ft_free_tab((void **)struct_tab), NULL);
+//		tok_nb = token_nb(&lex, OUTPUT) + token_nb(&lex, APPEND);
 		while (lex && lex->type != PIPE)
 		{
 			if (lex->type == OUTPUT || lex->type == APPEND)
-				struct_tab[i]->output_redir[j++] = ft_strdup(lex->word);
-			struct_tab[i]->output_redir[j] = NULL;
-			lex = lex->next;
+				ft_add_lex_node(&(struct_tab[i])->output, lex->word, lex->type);
+			lex = lex->next;			
 		}
 		if (lex && lex->type == PIPE)
 			lex = lex->next;
@@ -194,7 +215,8 @@ t_cmd	**command_builder(t_lexer **lexer)
 	fill_cmd_tab(*lexer, cmd_struct_tab, cmd_nb, tok_nb);
 	fill_eof_tab(*lexer, cmd_struct_tab, cmd_nb, tok_nb);
 	fill_input_tab(*lexer, cmd_struct_tab, cmd_nb, tok_nb);
-	fill_output_tab(*lexer, cmd_struct_tab, cmd_nb, tok_nb);
+	// fill_output_tab(*lexer, cmd_struct_tab, cmd_nb, tok_nb);
+	fill_output_lst(*lexer, cmd_struct_tab, cmd_nb);
 	ft_print_struct_tab(cmd_struct_tab); // IMPRIMER LES TABLEAUX DE COMMANDE
 	return (cmd_struct_tab);
 }

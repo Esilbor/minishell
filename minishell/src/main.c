@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:06:41 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/16 23:49:08 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/19 15:08:12 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,10 @@ void	free_cmd_struct_tab(t_cmd **cmd_struct_tab)
 				ft_free_tab((void **)cmd_struct_tab[i]->eof);
 			if (cmd_struct_tab[i]->input_redir)
 				ft_free_tab((void **)cmd_struct_tab[i]->input_redir);
-			if (cmd_struct_tab[i]->output_redir)
-				ft_free_tab((void **)cmd_struct_tab[i]->output_redir);
+			// if (cmd_struct_tab[i]->output_redir)
+			// 	ft_free_tab((void **)cmd_struct_tab[i]->output_redir);
+			if (cmd_struct_tab[i]->output)
+				free_lexer_list(&(cmd_struct_tab[i])->output);
 			i++;
 		}
 		ft_free_tab((void **)cmd_struct_tab);
@@ -107,7 +109,7 @@ int	shell_loop(t_env *envb)
 {
 	t_lexer	*lexer;
 	char	*input;
-	char	**cmd_tab;
+//	char	**cmd_tab;
 	t_cmd	**cmd_struct_tab;
 
 	cmd_struct_tab = NULL;
@@ -126,12 +128,13 @@ int	shell_loop(t_env *envb)
 
 //				EXECUTION PART HERE
 
-		cmd_tab = ft_split(input, ' '); // to be deleted
-		do_builtins(cmd_tab, &envb);
+//		cmd_tab = ft_split(input, ' '); // to be deleted
+		if (cmd_struct_tab[0]->cmd[0])
+			do_builtins(cmd_struct_tab[0]->cmd, &envb);
 
 /*************************************************************/
 
-		free_shell(cmd_tab, lexer, input, cmd_struct_tab);
+		free_shell(NULL, lexer, input, cmd_struct_tab);
 	}
 	else
 		return (ft_quit_shell(envb, cmd_struct_tab), 2);

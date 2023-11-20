@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:36:38 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/17 00:14:21 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/19 20:25:20 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,6 +206,10 @@ void	clean_lexer3(t_lexer **lexer)
 		{
 			lex = ft_remove_lex_node(lexer, lex);
 		}
+		if (lex->type == EXPAND && lex->word[0] == '\0') // IMPORTANT NOTE all pointers are initiated therefore never NULL must use [0]
+			lex = ft_remove_lex_node(lexer, lex);
+		if (lex->type == WORD && lex->word[0] == '\0')
+			lex = ft_remove_lex_node(lexer, lex);
 		lex = lex->next;
 	}
 }
@@ -262,10 +266,39 @@ void	clean_lexer(t_lexer **lexer)
 	}
 	clean_lexer2(lexer);
 }
+//merge two nodes when they are of same type and next to each other
+void	merge_lex_nodes(t_lexer **lexer, t_tokens type)
+{
+	t_lexer	*lex;
+	char	*tmp;
+	
+	if (!lexer)
+		return ;
+	lex = *lexer;
+	while (lex && lex->next)
+	{
+		if (lex->type == type && lex->next->type == type)
+		{
+			tmp = ft_strjoin(lex->word, lex->next->word);
+			free(lex->word);
+			lex->word = ft_strdup(tmp);
+			ft_remove_lex_node(lexer, lex->next);
+			free(tmp);
+			// Continue from the current node as the next node is now different
+		}
+		else
+		{
+			// Progress to the next node only if no merge happened
+			lex = lex->next;
+		}
+	}
+}
 
 // replace the value of expand nodes to the matching environment value
 void	ft_expander(t_lexer **lexer, t_env *envb)
 {
+	ft_printf("before expander= ");
+	print_lexer(lexer);
 	t_lexer	*lst;
 	char	*tmp;
 
@@ -287,6 +320,9 @@ void	ft_expander(t_lexer **lexer, t_env *envb)
 		}
 		lst = lst->next;
 	}
+	ft_printf("before clean= ");
+	print_lexer(lexer);
+	// merge_lex_nodes(lexer, SQUOTE);
 	clean_lexer(lexer);
 }
 

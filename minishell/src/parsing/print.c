@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 18:19:41 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/16 19:25:41 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/19 12:37:37 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void ft_print_struct_tab(t_cmd **struct_tab)
 
 	while (struct_tab[i])
 	{
-		if (!struct_tab[i]) // Null check for each element
+		if (!struct_tab[i])
 		{
 			ft_printf(RED"struct_tab[%d] is NULL\n"RESET, i);
 			i++;
@@ -56,14 +56,18 @@ void ft_print_struct_tab(t_cmd **struct_tab)
 			ft_print_tab((void **)struct_tab[i]->input_redir, "input");
 			ft_printf("***************\n\n"RESET);
 		}
-
-		if (struct_tab[i]->output_redir[0])
+		// if (struct_tab[i]->output_redir[0])
+		// {
+		// 	ft_printf(YELLOW"OUTPUT_TAB[%d]\n", i);
+		// 	ft_print_tab((void **)struct_tab[i]->output_redir, "output");
+		// 	ft_printf("***************\n\n"RESET);
+		// }
+		if (struct_tab[i]->output)
 		{
-			ft_printf(YELLOW"OUTPUT_TAB[%d]\n", i);
-			ft_print_tab((void **)struct_tab[i]->output_redir, "output");
+			ft_printf(YELLOW"OUTPUT_LST[%d]\n", i);
+			print_lexer(&(struct_tab[i])->output);
 			ft_printf("***************\n\n"RESET);
 		}
-
 		i++;
 	}
 }
