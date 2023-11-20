@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:36:38 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/20 19:17:14 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/11/20 21:07:50 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -337,6 +337,8 @@ void	ft_expander(t_lexer **lexer, t_env *envb)
 	// CLEAN QUOTES 
 	// merge_nodes(lexer)
 	clean_lexer(lexer);
+	ft_printf("after clean= ");
+	print_lexer(lexer);
 }
 
 // Candy_$hell> echo "this $$$$$$$$$$$?"

@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 15:14:20 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/20 19:44:14 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/11/20 20:58:52 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -295,7 +295,6 @@ void	handle_spec_chars(char *cmd_line, int *j, t_lexer **head)
 	}
 }
 
-// Handle dollar signs and variable expansion
 void	handle_dollar(char *cmd_line, int *i, t_lexer **head)
 {
 	int		j;
@@ -305,7 +304,13 @@ void	handle_dollar(char *cmd_line, int *i, t_lexer **head)
 	while (cmd_line[j] && !is_spec_char2(&cmd_line[j]) && cmd_line[j] != ' ')
 		j++;
 
-	if (j > *i)
+	if (cmd_line[j] && cmd_line[j] != ' ' && is_spec_char2(&cmd_line[j]))
+	{
+		tmp = ft_strndup(&cmd_line[*i], j - *i);
+		ft_add_lex_node(head, tmp, EMERGE); /*****************************************************************/
+		free(tmp);
+	}
+	else if (!cmd_line[j] || cmd_line[j] == ' ' || is_spec_char2(&cmd_line[j]))
 	{
 		tmp = ft_strndup(&cmd_line[*i], j - *i);
 		ft_add_lex_node(head, tmp, EXPAND);
@@ -313,6 +318,25 @@ void	handle_dollar(char *cmd_line, int *i, t_lexer **head)
 	}
 	*i = j;
 }
+
+// Handle dollar signs and variable expansion
+// void	handle_dollar(char *cmd_line, int *i, t_lexer **head)
+// {
+// 	int		j;
+// 	char	*tmp;
+
+// 	j = *i;
+// 	while (cmd_line[j] && !is_spec_char2(&cmd_line[j]) && cmd_line[j] != ' ')
+// 		j++;
+
+// 	if (j > *i)
+// 	{
+// 		tmp = ft_strndup(&cmd_line[*i], j - *i);
+// 		ft_add_lex_node(head, tmp, EXPAND);
+// 		free(tmp);
+// 	}
+// 	*i = j;
+// }
 
 // Process words with special chars in cmd_line
 void	handle_words_spec_char(char *cmd_line, int *i, t_lexer **head)
@@ -430,6 +454,8 @@ char	*print_token(t_tokens token) // A SUPPRIMER
 		return ("DMERGE");
 	else if(token == WMERGE)
 		return ("WMERGE");
+	else if(token == EMERGE)
+		return ("EMERGE");
 	return ("ERROR");
 }
 
