@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/10 16:59:30 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/14 20:01:15 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,23 +75,69 @@ typedef struct s_lexer
 
 typedef struct s_env
 {
-	char			*var_str;
+	char			*var_str; 
 	struct s_env	*next;
 }	t_env;
 
+// typedef struct s_cmd
+// {
+// 	int				index;
+// 	char			**cmd;
+// 	char			*eof;
+// 	char			*heredoc_path;
+// 	char			*input_redir;
+// 	char			*output_redir;
+// 	int				fd_out;
+// 	struct s_cmd	*next;
+// 	struct s_cmd	*prev;
+
+// }	t_cmd;
+
 typedef struct s_cmd
 {
-	int				index;
-	char			**cmd;
-	char			*eof;
-	char			*heredoc_path;
-	char			*input_redir;
-	char			*output_redir;
-	int				fd_out;
-	struct s_cmd	*next;
-	struct s_cmd	*prev;
-
+	int			index; // 
+	int			append; // plutot un boolean
+	char		**builtins; // tableau des builtins recu
+	char		**cmd; // tableau des commandes recus et a traiter
+	char		*eof; // 
+	char		*heredoc_path;
+	char		*input_redirec; // le dernier input des cmds
+	char		*output_redirec; // liste des output a creer et ecrire dans le dernier
+	//int			fd_out;
 }	t_cmd;
+
+
+
+
+
+typedef struct s_data
+{
+	// get_env()
+	// get_path()
+	 char			**paths;
+	 struct s_env	*env;
+	
+	
+	// int				**pipes;
+	// char			**builtins_tab;
+	// char			*readline;
+	// char			*path;
+	// char			**paths;
+	// int				cmds_nb;
+	// char			*cmds_exec;
+	// pid_t			*pid;
+	// struct s_token	*token;
+	// struct s_cmd	**cmds;
+	// struct s_env	*env;
+	// struct s_env	*export;
+	// char			*line;
+}					t_data;
+
+
+
+
+
+
 
 // LEXER
 void			handle_words_spec_char(char *cmd_line, int *i, t_lexer **head);
