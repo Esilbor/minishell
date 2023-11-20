@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 15:14:20 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/19 17:41:19 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/11/20 11:39:08 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ void	handle_quote(char *str, int *i, int *j, char *epur_str)
 		epur_str[(*j)++] = str[(*i)++];
 }
 
-
 char	*ft_epur_str(char *str)
 {
 	int	i;
@@ -76,9 +75,9 @@ char	*ft_epur_str(char *str)
 	epur_str = malloc(sizeof(char) * (strlen(str) + 1));
 	if (!str || !epur_str)
 		return (NULL);
-	while (str[i])
+	while (str[i]/*  && str[i + 1] */)
 	{
-		while (is_wspace(str[i]) && !is_quote(str[i]))
+		while (is_wspace(str[i]) && is_wspace(str[i + 1]) /* || !is_quote(str[i]) */)
 			i++;
 		if (is_quote(str[i]))
 			handle_quote(str, &i, &j, epur_str);
@@ -88,7 +87,8 @@ char	*ft_epur_str(char *str)
 	epur_str[j] = '\0';
 	return (epur_str);
 }
-// Detects shell symbols (|, <, >, quotes), defaults to WORD
+
+// Detects shell symbols (|, <, >, >>, <<, quotes), defaults to WORD
 t_tokens is_spec_char2(char *c)
 {
 	if (*c == '|')
@@ -112,12 +112,34 @@ t_tokens is_spec_char2(char *c)
 	return (WORD);
 }
 
-// Like is_spec_char2, but also recognizes $ as DOLLAR
+// Detects shell symbols (|, <, >, $, >>, <<), defaults to WORD
+t_tokens is_spec_char3(char *c)
+{
+	if (*c == '|')
+		return (PIPE);
+	else if (*c == '$')
+		return (DOLLAR);
+	else if (*c == '<')
+	{
+		if (*(c + 1) == '<')
+			return (LESS_LESS);
+		return (LESS);
+	}
+	else if (*c == '>')
+	{
+		if (*(c + 1) == '>')
+			return (GREAT_GREAT);
+		return (GREAT);
+	}
+	return (WORD);
+}
+
+// Detects shell symbols (|, <, >, >>, <<, quotes, $), defaults to WORD
 t_tokens is_spec_char(char *c)
 {
 	if (*c == '|')
 		return (PIPE);
-	else if (*c == '$') // EXPAND
+	else if (*c == '$')
 		return (DOLLAR);
 	else if (*c == '<')
 	{
@@ -180,13 +202,18 @@ int	handle_squotes(char *cmd_line, int *i, t_lexer **head)
 		*i = j;
 		return (1);
 	}
+	else if (cmd_line[j + 1] && cmd_line[j + 1] != ' ' && !is_spec_char3(&cmd_line[j + 1]))
+	{
+		tmp = ft_strndup(&cmd_line[*i], j - *i + 1);
+		ft_add_lex_node(head, tmp, SMERGE);
+	}
 	else
 	{
 		tmp = ft_strndup(&cmd_line[*i], j - *i + 1);
 		ft_add_lex_node(head, tmp, SQUOTE);
-		free(tmp);
-		*i = j + 1;
 	}
+	free(tmp);
+	*i = j + 1;
 	return (0);
 }
 
@@ -204,15 +231,44 @@ int	handle_dquotes(char *cmd_line, int *i, t_lexer **head)
 		*i = j;
 		return (1);
 	}
+	else if (cmd_line[j + 1] && cmd_line[j + 1] != ' ' && !is_spec_char3(&cmd_line[j + 1]))
+	{
+		tmp = ft_strndup(&cmd_line[*i], j - *i + 1);
+		ft_add_lex_node(head, tmp, DMERGE);
+	}
 	else
 	{
 		tmp = ft_strndup(&cmd_line[*i], j - *i + 1);
 		ft_add_lex_node(head, tmp, DQUOTE);
-		free(tmp);
-		*i = j + 1;
 	}
+	free(tmp);
+	*i = j + 1;
 	return (0);
 }
+
+// int	handle_dquotes(char *cmd_line, int *i, t_lexer **head)
+// {
+// 	int		j;
+// 	char	*tmp;
+
+// 	j = *i + 1;
+// 	while (cmd_line[j] && cmd_line[j] != '\"')
+// 		j++;
+// 	if (!cmd_line[j])
+// 	{
+// 		ft_putstr_fd("Candy_$hell: syntax error: unclosed Dquote\n", 2);
+// 		*i = j;
+// 		return (1);
+// 	}
+// 	else
+// 	{
+// 		tmp = ft_strndup(&cmd_line[*i], j - *i + 1);
+// 		ft_add_lex_node(head, tmp, DQUOTE);
+// 		free(tmp);
+// 		*i = j + 1;
+// 	}
+// 	return (0);
+// }
 
 // Processes double quotes in 'cmd_line', updates lexer, handles syntax errors
 void	handle_spec_chars(char *cmd_line, int *j, t_lexer **head)
@@ -339,6 +395,12 @@ char	*print_token(t_tokens token) // A SUPPRIMER
 		return ("OUTPUT");
 	else if(token == APPEND)
 		return ("APPEND");
+	else if(token == SMERGE)
+		return ("SMERGE");
+	else if(token == DMERGE)
+		return ("DMERGE");
+	else if(token == WMERGE)
+		return ("WMERGE");
 	return ("ERROR");
 }
 
@@ -423,6 +485,7 @@ t_lexer	*ft_lexer(char *line)
 
 	lexer_list = NULL;
 	epur_line = ft_epur_str(line);
+	ft_printf("epur_str = [%s]\n", epur_line);
 	if (ft_fill_lexer(&lexer_list, epur_line))
 	{
 		free (epur_line);

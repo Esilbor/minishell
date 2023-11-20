@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/19 12:40:03 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/11/20 15:34:02 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,12 @@ typedef enum e_tokens
 	SQUOTE,
 	INPUT,
 	OUTPUT,
-	LIMITER,
-	EXPAND,
 	APPEND,
+	LIMITER, // do not modify order above LIMITER
+	EXPAND,
+	SMERGE,
+	DMERGE,
+	WMERGE,
 }	t_tokens;
 
 typedef struct s_lexer
@@ -105,7 +108,7 @@ t_lexer			*syntax_error(t_lexer *lexer, t_lexer **lexer_head);
 t_lexer			*check_valid_input(t_lexer **lexer_head);
 t_lexer 		*ft_last_lexer_node(t_lexer *node);
 void			ft_add_lex_node(t_lexer **lexer, char *word, t_tokens type);
-
+t_tokens 		is_spec_char3(char *c);
 
 // EXPAND
 
