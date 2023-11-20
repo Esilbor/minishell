@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/20 15:34:02 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/11/20 19:32:36 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ typedef enum e_tokens
 	SMERGE,
 	DMERGE,
 	WMERGE,
+	EMERGE,
 }	t_tokens;
 
 typedef struct s_lexer
@@ -121,6 +122,8 @@ t_lexer			*expand_dquote(char *tmp, t_lexer *lst, t_env *envb);
 t_lexer			*clean_quotes(t_lexer *node);
 void			ft_expander(t_lexer **lexer, t_env *envb);
 t_lexer			*expand_node2(char *tmp, t_lexer *node, t_env *envb);
+void			clean_redir(t_lexer **lexer, t_lexer **lex, t_tokens type);
+
 
 // COMMAND BUILDER
 

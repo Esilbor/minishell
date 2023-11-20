@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:36:38 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/20 16:47:03 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/11/20 19:17:14 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,7 +189,7 @@ t_lexer	*clean_quotes(t_lexer *node)
 	new_str = ft_strndup(&node->word[1], ft_strlen2(node->word) - 2);
 	free (node->word);
 	node->word = new_str;
-	node->type = WORD; // might be too soon??
+	// node->type = WORD; // might be too soon?? yes it was too soon for XMERGE types
 	return (node);
 }
 
@@ -213,6 +213,7 @@ void	clean_lexer3(t_lexer **lexer)
 		lex = lex->next;
 	}
 }
+
 // clean and attribute nodes of type LIMITER, APPEND, INPUT or OUTPUT
 void	clean_redir(t_lexer **lexer, t_lexer **lex, t_tokens type)
 {
@@ -245,30 +246,9 @@ void	clean_lexer2(t_lexer **lexer)
 	{
 		if (lex->type == LESS_LESS
 			&& (lex->next->type == WORD || lex->next->type == EXPAND))
-		{
-			// lex = lex->next;
-			// if (!lex->word[0])
-			// {
-			// 	lex = ft_remove_lex_node(lexer, lex);
-			// 	lex = lex->next;		
-			// }
-			// if (lex)
-			// 	lex->type = LIMITER;
 			clean_redir(lexer, &lex, LIMITER);
-		}
 		else if (lex->type == GREAT_GREAT && (lex->next->type == WORD || lex->next->type == EXPAND))
-		{
-			// lex = lex->next;
-			// if (!lex->word[0])
-			// {
-			// 	lex = ft_remove_lex_node(lexer, lex);
-			// 	lex = lex->next;		
-			// }
-			// if (lex)
-			// 	lex->type = APPEND;
 			clean_redir(lexer, &lex, APPEND);
-
-		}
 		if (lex)
 			lex = lex->next;
 	}
@@ -291,23 +271,15 @@ void	clean_lexer(t_lexer **lexer)
 	while (lex && lex->next)
 	{
 		if (lex->type == LESS && (lex->next->type == WORD || lex->next->type == EXPAND))
-		{
-			// lex = lex->next;
-			// lex->type = INPUT;
 			clean_redir(lexer, &lex, INPUT);
-
-		}
 		else if (lex->type == GREAT && (lex->next->type == WORD || lex->next->type == EXPAND))
-		{
-			// lex = lex->next;
-			// lex->type = OUTPUT;
 			clean_redir(lexer, &lex, OUTPUT);
-			
-		}
-		lex = lex->next;
+		if (lex)
+			lex = lex->next;
 	}
 	clean_lexer2(lexer);
 }
+
 //merge two nodes when they are of same type and next to each other
 void	merge_lex_nodes(t_lexer **lexer, t_tokens type)
 {
@@ -345,14 +317,14 @@ void	ft_expander(t_lexer **lexer, t_env *envb)
 	lst = *lexer;
 	while (lst)
 	{
-		if (lst->type == DQUOTE || lst->type == DMERGE) // make a duplicate for EXPAND type
+		if (lst->type == DQUOTE || lst->type == DMERGE) // make a duplicate for EXPAND type************************
 		{
 			tmp = dol_to_expand(lst->word);
 			if (tmp)
 				lst = expand_dquote(tmp, lst, envb);
 			lst = clean_quotes(lst); // remove initial and final "
 		}
-		else if (lst->type == EXPAND) // make a duplicate for EXPAND type
+		else if (lst->type == EXPAND) // make a duplicate for EXPAND type need EMERGE type
 		{
 			tmp = dol_to_expand(lst->word);
 			if (tmp)
@@ -362,7 +334,8 @@ void	ft_expander(t_lexer **lexer, t_env *envb)
 	}
 	ft_printf("before clean= ");
 	print_lexer(lexer);
-	// merge_lex_nodes(lexer, SQUOTE);
+	// CLEAN QUOTES 
+	// merge_nodes(lexer)
 	clean_lexer(lexer);
 }
 

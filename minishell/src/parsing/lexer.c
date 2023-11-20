@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 15:14:20 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/20 11:39:08 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/11/20 19:44:14 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -324,16 +324,43 @@ void	handle_words_spec_char(char *cmd_line, int *i, t_lexer **head)
 	while (cmd_line[j] && !is_spec_char(&cmd_line[j]) && cmd_line[j] != ' ')
 		j++;
 
-	if (j > *i)
+
+	if (cmd_line[j] && cmd_line[j] != ' ' && !is_spec_char3(&cmd_line[j]))
+	{
+		tmp = ft_strndup(&cmd_line[*i], j - *i);
+		ft_add_lex_node(head, tmp, WMERGE); /*****************************************************************/
+		free(tmp);
+	}
+	else if (!cmd_line[j] || cmd_line[j] == ' ' || is_spec_char3(&cmd_line[j]))
 	{
 		tmp = ft_strndup(&cmd_line[*i], j - *i);
 		ft_add_lex_node(head, tmp, WORD);
 		free(tmp);
 	}
-	else
+	if (is_spec_char3(&cmd_line[j]))
 		handle_spec_chars(cmd_line, &j, head);
 	*i = j;
 }
+
+// void	handle_words_spec_char(char *cmd_line, int *i, t_lexer **head)
+// {
+// 	int		j;
+// 	char	*tmp;
+
+// 	j = *i;
+// 	while (cmd_line[j] && !is_spec_char(&cmd_line[j]) && cmd_line[j] != ' ')
+// 		j++;
+
+// 	if (j > *i)
+// 	{
+// 		tmp = ft_strndup(&cmd_line[*i], j - *i);
+// 		ft_add_lex_node(head, tmp, WORD); /*****************************************************************/
+// 		free(tmp);
+// 	}
+// 	else
+// 		handle_spec_chars(cmd_line, &j, head);
+// 	*i = j;
+// }
 
 // Fill lexer list from cmd_line string
 int	ft_fill_lexer(t_lexer **lexer_lst, char *cmd_line)
@@ -357,7 +384,9 @@ int	ft_fill_lexer(t_lexer **lexer_lst, char *cmd_line)
 
 		}
 		else
+		{
 			handle_words_spec_char(cmd_line, &i, &head);
+		}
 		while (cmd_line[i] && cmd_line[i] == ' ')
 			i++;
 	}
