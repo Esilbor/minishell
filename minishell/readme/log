@@ -38,3 +38,12 @@ configurations impossibles: (A CHECKER)
 [LESS_LESS][GREAT_GREAT]
 
 
+	new_str = var ? ft_strjoin(tmp_str, var) : ft_strdup(tmp_str); // this line is equivalent to the comments below
+	// if (var)
+	// {
+	// 	new_str = ft_strjoin(tmp_str, var); //join "this is \0 with bbresil
+	// 	free (var);
+	// }
+	// else
+	// 	new_str = ft_strdup(tmp_str);
+

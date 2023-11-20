@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 12:01:52 by bbresil           #+#    #+#             */
-/*   Updated: 2023/07/09 11:35:55 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/16 23:40:17 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,13 @@ void	ft_free_tab(void **tab)
 	int	i;
 
 	i = 0;
-	while (tab[i])
+	if (tab)
 	{
-		free (tab[i]);
-		i++;
+		while (tab[i])
+		{
+			free (tab[i]);
+			i++;
+		}
+		free (tab);
 	}
-	free (tab[i]);
-	free (tab);
 }

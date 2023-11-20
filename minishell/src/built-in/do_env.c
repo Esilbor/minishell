@@ -187,9 +187,9 @@ t_env	**sort_env(t_env **head)
 void	print_env(t_env **head)
 {
 	t_env	*lst;
-	int		col;
+//	int		col;
 
-	col = 0;
+//	col = 0;
 	lst = *head;
 	while (lst)
 	{

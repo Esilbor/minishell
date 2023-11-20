@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:06:41 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/10 16:27:43 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/20 19:32:51 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+// Handle SIGINT signal and print a prompt
 void	sigint_handler(int signum)
 {
 	(void)signum; // Avoid compiler warning for unused variable
@@ -23,6 +24,7 @@ void	sigquit_handler(int signum)
 	(void)signum; // This handler does nothing for SIGQUIT
 }
 
+// Execute built-in commands based on cmd_tab (to be edited)
 void	do_builtins(char **cmd_tab, t_env **envb)
 {
 	t_env	**env_dup;
@@ -62,17 +64,44 @@ void	ft_handle_signals(void)
 	sigaction(SIGQUIT, &sa, NULL); // Register handler for SIGQUIT
 }
 
-void	ft_quit_shell(t_env *envb)
+void	ft_quit_shell(t_env *envb, t_cmd **cmd_struct_tab)
 {
 	rl_clear_history();
 	ft_printf("exit\n"RESET);
 	ft_free_env_lst(envb);
+	free_cmd_struct_tab(cmd_struct_tab);
 }
 
-void	free_shell(char **cmd_tab, t_lexer *lexer, char *input)
+void	free_cmd_struct_tab(t_cmd **cmd_struct_tab)
+{
+	int	i;
+
+	i = 0;
+	if (cmd_struct_tab)
+	{
+		while (cmd_struct_tab[i])
+		{
+			if (cmd_struct_tab[i]->cmd)
+				ft_free_tab((void **)cmd_struct_tab[i]->cmd);
+			if (cmd_struct_tab[i]->eof)
+				ft_free_tab((void **)cmd_struct_tab[i]->eof);
+			if (cmd_struct_tab[i]->input_redir)
+				ft_free_tab((void **)cmd_struct_tab[i]->input_redir);
+			// if (cmd_struct_tab[i]->output_redir)
+			// 	ft_free_tab((void **)cmd_struct_tab[i]->output_redir);
+			if (cmd_struct_tab[i]->output)
+				free_lexer_list(&(cmd_struct_tab[i])->output);
+			i++;
+		}
+		ft_free_tab((void **)cmd_struct_tab);
+	}
+}
+
+void	free_shell(char **cmd_tab, t_lexer *lexer, char *input, t_cmd **cmd_struct_tab)
 {
 	ft_free_tab((void **)cmd_tab);
 	free_lexer_list(&lexer);
+	free_cmd_struct_tab(cmd_struct_tab);
 	free(input);
 }
 
@@ -80,9 +109,13 @@ int	shell_loop(t_env *envb)
 {
 	t_lexer	*lexer;
 	char	*input;
-	char	**cmd_tab;
+	char	*cmd_tab_name;
+	t_cmd	**cmd_struct_tab;
+	t_data *data;
 
-	// input = readline(PROMPT);
+	data = NULL;
+	cmd_struct_tab = NULL;
+	cmd_tab_name = "tab_name";
 	input = ft_prompt(envb);
 	if (input)
 	{
@@ -92,13 +125,33 @@ int	shell_loop(t_env *envb)
 		add_history(input);
 		// ft_parser(lexer);
 		ft_expander(&lexer, envb);
-		print_lexer(&lexer);
-		cmd_tab = ft_split(input, ' '); //split the prompt input
-		do_builtins(cmd_tab, &envb);
-		free_shell(cmd_tab, lexer, input);
+		print_lexer(&lexer); ///
+		cmd_struct_tab = command_builder(&lexer);
+/*************************************************************/
+
+//				EXECUTION PART HERE
+
+//		cmd_tab = ft_split(input, ' '); // to be deleted
+		if (cmd_struct_tab[0]->cmd[0])
+			do_builtins(cmd_struct_tab[0]->cmd, &envb);
+
+		// recuperer les cmds
+
+
+
+		// print "cmd_struct_tab" = cmd + builtins
+		//ft_print_tab((void **)cmd_struct_tab, cmd_tab_name);
+		
+		
+		//ft_execution(data,envb);
+
+
+/*************************************************************/
+
+		free_shell(NULL, lexer, input, cmd_struct_tab);
 	}
 	else
-		return (ft_quit_shell(envb), 2);
+		return (ft_quit_shell(envb, cmd_struct_tab), 2);
 	return (0);
 }
 

@@ -1,33 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
+/*   ft_print_tab.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/17 14:34:17 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/16 23:41:12 by bbresil          ###   ########.fr       */
+/*   Created: 2023/11/14 16:43:35 by bbresil           #+#    #+#             */
+/*   Updated: 2023/11/16 20:50:45 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-// Copies string 'src' to 'dst' up to 'size - 1' characters & \0 terminate
-size_t	ft_strlcpy(char *dst, const char *src, size_t size)
+void	ft_print_tab(void **tab, char *tab_name)
 {
-	size_t	i;
-	size_t	len_src;
+	int	j;
 
-	i = 0;
-	len_src = ft_strlen(src);
-	if (size > 0)
+	j = 0;
+	if (tab)
 	{
-		while (src[i] && i < size - 1)
+		while (tab[j])
 		{
-			dst[i] = src[i];
-			i++;
+			ft_printf("%s[%d] = %s\n", tab_name, j, (char *)tab[j]);
+			j++;
 		}
-		dst[i] = '\0';
+		ft_printf("\n");
 	}
-	return (len_src);
+	else
+		ft_printf("(NULL)\n");
 }

@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/14 20:01:15 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/11/20 19:39:17 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ typedef enum e_tokens
 	PIPE,
 	LESS,
 	GREAT,
-	LESS_LESS,
 	GREAT_GREAT,
+	LESS_LESS,
 	DOLLAR,
 	DQUOTE,
 	SQUOTE,
@@ -62,13 +62,13 @@ typedef enum e_tokens
 	OUTPUT,
 	LIMITER,
 	EXPAND,
+	APPEND,
 }	t_tokens;
 
 typedef struct s_lexer
 {
 	char			*word;
 	t_tokens		type;
-	// int			i;
 	struct s_lexer	*next;
 	struct s_lexer	*prev;
 }	t_lexer;
@@ -76,6 +76,7 @@ typedef struct s_lexer
 typedef struct s_env
 {
 	char			*var_str; 
+	char 			*env_value; // valeur
 	struct s_env	*next;
 }	t_env;
 
@@ -95,15 +96,15 @@ typedef struct s_env
 
 typedef struct s_cmd
 {
-	int			index; // 
-	int			append; // plutot un boolean
-	char		**builtins; // tableau des builtins recu
-	char		**cmd; // tableau des commandes recus et a traiter
-	char		*eof; // 
-	char		*heredoc_path;
-	char		*input_redirec; // le dernier input des cmds
-	char		*output_redirec; // liste des output a creer et ecrire dans le dernier
-	//int			fd_out;
+	int		index;
+	char	**cmd;
+	char	**eof; 
+	bool	append;
+	char	*heredoc_path;
+	char	**input_redir;
+	// char	**output_redir;
+	t_lexer	*output; //liste chainée des output avec leur type APPEND pour >> ou OUTPUT pour >
+
 }	t_cmd;
 
 
@@ -114,10 +115,17 @@ typedef struct s_data
 {
 	// get_env()
 	// get_path()
-	 char			**paths;
-	 struct s_env	*env;
+	t_env	*lst_env;
+	char			**paths;
+	char	*cmd_path;
 	
-	
+	t_lexer		*lexer; // struct s_token	*token;
+	 t_cmd	**lst_cmd;
+	 int				cmds_nb;
+	 
+	 char			*cmd_line; // char  *line;
+	 char			**builtins_tab;
+	 
 	// int				**pipes;
 	// char			**builtins_tab;
 	// char			*readline;
@@ -135,11 +143,8 @@ typedef struct s_data
 
 
 
-
-
-
-
 // LEXER
+
 void			handle_words_spec_char(char *cmd_line, int *i, t_lexer **head);
 void			handle_dollar(char *cmd_line, int *i, t_lexer **head);
 void			print_lexer(t_lexer **head);
@@ -147,15 +152,32 @@ void			free_lexer_list(t_lexer **head);
 t_lexer			*ft_lexer(char *line);
 char			*ft_epur_str(char *str);
 int				is_wspace(char c);
-int				ft_cmd_count(char *str);
+t_lexer			*syntax_error(t_lexer *lexer, t_lexer **lexer_head);
+t_lexer			*check_valid_input(t_lexer **lexer_head);
+t_lexer 		*ft_last_lexer_node(t_lexer *node);
+void			ft_add_lex_node(t_lexer **lexer, char *word, t_tokens type);
 
 
 // EXPAND
 
-void			ft_expander(t_lexer **lexer, t_env *envb);
+t_lexer			*ft_remove_lex_node(t_lexer **lexer, t_lexer *node_to_remove);
 t_lexer			*expand_node(t_lexer **lexer, t_lexer *lst, t_env *envb);
-t_lexer			*expand_dquote(t_lexer *lst, t_env *envb);
-// char			*expand_env_variable(char *word, t_env *envb);
+char			*extract_var(char *str, char **ptr);
+char			*get_env_value(t_env *envb, char **str);
+char			*dol_to_expand(char *str);
+t_lexer			*expand_dquote(char *tmp, t_lexer *lst, t_env *envb);
+t_lexer			*clean_quotes(t_lexer *node);
+void			ft_expander(t_lexer **lexer, t_env *envb);
+t_lexer			*expand_node2(char *tmp, t_lexer *node, t_env *envb);
+
+// COMMAND BUILDER
+
+int				count_cmd(t_lexer *lex);
+t_cmd			**init_cmd_struct(t_lexer **lexer);
+int				token_nb(t_lexer **lexer, t_tokens token);
+t_cmd			**command_builder(t_lexer **lexer);
+t_cmd			**fill_cmd_tab(t_lexer *lex, t_cmd **cmd_struct_tab, int cmd_nb, int tok_nb);
+void			free_cmd_struct_tab(t_cmd **cmd_struct_tab);
 
 // BUILT-INS
 
@@ -176,7 +198,6 @@ t_env			*ft_last_env_node(t_env *node);
 void			ft_add_env_node(t_env **env, char *varp);
 void			ft_fill_env(t_env **env, char **envp);
 void			print_env(t_env **head);
-char			*get_env_value(t_env *envb, char **str);
 t_env			*get_env_node(t_env *lst, char *str);
 t_env			*get_env(char **envp);
 void			ft_remove_env_node(t_env **head, char *varp);
@@ -196,5 +217,30 @@ void			ft_handle_signals(void);
 void			init_colors(char **colors);
 // char			*ft_rand_col(void);
 unsigned int	ft_rand(void);
+
+// PRINT
+
+void			ft_print_struct_tab(t_cmd	**struct_tab);
+
+
+// CMDS
+
+void	ft_execution(t_data *data, t_env *envp);
+void    ft_init_data(t_data *data, t_env *lst_env);
+
+// PATH
+
+char	*ft_read_path(t_data *data);
+char *check_cmd(t_data *data, char *cmd);
+char 	**set_tab_paths(t_data *data);
+int				ft_nb_cmd(char *str);
+
+// void	ft_isbuiltin(t_data *data, int index, char *argv[]);
+
+// ft_print_tab --> libft
+// voir expand_dquote pour l'utilisation du get_env_value
+
+
+
 
 #endif

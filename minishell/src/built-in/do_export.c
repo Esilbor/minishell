@@ -49,7 +49,7 @@ char	**ft_split_value(char *var)
 {
 	char	*equal;
 	char	*plus;
-	char	*tmp;
+//	char	*tmp;
 	char	**ret_tab;
 
 	equal = ft_strchr(var, '=');
@@ -64,7 +64,7 @@ char	**ft_split_value(char *var)
 	if (plus && *(plus + 1) == '=')
 	{
 		ret_tab = ft_split(var, '+');
-		tmp = ret_tab[1];
+	//	tmp = ret_tab[1];
 		free(ret_tab[1]);
 		ret_tab[1] = ft_strdup(equal + 1);
 	}
