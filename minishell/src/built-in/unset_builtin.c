@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   do_unset.c                                         :+:      :+:    :+:   */
+/*   unset_builtin.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 20:15:18 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/02 13:39:02 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/21 14:23:19 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,6 @@
 
 // Unset prend en compte le contenu de $?
 // unset He$?llo == unset He0llo || unset He1llo
-
-// cmd_tab[0] = unset
-// cmd_tab[1] = BOBO
-// cmd_tab[2] = BABA
 
 void	ft_remove_env_node(t_env **head, char *varp)
 {

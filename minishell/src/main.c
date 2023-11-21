@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:06:41 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/19 15:08:12 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/11/21 14:45:08 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,8 @@ void	free_cmd_struct_tab(t_cmd **cmd_struct_tab)
 	}
 }
 
-void	free_shell(char **cmd_tab, t_lexer *lexer, char *input, t_cmd **cmd_struct_tab)
+void	free_shell(char **cmd_tab, t_lexer *lexer, char *input,
+	t_cmd **cmd_struct_tab)
 {
 	ft_free_tab((void **)cmd_tab);
 	free_lexer_list(&lexer);
@@ -109,8 +110,8 @@ int	shell_loop(t_env *envb)
 {
 	t_lexer	*lexer;
 	char	*input;
-//	char	**cmd_tab;
 	t_cmd	**cmd_struct_tab;
+//	char	**cmd_tab;
 
 	cmd_struct_tab = NULL;
 	input = ft_prompt(envb);
@@ -120,20 +121,18 @@ int	shell_loop(t_env *envb)
 		if (!lexer)
 			return (add_history(input), 1);
 		add_history(input);
-		// ft_parser(lexer);
 		ft_expander(&lexer, envb);
-		print_lexer(&lexer); ///
+		print_lexer(&lexer); /// PRINT
 		cmd_struct_tab = command_builder(&lexer);
 /*************************************************************/
-
 //				EXECUTION PART HERE
-
+//
 //		cmd_tab = ft_split(input, ' '); // to be deleted
 		if (cmd_struct_tab[0]->cmd[0])
 			do_builtins(cmd_struct_tab[0]->cmd, &envb);
-
+//
 /*************************************************************/
-
+//
 		free_shell(NULL, lexer, input, cmd_struct_tab);
 	}
 	else
