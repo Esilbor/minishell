@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:12:40 by esilbor           #+#    #+#             */
-/*   Updated: 2023/11/21 14:39:40 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/11/21 15:54:08 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ t_lexer	*check_valid_input(t_lexer **lexer_head)
 	{
 		if (lexer->type == 1 && !i)
 			return (syntax_error(lexer, lexer_head));
-		if (lexer->type >= 1 && lexer->type <= 5 && lexer->next)
+		if (lexer->type >= PIPE && lexer->type <= 5 && lexer->next)
 		{
 			if ((lexer->next->type >= 1 && lexer->next->type < 5))
 				return (syntax_error(lexer, lexer_head));
