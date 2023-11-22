@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:12:40 by esilbor           #+#    #+#             */
-/*   Updated: 2023/11/22 08:47:37 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/11/22 23:47:46 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ t_lexer	*syntax_error(t_lexer *lexer, t_lexer **lexer_head)
 // Check validity of lexer tokens in the input
 t_lexer	*check_valid_input(t_lexer **lexer_head)
 {
+	print_lexer(lexer_head);
 	t_lexer	*lexer;
 	int		i;
 
@@ -60,7 +61,7 @@ t_lexer	*check_valid_input(t_lexer **lexer_head)
 		return (NULL);
 	while (lexer)
 	{
-		if (lexer->type == 1 && !i)
+		if (lexer->type == PIPE && !i)
 			return (syntax_error(lexer, lexer_head));
 		if (lexer->type >= PIPE && lexer->type <= 5 && lexer->next)
 		{
@@ -87,6 +88,8 @@ t_lexer	*ft_lexer(char *line)
 	lexer_list = NULL;
 	// ft_printf("AAAAAAA\n");
 	epur_line = ft_epur_str(line);
+
+	
 	ft_printf("epur_str = [%s]\n", epur_line);
 	if (ft_fill_lexer(&lexer_list, epur_line))
 	{
