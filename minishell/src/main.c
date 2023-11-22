@@ -112,6 +112,7 @@ int	shell_loop(t_env *envb)
 	char	*input;
 	t_cmd	**cmd_struct_tab;
 //	char	**cmd_tab;
+	//t_data data;
 
 	//data = NULL;
 	cmd_struct_tab = NULL;
@@ -135,7 +136,7 @@ int	shell_loop(t_env *envb)
 
 		// recuperer les cmds
 
-
+		 //ft_init_data(&data, envb);
 
 		// print "cmd_struct_tab" = cmd + builtins
 		//ft_print_tab((void **)cmd_struct_tab, cmd_tab_name);
