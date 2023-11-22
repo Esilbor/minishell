@@ -103,12 +103,12 @@ typedef struct s_env
 typedef struct s_cmd
 {
 	int		index;
-	char	**cmd;
+	char	**cmd; // tableau des [cmd + builtins]
 	char	**eof; 
 	bool	append;
 	char	*heredoc_path;
-	char	**input_redir;
-	// char	**output_redir;
+	char	**input_redir; // derniers input des cmds
+	// char	**output_redir; // liste des output a creer et a ecrire ds le dernier fd_out
 	t_lexer	*output;
 
 }	t_cmd;
@@ -306,6 +306,8 @@ void	ft_quit_shell(t_env *envb, t_cmd **cmd_struct_tab);
 void	free_cmd_struct_tab(t_cmd **cmd_struct_tab);
 void	free_shell(char **cmd_tab, t_lexer *lexer, char *input, t_cmd **cmd_struct_tab);
 int		shell_loop(t_env *envb);
+
+
 
 
 // CMDS
