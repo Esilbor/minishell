@@ -6,11 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/11/20 19:39:17 by zaquedev         ###   ########.fr       */
-=======
 /*   Updated: 2023/11/21 13:24:15 by esilbor          ###   ########.fr       */
->>>>>>> main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +46,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <signal.h>
+#include <stddef.h>
 
 // DO NOT MODIFY ORDER OF T_TOKENS
 typedef enum e_tokens
@@ -116,7 +113,6 @@ typedef struct s_cmd
 
 }	t_cmd;
 
-<<<<<<< HEAD
 
 
 
@@ -154,11 +150,6 @@ typedef struct s_data
 
 
 // LEXER
-=======
-/******************************************/
-/***************BUILT-IN*******************/
-/******************************************/
->>>>>>> main
 
 /*	cd_echo_pwd_builtins.c	*/
 
