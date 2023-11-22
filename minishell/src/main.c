@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:06:41 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/21 14:45:08 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/11/22 11:36:14 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,8 +111,10 @@ int	shell_loop(t_env *envb)
 	t_lexer	*lexer;
 	char	*input;
 	t_cmd	**cmd_struct_tab;
+	t_set	*set;
 //	char	**cmd_tab;
-
+	
+	set = NULL;
 	cmd_struct_tab = NULL;
 	input = ft_prompt(envb);
 	if (input)
@@ -126,7 +128,9 @@ int	shell_loop(t_env *envb)
 		cmd_struct_tab = command_builder(&lexer);
 /*************************************************************/
 //				EXECUTION PART HERE
-//
+
+		init_set(&set, cmd_struct_tab, envb);
+
 //		cmd_tab = ft_split(input, ' '); // to be deleted
 		if (cmd_struct_tab[0]->cmd[0])
 			do_builtins(cmd_struct_tab[0]->cmd, &envb);

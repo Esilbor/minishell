@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/21 13:24:15 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/11/22 11:35:58 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,16 @@ typedef struct s_cmd
 	t_lexer	*output;
 
 }	t_cmd;
+
+typedef struct t_set
+{
+	char			**paths;
+	int				cmd_nb;
+	struct s_env	*envb;
+	struct s_cmd	**cmd_set;
+}	t_set;
+
+
 
 /******************************************/
 /***************BUILT-IN*******************/
@@ -256,5 +266,6 @@ void	ft_quit_shell(t_env *envb, t_cmd **cmd_struct_tab);
 void	free_cmd_struct_tab(t_cmd **cmd_struct_tab);
 void	free_shell(char **cmd_tab, t_lexer *lexer, char *input, t_cmd **cmd_struct_tab);
 int		shell_loop(t_env *envb);
+t_set   *init_set(t_set **set, t_cmd **cmd_struct_tab, t_env *envb);
 
 #endif

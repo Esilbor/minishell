@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:12:40 by esilbor           #+#    #+#             */
-/*   Updated: 2023/11/21 15:54:08 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/11/22 08:47:37 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ t_lexer	*ft_lexer(char *line)
 	char	*epur_line;
 
 	lexer_list = NULL;
+	// ft_printf("AAAAAAA\n");
 	epur_line = ft_epur_str(line);
 	ft_printf("epur_str = [%s]\n", epur_line);
 	if (ft_fill_lexer(&lexer_list, epur_line))

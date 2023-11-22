@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 10:53:54 by esilbor           #+#    #+#             */
-/*   Updated: 2023/11/21 10:54:41 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/11/22 09:20:35 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,20 +50,40 @@ void	merge_nodes(t_lexer **lexer)
 	lex = *lexer;
 	while (lex && lex->next)
 	{
+		int	i;
+
+		i = 0;
 		while (lex->type >= 14)
 		{
-			tmp = ft_strdup(lex->word);
-			lex = ft_remove_lex_node(lexer, lex);
-			lex = lex->next; // since ft_remove_lex_node return the previous node
-			tmp2 = ft_strdup(lex->word);
-			free (lex->word);
-			lex->word = ft_strjoin(tmp, tmp2);
+			if (i == 0)
+			{
+				tmp = ft_strdup(lex->word);
+				lex = ft_remove_lex_node(lexer, lex);
+				// lex = lex->next; // since ft_remove_lex_node return the previous node
+				tmp2 = ft_strdup(lex->word);
+				free (lex->word);
+				lex->word = ft_strjoin(tmp, tmp2);
+				ft_printf("lexjoin = [%s]__%s\n", lex->word, print_token(lex->type));
+			}
+			else
+			{
+				lex = lex->next;
+				tmp = ft_strdup(lex->word);
+				lex = ft_remove_lex_node(lexer, lex);
+				lex = lex->next; // since ft_remove_lex_node return the previous node
+				tmp2 = ft_strdup(lex->word);
+				free (lex->word);
+				lex->word = ft_strjoin(tmp, tmp2);
+				i++;
+			}
 			free (tmp);
+			free (tmp2);
 		}
 		lex = lex->next;
 	}
 	
 }
+
 //finally change SQUOTES and DQUOTES into WORDS before cleaning
 void	quotes_to_words(t_lexer **lexer)
 {
@@ -103,6 +123,8 @@ void	ft_expander(t_lexer **lexer, t_env *envb)
 		lst = lst->next;
 	}
 	clean_squotes(lexer);
+	ft_printf("BEFORE MERGE =\n");
+	print_lexer(lexer);
 	merge_nodes(lexer);
 	quotes_to_words(lexer);
 	clean_lexer(lexer);
