@@ -136,6 +136,7 @@ int ft_nb_cmd(char *str)
 	return (count);
 }
 
+/*
 //void    ft_init_data(t_data *data, char **envp)
 void    ft_init_data(t_data *data, t_env *lst_env)
 {
@@ -153,15 +154,12 @@ void    ft_init_data(t_data *data, t_env *lst_env)
 // px->cmd_paths = ft_split(px->paths, ':');
 data->paths = set_tab_paths(data);
 //printf("data->paths = %s\n", data->paths);
-data->lexer= ft_lexer(data->cmd_line); // t_lexer	*ft_lexer(char *line)
-data->lst_cmd = command_builder(&data->lexer);
-data->cmds_nb = ft_nb_cmd(data->lexer->word); // cmd + builtins
-
-
-
+//data->lexer= ft_lexer(data->cmd_line); // t_lexer	*ft_lexer(char *line)
+//data->lst_cmd = command_builder(&data->lexer);
+//data->cmds_nb = ft_nb_cmd(data->lexer->word); // cmd + builtins
 
 }
-
+*/
 
 // void ft_isbuiltin(t_data *data, int index)
 // {
@@ -170,19 +168,19 @@ data->cmds_nb = ft_nb_cmd(data->lexer->word); // cmd + builtins
 
 // }
 //void	ft_execution(t_data *data, char **envp)
-void	ft_execution(t_data *data, t_env *lst_env)
+
+/*void	ft_execution(t_data *data, t_env *lst_env)
 {
 
   // init data , cmd ...
 
   // int	ft_fill_lexer(t_lexer **lexer_lst, char *cmd_line)
 
-  ft_init_data(data, lst_env);
+  //ft_init_data(data, lst_env);
   
-  printf("data->cmd_path = %s\n", data->cmd_path);
-
-
-
+  
+  //printf("data->cmd_path = %s\n", data->cmd_path);
 
 
 }
+*/

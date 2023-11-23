@@ -114,8 +114,13 @@ typedef struct s_cmd
 }	t_cmd;
 
 
-
-
+// typedef struct t_set
+// {
+//     char            **paths;
+//     int                cmd_nb;
+//     struct s_env    *envb; // would give access to envb if needed
+//     struct s_cmd    **cmd_set; // would give access to cmd_struct_tab if needed
+// }    t_set;
 
 typedef struct s_data
 {
@@ -125,12 +130,12 @@ typedef struct s_data
 	char			**paths;
 	char	*cmd_path;
 	
-	t_lexer		*lexer; // struct s_token	*token;
+	//t_lexer		*lexer; // struct s_token	*token;
 	 t_cmd	**lst_cmd;
 	 int				cmds_nb;
 	 
-	 char			*cmd_line; // char  *line;
-	 char			**builtins_tab;
+	 //char			*cmd_line; // char  *line;
+	// char			**builtins_tab;
 	 
 	// int				**pipes;
 	// char			**builtins_tab;
@@ -312,15 +317,20 @@ int		shell_loop(t_env *envb);
 
 // CMDS
 
-void	ft_execution(t_data *data, t_env *envp);
-void    ft_init_data(t_data *data, t_env *lst_env);
+//void	ft_execution(t_data *data, t_env *envp);
+//void    ft_init_data(t_data *data, t_env *lst_env);
+
+
+t_data   *init_set(t_data **data, t_cmd **cmd_struct_tab, t_env *envb);
 
 // PATH
 
-char	*ft_read_path(t_data *data);
-char *check_cmd(t_data *data, char *cmd);
-char 	**set_tab_paths(t_data *data);
+//char	*ft_read_path(t_data *data);
+char 	*ft_get_path(t_env *envb);
+char 	*check_cmd(t_data *data, char *cmd);
+//char 	**set_tab_paths(t_data *data);
 int				ft_nb_cmd(char *str);
+char 	*set_path_cmd(t_data *data, char *cmd);
 
 // void	ft_isbuiltin(t_data *data, int index, char *argv[]);
 

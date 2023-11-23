@@ -112,7 +112,7 @@ int	shell_loop(t_env *envb)
 	char	*input;
 	t_cmd	**cmd_struct_tab;
 //	char	**cmd_tab;
-	//t_data data;
+	t_data *data;
 
 	//data = NULL;
 	cmd_struct_tab = NULL;
@@ -137,6 +137,19 @@ int	shell_loop(t_env *envb)
 		// recuperer les cmds
 
 		 //ft_init_data(&data, envb);
+
+		 data = init_set(&data,cmd_struct_tab, envb);
+		 ft_print_struct_tab(cmd_struct_tab);
+		 
+
+
+		 printf("data->cmds_nb = %d\n", data->cmds_nb);
+		//ft_print_tab((void **)cmd_struct_tab[0]->cmd, "cmd");
+
+		char *cmd_tmp;
+
+		 cmd_tmp = set_path_cmd(data, data->cmd_path);
+		 printf("cmd_tmp = %s\n", cmd_tmp);
 
 		// print "cmd_struct_tab" = cmd + builtins
 		//ft_print_tab((void **)cmd_struct_tab, cmd_tab_name);
