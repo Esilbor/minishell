@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 15:14:20 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/21 14:38:31 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/11/23 09:03:21 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ char	*ft_epur_str(char *str)
 	while (str[i])
 	{
 		while (is_wspace(str[i]) && is_wspace(str[i + 1]))
+			i++;
+		if (is_wspace(str[i]))
 			i++;
 		if (is_quote(str[i]))
 			handle_quote(str, &i, &j, epur_str);
