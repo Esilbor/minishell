@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:06:41 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/20 19:32:51 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/11/20 21:05:56 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,8 @@ int	shell_loop(t_env *envb)
 	t_cmd	**cmd_struct_tab;
 	t_data *data;
 
+	
+
 	data = NULL;
 	cmd_struct_tab = NULL;
 	cmd_tab_name = "tab_name";
@@ -136,8 +138,8 @@ int	shell_loop(t_env *envb)
 			do_builtins(cmd_struct_tab[0]->cmd, &envb);
 
 		// recuperer les cmds
-
-
+		
+		
 
 		// print "cmd_struct_tab" = cmd + builtins
 		//ft_print_tab((void **)cmd_struct_tab, cmd_tab_name);

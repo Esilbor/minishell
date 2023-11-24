@@ -146,6 +146,7 @@ void    ft_init_data(t_data *data, t_env *lst_env)
  *data = (t_data){0, 0, 0, 0, 0, 0,0 ,0};
 
  data->lst_env = get_env(&lst_env->var_str);
+ print_env(&data->lst_env);
  data->cmd_path = ft_read_path(data);   // data->paths = a faire ;
  printf("data->cmd_path = %s\n", data->cmd_path);
 //data->cmds = a faire;
