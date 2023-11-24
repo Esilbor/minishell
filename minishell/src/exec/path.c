@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 18:32:29 by zaquedev          #+#    #+#             */
-/*   Updated: 2023/11/20 19:41:05 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/11/24 21:22:49 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ static char	*check_cmd_null(char *cmd)
 // 	return (NULL);
 // }
 
+// Recuperer la variable PATH a partir de env (environment)
 
 char *ft_get_path(t_env *envb)
 {
@@ -117,7 +118,7 @@ char *ft_get_path(t_env *envb)
     path = ft_strdup(ft_strchr(p->var_str, '=') + 1);
     // if(!path)
     //     return (NULL);
-	printf("path dans ft_get_path = %s\n", path);
+	printf("path dans ft_get_path \n=> path = %s\n", path);
 	return (path);
 }
 
@@ -132,17 +133,17 @@ char *set_path_cmd(t_data *data, char *cmd)
 	cmd = check_cmd_null(cmd);
 	index = 0;
 
-	data->paths[index] = ft_get_path(data->lst_env);
+	data->paths[0] = ft_get_path(data->lst_env);
 
 	tmp = ft_strjoin("/", cmd);
 	if (!tmp)
 		return (printf("ERR_MALLOC\n"), NULL); // free!!!
 
-	printf("data->pahts dans set_path_cmd  = %s\n", data->paths[0]);
+	printf(" dans set_path_cmd\n data->pahts[0] = %s\n", data->paths[0]);
 
 	while (*data->paths != NULL && data->paths[index])
 	{
-		printf("Ici dans fonction set_path_cmd ===> data->paths[index] = %s\n", data->paths[index]);
+		printf("Ici dans fonction set_path_cmd\n ==> data->paths[%d] = %s\n",index, data->paths[index]);
 		cmd_tmp = ft_strjoin(data->paths[index], tmp);
 		
 		if (!cmd_tmp)
@@ -155,6 +156,7 @@ char *set_path_cmd(t_data *data, char *cmd)
         }
 			//return (cmd_tmp);
 		free (cmd_tmp);
+		//data->paths++;
 		index++;
 	}
 	return (NULL);

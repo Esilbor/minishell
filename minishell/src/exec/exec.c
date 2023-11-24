@@ -208,9 +208,17 @@ char    **env_to_tab(t_env *lst)
 
     i = 0;
     len = ft_lstsize((t_list *)lst);
-    tab = malloc(sizeof(char *) * (len + 1));
+    printf("len = %d\n", len);
+   // tab = (char **)malloc(sizeof(char *) * (len + 1));
+     //tab = (char **)malloc(sizeof(char *) * (4096)); // 64 *
+    tab = (char **)malloc(sizeof(char *) * (64));
     if (!tab)
-        return (NULL);
+    {
+      printf("Unable to allocate memory.\n");
+      exit(1);
+       // return (NULL);
+    }
+      
     tab[len] = NULL;
     while (lst)
     {
@@ -245,6 +253,8 @@ void	ft_print_char_tab(char **tab)
 void	ft_init_execution(t_data *data, int index)
 {
 
+  printf("---------------------ft_init_execution*****************\n");
+
   // init data , cmd ...
 
   // int	ft_fill_lexer(t_lexer **lexer_lst, char *cmd_line)
@@ -263,8 +273,11 @@ void	ft_init_execution(t_data *data, int index)
 
   // envp = ft_get_env(data); // , index);
   envp = env_to_tab(data->lst_env);
-  printf("envp = ");
+  printf("envp \n ft_print_char_tab = \n");
   ft_print_char_tab(envp);
+
+
+
 
 	if (data->paths && !ft_strchr(data->lst_cmd[index]->cmd[0], '/'))
 		ft_path_ok_cmd(data, data->lst_cmd[index]->cmd, envp, index);

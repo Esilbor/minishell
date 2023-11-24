@@ -36,17 +36,36 @@ t_data   *init_set(t_data **data, t_cmd **cmd_struct_tab, t_env *envb)
 
     path = ft_get_path(envb); // la liste des chemins tous confondus : char * 
 
+    // if (path)
+    // {
+    //     (*data)->paths = ft_split(path, ':');
+    //     if (!(*data)->paths)
+    //         printf("ERR_SPLIT\n"); // free
+
+    // }
     *data = malloc(sizeof(t_data));
     if (!(*data))
         return (free (path), NULL);
 
     ft_memset(*data, 0, sizeof(t_data));
     (*data)->cmds_nb = ft_tab_len((char **)cmd_struct_tab);
+     printf("(*data)->cmds_nb = %d\n", (*data)->cmds_nb);
     (*data)->paths = ft_split(path, ':'); // tableau de listes de chemin : char **   
     //if (!(*data)->paths)
 	// 		printf("ERR_SPLIT\n");
-    printf("data->pahts[0] = %s\n", (*data)->paths[0]);
-    printf("data->pahts[1] = %s\n", (*data)->paths[1]);
+
+    int count = ft_tab_len((char **)(*data)->paths);
+    printf("count = %d\n", count);
+    int i = 0;
+    while (i < count)
+    {
+        printf("data->pahts[%i] = %s\n", i, (*data)->paths[i]);
+        i++;
+    }
+
+    // printf("data->pahts[0] = %s\n", (*data)->paths[0]);
+    // printf("data->pahts[1] = %s\n", (*data)->paths[1]);
+
 
     if (!(*data)->paths)
     {
