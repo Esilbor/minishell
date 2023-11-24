@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:36:38 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/24 11:40:50 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/11/25 00:22:12 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*dol_to_expand(char *str)
 	i = 0;
 	while (str[i] && str[i + 1])
 	{
-		if (str[i] == '$' && (str[i + 1]) != ' ' && str[i + 1] != '"' /* && str[i + 1] != '\'' */)
+		if (str[i] == '$' && (str[i + 1]) != ' ' && str[i + 1] != '"')
 		{
 			if (i > 0 && str[i - 1] == '\\')
 				i ++;
@@ -43,22 +43,22 @@ t_lexer	*expand_dquote(char *tmp, t_lexer *node, t_env *envb)
 
 	var = extract_var(tmp + 1, &ptr);
 	tmp_str = ft_strpcpy(node->word, tmp);
-	get_env_value(envb, &var); //updates USER into bbresil
+	get_env_value(envb, &var);
 	if (var)
-		new_str = ft_strjoin(tmp_str, var); //join "this is \0 with bbresil
+		new_str = ft_strjoin(tmp_str, var);
 	else
 		new_str = ft_strdup(tmp_str);
-	free (var); // if var is NULL nothing will occur :)
+	free (var);
 	free (tmp_str);
 	if (ptr)
-		tmp_str = ft_strjoin(new_str, ptr);// "this is bbresil"
+		tmp_str = ft_strjoin(new_str, ptr);
 	free (node->word);
 	free (new_str);
 	node->word = ft_strdup(tmp_str);
 	free (tmp_str);
 	tmp = dol_to_expand(node->word);
 	if (tmp)
-		node = expand_dquote(tmp, node, envb); // RECURSIVITÉ
+		node = expand_dquote(tmp, node, envb);
 	return (node);
 }
 
@@ -70,9 +70,5 @@ t_lexer	*clean_quotes(t_lexer *node)
 	new_str = ft_strndup(&node->word[1], ft_strlen2(node->word) - 2);
 	free (node->word);
 	node->word = new_str;
-	// free (new_str);
 	return (node);
 }
-
-// Candy_$hell> echo "this $$$$$$$$$$$?"
-// [echo__WORD__][this 0__DQUOTE__]

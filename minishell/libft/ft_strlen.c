@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 16:34:54 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/22 20:55:17 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/11/25 00:31:49 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,5 @@ size_t	ft_strlen(const char *s)
 		while (s[i])
 			i++;
 	}
-	// ft_printf("STRLEN = [%s]\n", s);
 	return (i);
 }
-
-// int	ft_strlen2(char *s)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (s[i])
-// 		i++;
-// 	return (i);
-// }

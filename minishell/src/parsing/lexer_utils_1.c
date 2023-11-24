@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 15:14:20 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/23 09:03:21 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/11/25 00:25:25 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,12 +80,12 @@ int	ft_fill_lexer(t_lexer **lexer_lst, char *cmd_line)
 		if (cmd_line[i] == '\"')
 		{
 			if (handle_dquotes(cmd_line, &i, &head))
-				return (1);
+				return (*lexer_lst = head, 1);
 		}
 		else if (cmd_line[i] == '\'')
 		{
 			if (handle_squotes(cmd_line, &i, &head))
-				return (1);
+				return (*lexer_lst = head, 1);
 		}
 		else
 			handle_words_spec_char(cmd_line, &i, &head);
@@ -95,7 +95,6 @@ int	ft_fill_lexer(t_lexer **lexer_lst, char *cmd_line)
 	*lexer_lst = head;
 	return (0);
 }
-
 
 /*******************************************************************/
 /******************PRINT FUNCTIONS TO BE DELETED********************/

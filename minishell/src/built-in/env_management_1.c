@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 19:51:29 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/22 10:43:16 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/11/25 00:07:47 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,49 +43,28 @@ t_env	*ft_last_env_node(t_env *node)
 	return (node);
 }
 
-void ft_add_env_node(t_env **env, char *varp)
+void	ft_add_env_node(t_env **env, char *varp)
 {
-    t_env *new_node;
+	t_env	*new_node;
 
-    new_node = malloc(sizeof(t_env));
-    if (!new_node)
-    {
-        ft_putstr_fd(strerror(errno), 2);
-        return;
-    }
-
-    new_node->var_str = ft_strdup(varp);
-    if (!new_node->var_str) // Check if ft_strdup failed
-    {
-        free(new_node); // Free the allocated new_node to prevent memory leak
-        return;
-    }
-
-    new_node->next = NULL;
-    if (!*env)
-        *env = new_node;
-    else
-        ft_last_env_node(*env)->next = new_node;
+	new_node = malloc(sizeof(t_env));
+	if (!new_node)
+	{
+		ft_putstr_fd(strerror(errno), 2);
+		return ;
+	}
+	new_node->var_str = ft_strdup(varp);
+	if (!new_node->var_str)
+	{
+		free(new_node);
+		return ;
+	}
+	new_node->next = NULL;
+	if (!*env)
+		*env = new_node;
+	else
+		ft_last_env_node(*env)->next = new_node;
 }
-
-
-// void	ft_add_env_node(t_env **env, char *varp)
-// {
-// 	t_env	*new_node;
-
-// 	new_node = malloc(sizeof(t_env));
-// 	if (!new_node)
-// 	{
-// 		ft_putstr_fd(strerror(errno), 2);
-// 		return ;
-// 	}
-// 	new_node->var_str = ft_strdup(varp); //ft_strdup can fail and return NULL
-// 	new_node->next = NULL;
-// 	if (!*env)
-// 		*env = new_node;
-// 	else
-// 		ft_last_env_node(*env)->next = new_node;
-// }
 
 // duplicate and return a t_env chained list
 t_env	**dup_env(t_env **env)

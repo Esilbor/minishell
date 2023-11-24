@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 10:53:54 by esilbor           #+#    #+#             */
-/*   Updated: 2023/11/24 11:39:17 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/11/25 00:17:47 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,29 @@
 
 //merge two nodes when they are of same type and next to each other
 //UNUSED
-void merge_nodes(t_lexer **lexer)
+void	merge_nodes(t_lexer **lexer)
 {
-    t_lexer *lex;
-    t_lexer *node_to_remove;
-    char    *merged_word;
+	t_lexer	*lex;
+	t_lexer	*node_to_remove;
+	char	*merged_word;
 
-    lex = *lexer;
-    while (lex && lex->next)
-    {
-        if (lex->type >= SMERGE && lex->type <= EMERGE)
-        {
-            merged_word = ft_strjoin(lex->word, lex->next->word);
-            free(lex->next->word);
-            lex->next->word = merged_word;
-            node_to_remove = lex;
-            lex = lex->next;
-            if (lex == *lexer)
-                *lexer = lex;
-            ft_remove_lex_node(lexer, node_to_remove);
-        }
-        else
-            lex = lex->next;
-    }
+	lex = *lexer;
+	while (lex && lex->next)
+	{
+		if (lex->type >= SMERGE && lex->type <= EMERGE)
+		{
+			merged_word = ft_strjoin(lex->word, lex->next->word);
+			free(lex->next->word);
+			lex->next->word = merged_word;
+			node_to_remove = lex;
+			lex = lex->next;
+			if (lex == *lexer)
+				*lexer = lex;
+			ft_remove_lex_node(lexer, node_to_remove);
+		}
+		else
+			lex = lex->next;
+	}
 }
 
 //finally change SQUOTES and DQUOTES into WORDS before cleaning
@@ -52,6 +52,7 @@ void	quotes_to_words(t_lexer **lexer)
 		lex = lex->next;
 	}
 }
+
 // remove \ pointed by esc from lex->word
 void	clean_esc(t_lexer **lex, char **esc)
 {
@@ -70,9 +71,6 @@ void	clean_esc(t_lexer **lex, char **esc)
 // replace the value of expand nodes to the matching environment value
 void	ft_expander(t_lexer **lexer, t_env *envb)
 {
-	ft_printf("BEFORE EXPANDER =\n");
-	print_lexer(lexer);
-
 	t_lexer	*lst;
 	char	*tmp;
 	char	*esc;
@@ -80,7 +78,6 @@ void	ft_expander(t_lexer **lexer, t_env *envb)
 	lst = *lexer;
 	while (lst)
 	{
-		// IL ME SEMBLE QUE echo "\$\$USER$USER\$USER\?\" N'EST PAS A ETRE GERE dquotes
 		if (lst->type == DQUOTE || lst->type == DMERGE)
 		{
 			tmp = dol_to_expand(lst->word);
@@ -90,7 +87,6 @@ void	ft_expander(t_lexer **lexer, t_env *envb)
 			while (esc && esc[1] != '\"' && esc[1] != '?')
 				clean_esc(&lst, &esc);
 			lst = clean_quotes(lst);
-			
 		}
 		else if (lst->type == EXPAND || lst->type == EMERGE)
 		{
@@ -103,14 +99,8 @@ void	ft_expander(t_lexer **lexer, t_env *envb)
 		}
 		lst = lst->next;
 	}
-	// ft_printf("AFTER EXPANDER =\n");
-	// print_lexer(lexer);
 	clean_squotes(lexer);
-	// ft_printf("AFTER CLEAN_SQUOTES =\n");
-	// print_lexer(lexer);
 	merge_nodes(lexer);
-	// ft_printf("AFTER MERGE_NODES =\n");
-	// print_lexer(lexer);
 	quotes_to_words(lexer);
 	clean_lexer(lexer);
 }
