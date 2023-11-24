@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 17:09:43 by bbresil           #+#    #+#             */
-/*   Updated: 2022/12/05 18:43:01 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/11/23 11:39:40 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+// finds little in big within len, returning its position or NULL
 char	*ft_strnstr(const char *big, const char *little, size_t len)
 {
 	size_t	i;

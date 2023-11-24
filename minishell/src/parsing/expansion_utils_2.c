@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:36:38 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/23 09:52:23 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/11/24 11:40:50 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,15 @@ char	*dol_to_expand(char *str)
 	i = 0;
 	while (str[i] && str[i + 1])
 	{
-		if (str[i] == '$' && (str[i + 1]) != ' ' && str[i + 1] != '"' && str[i + 1] != '\'')
+		if (str[i] == '$' && (str[i + 1]) != ' ' && str[i + 1] != '"' /* && str[i + 1] != '\'' */)
 		{
-			if (i > 0)
-			{
-				if (str[i - 1] == '\\') // work to be done here
-					return (NULL);
-			}			
-			return (&str[i]);
+			if (i > 0 && str[i - 1] == '\\')
+				i ++;
+			else
+				return (&str[i]);
 		}
-		i ++;
+		else
+			i ++;
 	}
 	return (NULL);
 }

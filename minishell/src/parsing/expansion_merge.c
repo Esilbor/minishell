@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 10:53:54 by esilbor           #+#    #+#             */
-/*   Updated: 2023/11/22 23:25:58 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/11/24 11:39:17 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,27 +52,44 @@ void	quotes_to_words(t_lexer **lexer)
 		lex = lex->next;
 	}
 }
+// remove \ pointed by esc from lex->word
+void	clean_esc(t_lexer **lex, char **esc)
+{
+	char	*before;
+	char	*after;
+
+	before = ft_strpcpy((*lex)->word, *esc);
+	after = ft_strdup(*esc + 1);
+	free ((*lex)->word);
+	(*lex)->word = ft_strjoin(before, after);
+	*esc = ft_strchr((*lex)->word, '\\');
+	free (before);
+	free (after);
+}
 
 // replace the value of expand nodes to the matching environment value
 void	ft_expander(t_lexer **lexer, t_env *envb)
 {
-	// ft_printf("BEFORE EXPANDER =\n");
-	// print_lexer(lexer);
+	ft_printf("BEFORE EXPANDER =\n");
+	print_lexer(lexer);
 
 	t_lexer	*lst;
 	char	*tmp;
+	char	*esc;
 
 	lst = *lexer;
 	while (lst)
 	{
+		// IL ME SEMBLE QUE echo "\$\$USER$USER\$USER\?\" N'EST PAS A ETRE GERE dquotes
 		if (lst->type == DQUOTE || lst->type == DMERGE)
 		{
 			tmp = dol_to_expand(lst->word);
 			if (tmp)
 				lst = expand_dquote(tmp, lst, envb);
-			// ft_printf("BEFORE CLEAN QUOTE FOR DQUOTES = [%s]\n", lst->word);
+			esc = ft_strchr(lst->word, '\\');
+			while (esc && esc[1] != '\"' && esc[1] != '?')
+				clean_esc(&lst, &esc);
 			lst = clean_quotes(lst);
-			// ft_printf("AFTER CLEAN QUOTE FOR DQUOTES = [%s]\n", lst->word);
 			
 		}
 		else if (lst->type == EXPAND || lst->type == EMERGE)
@@ -80,6 +97,9 @@ void	ft_expander(t_lexer **lexer, t_env *envb)
 			tmp = dol_to_expand(lst->word);
 			if (tmp)
 				lst = expand_node2(tmp, lst, envb);
+			esc = ft_strchr(lst->word, '\\');
+			while (esc && esc[1])
+				clean_esc(&lst, &esc);
 		}
 		lst = lst->next;
 	}

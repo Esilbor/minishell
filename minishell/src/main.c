@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:06:41 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/22 23:24:58 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/11/24 09:19:37 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,8 @@ int	shell_loop(t_env *envb)
 //				EXECUTION PART HERE
 
 		// init_set(&set, cmd_struct_tab, envb);
+		// ft_printf("ENV TO TAB\n");
+		// ft_print_tab((void **)env_to_tab(envb), "env_tab");
 
 //		cmd_tab = ft_split(input, ' '); // to be deleted
 		if (cmd_struct_tab[0]->cmd[0])

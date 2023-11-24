@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 09:45:47 by esilbor           #+#    #+#             */
-/*   Updated: 2023/11/22 12:59:52 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/11/23 22:39:11 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,3 +52,26 @@ t_set   *init_set(t_set **set, t_cmd **cmd_struct_tab, t_env *envb)
 	ft_print_struct_tab((*set)->cmd_set);
 	return (*set);
 } 
+
+char	**env_to_tab(t_env *lst)
+{
+	int		i;
+	int		len;
+	char	**tab;
+
+	i = 0;
+	len = ft_lstsize((t_list *)lst);
+	tab = malloc(sizeof(char *) * (len + 1));
+	if (!tab)
+		return (NULL);
+	tab[len] = NULL;
+	while (lst)
+	{
+		tab[i] = ft_strdup(lst->var_str);
+		if (!tab[i])
+			return (ft_free_tab((void **)tab),NULL);
+		lst = lst->next;
+		i ++;
+	}
+	return (tab);	
+}

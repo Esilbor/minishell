@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/22 11:35:58 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/11/23 21:49:54 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -267,5 +267,6 @@ void	free_cmd_struct_tab(t_cmd **cmd_struct_tab);
 void	free_shell(char **cmd_tab, t_lexer *lexer, char *input, t_cmd **cmd_struct_tab);
 int		shell_loop(t_env *envb);
 t_set   *init_set(t_set **set, t_cmd **cmd_struct_tab, t_env *envb);
+char	**env_to_tab(t_env *lst);
 
 #endif
