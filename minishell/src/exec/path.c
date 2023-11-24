@@ -42,20 +42,6 @@
 // 	return(data->paths);
 // }
 
-char *ft_get_path(t_env *envb)
-{
-	t_env *p;
-	char *path;
-
-	p = get_env_node(envb, "PATH");
-    if (!p || !p->var_str)
-        return (NULL);
-    path = ft_strdup(ft_strchr(p->var_str, '=') + 1);
-    // if(!path)
-    //     return (NULL);
-	printf("path = %s\n", path);
-	return (path);
-}
 
 
 static int	string_empty(char *str)
@@ -83,6 +69,60 @@ static char	*check_cmd_null(char *cmd)
 	return (cmd);
 }
 
+
+// char *set_path_cmd(t_data *data ,char **path_to_check, char *cmd)
+// {
+// 	//int index;
+// 	char *tmp;
+// 	char *cmd_tmp;
+
+// 	cmd = check_cmd_null(cmd);
+// 	//index = 0;
+// 	//data->paths = set_tab_paths(data);
+// 	path_to_check = ft_get_path(data->lst_env);
+
+// 	tmp = ft_strjoin("/", cmd);
+// 	if (!tmp)
+// 		return (printf("ERR_MALLOC\n"), NULL); // free!!!
+// 	while (path_to_check != NULL && *path_to_check)
+// 	{
+// 		cmd_tmp = ft_strjoin(path_to_check, tmp);
+// 		printf("Ici dans fonction set_path_cmd ===> data->paths[index] = %s\n", *data->paths);
+// 		if (!cmd_tmp)
+// 			return (printf("ERR_MALLOC\n"), NULL); // free!!!
+// 		free(tmp);
+// 		//cmd_tmp = check_cmd(data, cmd_tmp);
+// 		//printf("cmd_tmp = %s\n", cmd_tmp);
+// 		if (access(cmd_tmp, X_OK | F_OK) == 0)
+// 		{
+//             printf("cmd_tmp = %s\n", cmd_tmp);
+//             return (cmd_tmp);
+//         }
+// 			//return (cmd_tmp);
+// 		free (cmd_tmp);
+// 		path_to_check++;
+// 	}
+// 	return (NULL);
+// }
+
+
+char *ft_get_path(t_env *envb)
+{
+	t_env *p;
+	char *path;
+
+	p = get_env_node(envb, "PATH");
+    if (!p || !p->var_str)
+        return (NULL);
+    path = ft_strdup(ft_strchr(p->var_str, '=') + 1);
+    // if(!path)
+    //     return (NULL);
+	printf("path dans ft_get_path = %s\n", path);
+	return (path);
+}
+
+
+
 char *set_path_cmd(t_data *data, char *cmd)
 {
 	int index;
@@ -91,21 +131,23 @@ char *set_path_cmd(t_data *data, char *cmd)
 
 	cmd = check_cmd_null(cmd);
 	index = 0;
-	//data->paths = set_tab_paths(data);
-	//data->paths = ft_get_path(data);
+
+	data->paths[index] = ft_get_path(data->lst_env);
 
 	tmp = ft_strjoin("/", cmd);
 	if (!tmp)
 		return (printf("ERR_MALLOC\n"), NULL); // free!!!
-	while (data->paths[index])
+
+	printf("data->pahts dans set_path_cmd  = %s\n", data->paths[0]);
+
+	while (*data->paths != NULL && data->paths[index])
 	{
-		cmd_tmp = ft_strjoin(data->paths[index], tmp);
 		printf("Ici dans fonction set_path_cmd ===> data->paths[index] = %s\n", data->paths[index]);
+		cmd_tmp = ft_strjoin(data->paths[index], tmp);
+		
 		if (!cmd_tmp)
-		return (printf("ERR_MALLOC\n"), NULL); // free!!!
+			return (printf("ERR_MALLOC\n"), NULL); // free!!!
 		free(tmp);
-		//cmd_tmp = check_cmd(data, cmd_tmp);
-		printf("cmd_tmp = %s\n", cmd_tmp);
 		if (access(cmd_tmp, X_OK | F_OK) == 0)
 		{
             printf("cmd_tmp = %s\n", cmd_tmp);
@@ -115,7 +157,6 @@ char *set_path_cmd(t_data *data, char *cmd)
 		free (cmd_tmp);
 		index++;
 	}
-	 //printf("cmd_tmp = %s\n", cmd_tmp);
 	return (NULL);
 }
 

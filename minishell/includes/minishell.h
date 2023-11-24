@@ -128,13 +128,14 @@ typedef struct s_data
 	// get_path()
 	t_env	*lst_env;
 	char			**paths;
+	char *path;
 	char	*cmd_path;
 	
 	//t_lexer		*lexer; // struct s_token	*token;
 	 t_cmd	**lst_cmd;
 	 int				cmds_nb;
 	 
-	 //char			*cmd_line; // char  *line;
+	 //char			*cmd_line; // char  *line; // data->line = readline("Candy_$hell$ ");
 	// char			**builtins_tab;
 	 
 	// int				**pipes;
@@ -328,14 +329,19 @@ t_data   *init_set(t_data **data, t_cmd **cmd_struct_tab, t_env *envb);
 //char	*ft_read_path(t_data *data);
 char 	*ft_get_path(t_env *envb);
 char 	*check_cmd(t_data *data, char *cmd);
-//char 	**set_tab_paths(t_data *data);
+
 int				ft_nb_cmd(char *str);
-char 	*set_path_cmd(t_data *data, char *cmd);
+//char 	*set_path_cmd(t_data *data, char *cmd);
 
 // void	ft_isbuiltin(t_data *data, int index, char *argv[]);
 
 // ft_print_tab --> libft
 // voir expand_dquote pour l'utilisation du get_env_value
+
+//char *set_path_cmd(t_data *data ,char **path_to_check, char *cmd);
+//char 	**set_tab_paths(t_data *data);
+char *set_path_cmd(t_data *data, char *cmd);
+void	ft_init_execution(t_data *data, int index);
 
 
 

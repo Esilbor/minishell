@@ -168,8 +168,81 @@ data->paths = set_tab_paths(data);
 
 // }
 //void	ft_execution(t_data *data, char **envp)
+void	ft_free_char_tab(char **tab)
+{
+	int	i;
 
-/*void	ft_execution(t_data *data, t_env *lst_env)
+	i = 0;
+	while (tab[i])
+	{
+		free(tab[i]);
+		i++;
+	}
+	free(tab);
+	tab = NULL;
+}
+
+void ft_path_ok_cmd(t_data *data, char **cmd, char **envp, int index)
+{
+    char *cmd_find;
+
+    cmd_find = set_path_cmd(data, cmd[0]);
+    if(!cmd_find)
+    {
+      //free , exit ?
+    
+     // ft_free_tab((void **)envp);
+     printf(" cmd_path //  = %s\n", data->lst_cmd[index]->cmd[0]);
+     ft_free_char_tab(envp);
+    }
+}
+
+
+char    **env_to_tab(t_env *lst)
+{
+    
+    printf("Ici dans la fonction ---> env_to_tab\n");
+    int        i;
+    int        len;
+    char        **tab;
+
+    i = 0;
+    len = ft_lstsize((t_list *)lst);
+    tab = malloc(sizeof(char *) * (len + 1));
+    if (!tab)
+        return (NULL);
+    tab[len] = NULL;
+    while (lst)
+    {
+        tab[i] = ft_strdup(lst->var_str);
+        if (!tab[i])
+            return (ft_free_tab((void **)tab), NULL);
+        lst = lst->next;
+        i ++;
+    }
+    return (tab);    
+}
+
+
+void	ft_print_char_tab(char **tab)
+{
+	int	i;
+
+	i = 0;
+	if (tab)
+	{
+		while (tab[i])
+		{
+			printf("tab[%d] = %s\n", i, (char *)tab[i]);
+			i++;
+		}
+		printf("\n");
+	}
+	else
+		printf("(NULL)\n");
+}
+
+void	ft_init_execution(t_data *data, int index)
 {
 
   // init data , cmd ...
@@ -181,6 +254,22 @@ data->paths = set_tab_paths(data);
   
   //printf("data->cmd_path = %s\n", data->cmd_path);
 
+  char **envp;
+
+  // data->paths = ft_split(data->path, ':');
+  // if (!data->paths)
+	// 		printf("ERR_SPLIT\n");
+
+
+  // envp = ft_get_env(data); // , index);
+  envp = env_to_tab(data->lst_env);
+  printf("envp = ");
+  ft_print_char_tab(envp);
+
+	if (data->paths && !ft_strchr(data->lst_cmd[index]->cmd[0], '/'))
+		ft_path_ok_cmd(data, data->lst_cmd[index]->cmd, envp, index);
+	// else
+	
+
 
 }
-*/

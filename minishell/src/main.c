@@ -134,7 +134,6 @@ int	shell_loop(t_env *envb)
 		if (cmd_struct_tab[0]->cmd[0])
 			do_builtins(cmd_struct_tab[0]->cmd, &envb);
 
-		// recuperer les cmds
 
 		 //ft_init_data(&data, envb);
 
@@ -142,22 +141,26 @@ int	shell_loop(t_env *envb)
 		 ft_print_struct_tab(cmd_struct_tab);
 		 
 
+		// recuperer la cmd_path 
 
-		 printf("data->cmds_nb = %d\n", data->cmds_nb);
-		//ft_print_tab((void **)cmd_struct_tab[0]->cmd, "cmd");
-
-		char *cmd_tmp;
-
-		 cmd_tmp = set_path_cmd(data, data->cmd_path);
-		 printf("cmd_tmp = %s\n", cmd_tmp);
-
-		// print "cmd_struct_tab" = cmd + builtins
-		//ft_print_tab((void **)cmd_struct_tab, cmd_tab_name);
+		printf("data->cmds_nb = %d\n", data->cmds_nb);
+		printf("data->cmd_path = %s\n", data->cmd_path);
 		
+		//ft_init_execution(data);
+		printf("executions\n");
+		int index = 0;
+		while (index < data->cmds_nb)
+		{
+			ft_init_execution( data, index);
+			/*
+			valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose ./minishell
+			
+			*/
+			index++;
+		}
 		
-		//ft_execution(data,envb);
-
-
+			
+		
 /*************************************************************/
 //
 		free_shell(NULL, lexer, input, cmd_struct_tab);
