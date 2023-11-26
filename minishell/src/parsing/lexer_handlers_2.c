@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:05:48 by esilbor           #+#    #+#             */
-/*   Updated: 2023/11/22 13:26:06 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/11/26 19:00:52 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	handle_non_quote(char *str, int *i, int *j, char *epur_str)
 {
 	while (str[*i] && !is_wspace(str[*i]) && !is_quote(str[*i]))
 		epur_str[(*j)++] = str[(*i)++];
-	// ft_printf("BBBBB\n");
 	if (str[*i] && !str[*i + 1])
 		(*i)++;
 	while (is_wspace(str[*i]) && is_wspace(str[*i + 1]))
@@ -30,9 +29,14 @@ void	handle_quote(char *str, int *i, int *j, char *epur_str)
 	char	quote_char;
 
 	quote_char = str[*i];
-	epur_str[(*j)++] = str[(*i)++];
-	while (str[*i] && str[*i] != quote_char)
+	if (str[*i] && str[*i + 1] && str[*i + 1] == quote_char)
+		*i+= 2; // cancelout empty quotes
+	if (str[*i])
+	{
 		epur_str[(*j)++] = str[(*i)++];
-	if (str[*i] == quote_char)
-		epur_str[(*j)++] = str[(*i)++];
+		while (str[*i] && str[*i] != quote_char)
+			epur_str[(*j)++] = str[(*i)++];
+		if (str[*i] == quote_char)
+			epur_str[(*j)++] = str[(*i)++];
+	}
 }

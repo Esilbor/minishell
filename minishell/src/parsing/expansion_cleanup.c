@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 10:51:44 by esilbor           #+#    #+#             */
-/*   Updated: 2023/11/25 00:14:58 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/11/26 22:52:35 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,20 @@
 void	clean_lexer3(t_lexer **lexer)
 {
 	t_lexer	*lex;
+	// print_lexer(lexer, "before clean_lexer3()");
 
 	lex = *lexer;
-	while (lex)
+	while (lex && lex->next)
 	{
 		if (lex->type == LESS_LESS || lex->type == LESS
 			|| lex->type == GREAT || lex->type == GREAT_GREAT)
 		{
+			if (lex->next->type == APPEND || lex->next->type == LIMITER
+				||lex->next->type == OUTPUT || lex->next->type == INPUT)
+			{
+				syntax_error(lex, lexer);
+				return ; //echo a>>>b|ls
+			}
 			lex = ft_remove_lex_node(lexer, lex);
 		}
 		if (lex->type == EXPAND && lex->word[0] == '\0')
@@ -31,6 +38,8 @@ void	clean_lexer3(t_lexer **lexer)
 			lex = ft_remove_lex_node(lexer, lex);
 		lex = lex->next;
 	}
+	// print_lexer(lexer, "after clean_lexer3()");
+
 }
 
 // clean and attribute nodes of type LIMITER, APPEND, INPUT or OUTPUT

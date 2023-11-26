@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:06:41 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/24 09:19:37 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/11/26 23:02:12 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,10 @@ int	shell_loop(t_env *envb)
 		add_history(input);
 		ft_expander(&lexer, envb);
 		// print_lexer(&lexer); /// PRINT
+		if (!lexer)
+			return (add_history(input), 1);
 		cmd_struct_tab = command_builder(&lexer);
+		ft_print_struct_tab(cmd_struct_tab);
 /*************************************************************/
 //				EXECUTION PART HERE
 
