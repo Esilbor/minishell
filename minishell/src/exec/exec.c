@@ -184,6 +184,8 @@ void	ft_free_char_tab(char **tab)
 
 void ft_path_ok_cmd(t_data *data, char **cmd, char **envp, int index)
 {
+    
+    printf(" *********** ft_path_ok_cmd **********\n");
     char *cmd_find;
 
     cmd_find = set_path_cmd(data, cmd[0]);
@@ -211,7 +213,10 @@ char    **env_to_tab(t_env *lst)
     printf("len = %d\n", len);
    // tab = (char **)malloc(sizeof(char *) * (len + 1));
      //tab = (char **)malloc(sizeof(char *) * (4096)); // 64 *
-    tab = malloc(sizeof(char *) * (len + 1));
+
+   
+    tab = ft_calloc(len + 1, sizeof(char *));
+   // tab = (char **)malloc((len + 1) * sizeof(char *));
     if (!tab)
     {
       printf("Unable to allocate memory.\n");
@@ -220,14 +225,15 @@ char    **env_to_tab(t_env *lst)
     }
       
     tab[len] = NULL;
-    while (lst)
+    while (lst != NULL)
     {
         tab[i] = ft_strdup(lst->var_str);
-        if (!tab[i])
-            return (ft_free_tab((void **)tab), NULL);
+        // if (!tab[i])
+        //     return (ft_free_tab((void **)tab), NULL);
         lst = lst->next;
         i ++;
     }
+    tab[i] = NULL;
     return (tab);    
 }
 
@@ -273,7 +279,8 @@ void	ft_init_execution(t_data *data, int index)
 
 
   // envp = ft_get_env(data); // , index);
-  envp = env_to_tab(data->lst_env);
+ 
+ envp = env_to_tab(data->lst_env);
   printf("envp \n ft_print_char_tab = \n");
   ft_print_char_tab(envp);
 

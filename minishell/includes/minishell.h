@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/21 13:24:15 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/11/27 20:23:39 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,7 @@ typedef struct s_data
 	// get_env()
 	// get_path()
 	t_env	*lst_env;
+	char **env;
 	char			**paths;
 	char *path;
 	char	*cmd_path;
