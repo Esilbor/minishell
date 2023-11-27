@@ -34,15 +34,11 @@ t_data   *init_set(t_data **data, t_cmd **cmd_struct_tab, t_env *envb)
 
     printf("*********** init_set **************\n");
 
+     //  char *path ---> PATH = ....
+
     path = ft_get_path(envb); // la liste des chemins tous confondus : char * 
 
-    // if (path)
-    // {
-    //     (*data)->paths = ft_split(path, ':');
-    //     if (!(*data)->paths)
-    //         printf("ERR_SPLIT\n"); // free
-
-    // }
+   
     *data = malloc(sizeof(t_data));
     if (!(*data))
         return (free (path), NULL);
@@ -50,9 +46,18 @@ t_data   *init_set(t_data **data, t_cmd **cmd_struct_tab, t_env *envb)
     ft_memset(*data, 0, sizeof(t_data));
     (*data)->cmds_nb = ft_tab_len((char **)cmd_struct_tab);
      printf("(*data)->cmds_nb = %d\n", (*data)->cmds_nb);
-    (*data)->paths = ft_split(path, ':'); // tableau de listes de chemin : char **   
-    //if (!(*data)->paths)
-	// 		printf("ERR_SPLIT\n");
+   
+
+    //******************************************************** 
+
+    // char **paths --> data->paths  // tableau de listes de chemin : char **   
+    if (path)
+    {
+        (*data)->paths = ft_split(path, ':');
+        if (!(*data)->paths)
+            printf("ERR_SPLIT\n"); // free
+
+    }
 
     int count = ft_tab_len((char **)(*data)->paths);
     printf("count = %d\n", count);
@@ -62,11 +67,6 @@ t_data   *init_set(t_data **data, t_cmd **cmd_struct_tab, t_env *envb)
         printf("data->pahts[%i] = %s\n", i, (*data)->paths[i]);
         i++;
     }
-
-    // printf("data->pahts[0] = %s\n", (*data)->paths[0]);
-    // printf("data->pahts[1] = %s\n", (*data)->paths[1]);
-
-
     if (!(*data)->paths)
     {
         //return (printf("ERR_SPLIT\n"), NULL); // free!!!
@@ -74,12 +74,12 @@ t_data   *init_set(t_data **data, t_cmd **cmd_struct_tab, t_env *envb)
         free (path);
     }
     free (path);
-    (*data)->cmd_path = set_path_cmd(*data, cmd_struct_tab[0]->cmd[0]);
-   
-
+  
     (*data)->lst_env = envb;
     (*data)->lst_cmd = cmd_struct_tab;
 
+    // cmd ?? <--- cmd_struct_tab[index][0]
+     // (*data)->cmd_path = set_path_cmd(*data, cmd_struct_tab[0]->cmd[0]);
    
     return (*data);
 } 

@@ -201,7 +201,7 @@ void ft_path_ok_cmd(t_data *data, char **cmd, char **envp, int index)
 char    **env_to_tab(t_env *lst)
 {
     
-    printf("Ici dans la fonction ---> env_to_tab\n");
+    printf("\n==========Ici dans la fonction ---> env_to_tab==========\n");
     int        i;
     int        len;
     char        **tab;
@@ -211,7 +211,7 @@ char    **env_to_tab(t_env *lst)
     printf("len = %d\n", len);
    // tab = (char **)malloc(sizeof(char *) * (len + 1));
      //tab = (char **)malloc(sizeof(char *) * (4096)); // 64 *
-    tab = (char **)malloc(sizeof(char *) * (64));
+    tab = malloc(sizeof(char *) * (len + 1));
     if (!tab)
     {
       printf("Unable to allocate memory.\n");
@@ -232,6 +232,7 @@ char    **env_to_tab(t_env *lst)
 }
 
 
+
 void	ft_print_char_tab(char **tab)
 {
 	int	i;
@@ -239,7 +240,7 @@ void	ft_print_char_tab(char **tab)
 	i = 0;
 	if (tab)
 	{
-		while (tab[i])
+		while (tab !=NULL && *tab)
 		{
 			printf("tab[%d] = %s\n", i, (char *)tab[i]);
 			i++;

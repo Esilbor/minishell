@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:06:41 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/21 14:45:08 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/11/27 18:41:02 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,16 +138,29 @@ int	shell_loop(t_env *envb)
 		 //ft_init_data(&data, envb);
 
 		 data = init_set(&data,cmd_struct_tab, envb);
-		 ft_print_struct_tab(cmd_struct_tab);
+		
 		 
 
-		// recuperer la cmd_path 
+		// recuperer la cmd_path ????
 
 		printf("data->cmds_nb = %d\n", data->cmds_nb);
-		printf("data->cmd_path = %s\n", data->cmd_path);
+		// cmd?
+		int cpt = data->cmds_nb;
+		int i = 0;
+		//while (cmd_struct_tab[c]->cmd[0])
+		while (i < cpt)
+		{
+			printf("cmd_struct_tab[c]->cmd = %s\n", cmd_struct_tab[i]->cmd[0]);
+			i++;
+		}
+
+		//ft_print_struct_tab(cmd_struct_tab);
 		
-		//ft_init_execution(data);
-		printf("executions\n");
+		printf("data->cmd_path ??????? = %s\n", data->cmd_path);
+		
+		
+		printf("\n\n========main --> EXECUTIONS ==================\n\n");
+		
 		int index = 0;
 		while (index < data->cmds_nb)
 		{

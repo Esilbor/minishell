@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 18:32:29 by zaquedev          #+#    #+#             */
-/*   Updated: 2023/11/24 21:22:49 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/11/27 18:11:41 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,16 +135,20 @@ char *set_path_cmd(t_data *data, char *cmd)
 
 	data->paths[0] = ft_get_path(data->lst_env);
 
+	
+
 	tmp = ft_strjoin("/", cmd);
 	if (!tmp)
 		return (printf("ERR_MALLOC\n"), NULL); // free!!!
 
-	printf(" dans set_path_cmd\n data->pahts[0] = %s\n", data->paths[0]);
-
-	while (*data->paths != NULL && data->paths[index])
+	while (data->paths != NULL && *data->paths)
 	{
-		printf("Ici dans fonction set_path_cmd\n ==> data->paths[%d] = %s\n",index, data->paths[index]);
-		cmd_tmp = ft_strjoin(data->paths[index], tmp);
+		//printf("Ici dans fonction set_path_cmd\n ==> data->paths[%d] = %s\n",index, data->paths[index]);
+		
+		printf("???\n");
+		
+		cmd_tmp = ft_strjoin(*data->paths, tmp);
+		//printf("cmd_tmp = %s\n", cmd_tmp);
 		
 		if (!cmd_tmp)
 			return (printf("ERR_MALLOC\n"), NULL); // free!!!
@@ -156,7 +160,7 @@ char *set_path_cmd(t_data *data, char *cmd)
         }
 			//return (cmd_tmp);
 		free (cmd_tmp);
-		//data->paths++;
+		data->paths++;
 		index++;
 	}
 	return (NULL);
