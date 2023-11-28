@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 19:40:11 by zaquedev          #+#    #+#             */
-/*   Updated: 2023/11/28 19:45:09 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/11/28 19:58:23 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,20 @@
 
 
 
+int	execution(t_data *data, t_cmd *cmd)
+{
 
+	int fork_nb = 0;
+	int pid;
+
+	while (cmd)
+	{
+		//fork_nb = ?
+
+		
+	}
+	
+}
 
 
 
