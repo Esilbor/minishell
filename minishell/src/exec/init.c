@@ -1,21 +1,17 @@
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/28 19:41:10 by zaquedev          #+#    #+#             */
+/*   Updated: 2023/11/28 19:45:43 by zaquedev         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 
 #include "../includes/minishell.h"
-
-
-
-// typedef struct t_set
-// {
-//     char            **paths;
-//     int                cmd_nb;
-//     struct s_env    *envb; // would give access to envb if needed
-//     struct s_cmd    **cmd_set; // would give access to cmd_struct_tab if needed
-// }    t_set;
-
-
-
-
 
 
 t_data   *init_set(t_data **data, t_cmd **cmd_struct_tab, t_env *envb)
