@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:06:41 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/28 18:59:23 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/11/28 19:24:04 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,15 +185,21 @@ int	shell_loop(t_env *envb, char **envp)
 		int i = 0;
 		while (i < cpt)
 		{
-			printf("cmd_struct_tab[c]->cmd = %s\n", cmd_struct_tab[i]->cmd[0]);
+			printf("cmd_struct_tab[%i]->cmd = %s\n", i, cmd_struct_tab[i]->cmd[0]);
 			i++;
 		}
 		
 		// char *set_path_cmd(t_data *data, char *cmd)
 
 		printf("\n\n========main --> set_path_cmd ==================\n\n");
+
+		i = 0;
 		
-		data->cmd_path = set_path_cmd(data,cmd_struct_tab[0]->cmd[0] );
+		while (i < cpt)
+		{
+			data->cmd_path = set_path_cmd(data,cmd_struct_tab[i]->cmd[0] );
+			i++;
+		}
 		
 		//printf("data->cmd_path ??????? = %s\n", data->cmd_path);
 		

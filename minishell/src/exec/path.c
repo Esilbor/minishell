@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 18:32:29 by zaquedev          #+#    #+#             */
-/*   Updated: 2023/11/28 19:00:51 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/11/28 19:01:40 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ static char	*check_cmd_null(char *cmd)
 	}
 	return (cmd);
 }
+
+
 
 // Recuperer la variable PATH a partir de env (environment)
 // reconstitution du path entier de la commande quand elle existe
