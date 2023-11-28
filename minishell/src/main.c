@@ -6,17 +6,10 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:06:41 by bbresil           #+#    #+#             */
-<<<<<<< HEAD
-<<<<<<< HEAD
-/*   Updated: 2023/11/28 15:06:36 by zaquedev         ###   ########.fr       */
-=======
-/*   Updated: 2023/11/28 14:31:02 by zaquedev         ###   ########.fr       */
->>>>>>> b8dd15f (test push)
-=======
-/*   Updated: 2023/11/28 14:34:31 by zaquedev         ###   ########.fr       */
->>>>>>> 508fa4c (add src/main for test)
+/*   Updated: 2023/11/28 15:29:20 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../includes/minishell.h"
 
