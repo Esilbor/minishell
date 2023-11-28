@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 10:51:44 by esilbor           #+#    #+#             */
-/*   Updated: 2023/11/28 17:41:13 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/11/28 17:50:04 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ void	clean_redir(t_lexer **lexer, t_lexer **lex, t_tokens type)
 		ft_putstr_fd("invalid clean_redir type\n", 2);
 		return ;
 	}
-	 if ((*lex)->type >= PIPE && (*lex)->type <= LESS_LESS)
-        *lex = ft_remove_lex_node(lexer, *lex);
+	if ((*lex)->type >= PIPE && (*lex)->type <= LESS_LESS)
+		*lex = ft_remove_lex_node(lexer, *lex);
     *lex = (*lex)->next;
 	if (!(*lex)->word[0])
 	{

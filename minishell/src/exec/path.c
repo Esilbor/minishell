@@ -6,43 +6,12 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 18:32:29 by zaquedev          #+#    #+#             */
-/*   Updated: 2023/11/27 18:11:41 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/11/28 18:29:27 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../includes/minishell.h"
-
-
-// char	*ft_read_path(t_data *data)
-// {
-// 	t_env	*current;
-
-// 	current = data->lst_env;
-// 	while (current)
-// 	{
-// 		if (!ft_strncmp("PATH", current->var_str, 5))
-// 			return (current->env_value);
-// 		current = current->next;
-// 	}
-// 	return (NULL);
-// }
-
-
-// char 	**set_tab_paths(t_data *data)
-// {
-// 	if (!(data->cmd_path = ft_read_path(data)))
-// 		return (printf("ERR_CMD\n"), NULL);
-// 	if (data->cmd_path)
-// 	{
-// 		data->paths = ft_split(data->cmd_path, ':');
-// 		if(!data->paths)
-// 			return (printf("ERR_SPLIT\n"), NULL); // free!!!
-// 	}
-// 	return(data->paths);
-// }
-
-
 
 static int	string_empty(char *str)
 {
@@ -126,41 +95,42 @@ char *ft_get_path(t_env *envb)
 
 char *set_path_cmd(t_data *data, char *cmd)
 {
+	printf("Ici dans fonction set_path_cmd\n ");
+	
 	int index;
 	char *tmp;
 	char *cmd_tmp;
 
 	cmd = check_cmd_null(cmd);
+	// if (cmd[0] == '\0')
+	// 	return (NULL);
+
+	//data->paths[0] = ft_get_path(data->lst_env);
+
 	index = 0;
-
-	data->paths[0] = ft_get_path(data->lst_env);
-
-	
-
 	tmp = ft_strjoin("/", cmd);
 	if (!tmp)
 		return (printf("ERR_MALLOC\n"), NULL); // free!!!
 
-	while (data->paths != NULL && *data->paths)
+	//while (data->paths != NULL && *data->paths)
+	while (data->paths[index])
 	{
-		//printf("Ici dans fonction set_path_cmd\n ==> data->paths[%d] = %s\n",index, data->paths[index]);
+		//printf(" ==> data->paths[%d] = %s\n",index, data->paths[index]);
 		
-		printf("???\n");
-		
-		cmd_tmp = ft_strjoin(*data->paths, tmp);
+		cmd_tmp = ft_strjoin(data->paths[index], tmp);
 		//printf("cmd_tmp = %s\n", cmd_tmp);
-		
 		if (!cmd_tmp)
+		{
+			free(tmp);
 			return (printf("ERR_MALLOC\n"), NULL); // free!!!
-		free(tmp);
+		}
+			
 		if (access(cmd_tmp, X_OK | F_OK) == 0)
 		{
             printf("cmd_tmp = %s\n", cmd_tmp);
             return (cmd_tmp);
         }
-			//return (cmd_tmp);
 		free (cmd_tmp);
-		data->paths++;
 		index++;
 	}
 	return (NULL);

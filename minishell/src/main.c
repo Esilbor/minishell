@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:06:41 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/28 15:43:38 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/11/28 18:26:06 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,12 +173,9 @@ int	shell_loop(t_env *envb, char **envp)
 			valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose ./minishell
 			*/
 		
-		printf("\n\n========main --> cmd_pah ==================\n\n");
-	 
+		
 
-		// recuperer la cmd_path ????
-
-		// cmds_nb
+		// char *set_path_cmd(t_data *data, char *cmd)
 
 		printf("\n\ndata->cmds_nb = %d\n", data->cmds_nb);
 		int cpt = data->cmds_nb;
@@ -191,10 +188,14 @@ int	shell_loop(t_env *envb, char **envp)
 			printf("cmd_struct_tab[c]->cmd = %s\n", cmd_struct_tab[i]->cmd[0]);
 			i++;
 		}
-
-		//ft_print_struct_tab(cmd_struct_tab);
 		
-		printf("data->cmd_path ??????? = %s\n", data->cmd_path);
+		// char *set_path_cmd(t_data *data, char *cmd)
+
+		printf("\n\n========main --> set_path_cmd ==================\n\n");
+		
+		data->cmd_path = set_path_cmd(data,cmd_struct_tab[0]->cmd[0] );
+		
+		//printf("data->cmd_path ??????? = %s\n", data->cmd_path);
 		
 			
 		
