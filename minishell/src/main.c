@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:06:41 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/28 18:26:06 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/11/28 18:59:23 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,7 +197,16 @@ int	shell_loop(t_env *envb, char **envp)
 		
 		//printf("data->cmd_path ??????? = %s\n", data->cmd_path);
 		
-			
+		/*************************************************************/
+		//				TRAITEMENT DES CMD (cmd / builtin)
+		//						==> executer un builtin
+		//						==> executer une commande (FORK / WAIT / EXECVE)
+
+		
+
+
+
+		
 		
 		/*************************************************************/
 		//				suite du programme
