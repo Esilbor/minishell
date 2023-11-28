@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:02:57 by esilbor           #+#    #+#             */
-/*   Updated: 2023/11/21 14:30:16 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/11/26 20:54:18 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,12 @@ int	handle_squotes(char *cmd_line, int *i, t_lexer **head)
 		*i = j;
 		return (1);
 	}
-	else if (cmd_line[j + 1] && cmd_line[j + 1] != ' ' && !is_spec_char3(&cmd_line[j + 1]))
-	{
-		tmp = ft_strndup(&cmd_line[*i], j - *i + 1);
+	tmp = ft_strndup(&cmd_line[*i], j - *i + 1);
+	if (cmd_line[j + 1] && cmd_line[j + 1] != ' '
+		&& !is_spec_char3(&cmd_line[j + 1]))
 		ft_add_lex_node(head, tmp, SMERGE);
-	}
 	else
-	{
-		tmp = ft_strndup(&cmd_line[*i], j - *i + 1);
 		ft_add_lex_node(head, tmp, SQUOTE);
-	}
 	free(tmp);
 	*i = j + 1;
 	return (0);
@@ -56,16 +52,11 @@ int	handle_dquotes(char *cmd_line, int *i, t_lexer **head)
 		*i = j;
 		return (1);
 	}
-	else if (cmd_line[j + 1] && cmd_line[j + 1] != ' ' && !is_spec_char3(&cmd_line[j + 1]))
-	{
-		tmp = ft_strndup(&cmd_line[*i], j - *i + 1);
+	tmp = ft_strndup(&cmd_line[*i], j - *i + 1);
+	if (cmd_line[j + 1] && cmd_line[j + 1] != ' '/*  && !is_spec_char3(&cmd_line[j + 1]) */)
 		ft_add_lex_node(head, tmp, DMERGE);
-	}
 	else
-	{
-		tmp = ft_strndup(&cmd_line[*i], j - *i + 1);
 		ft_add_lex_node(head, tmp, DQUOTE);
-	}
 	free(tmp);
 	*i = j + 1;
 	return (0);
@@ -90,7 +81,7 @@ void	handle_spec_chars(char *cmd_line, int *j, t_lexer **head)
 	else
 	{
 		tmp = ft_strndup(&cmd_line[*j], 1);
-		ft_add_lex_node(head, tmp, is_spec_char2(&cmd_line[*j])); /*2*/
+		ft_add_lex_node(head, tmp, is_spec_char2(&cmd_line[*j]));
 		free(tmp);
 		(*j)++;
 	}
@@ -128,7 +119,7 @@ void	handle_words_spec_char(char *cmd_line, int *i, t_lexer **head)
 	j = *i;
 	while (cmd_line[j] && !is_spec_char(&cmd_line[j]) && cmd_line[j] != ' ')
 		j++;
-	if (cmd_line[j] && cmd_line[j] != ' ' && !is_spec_char3(&cmd_line[j]))
+	if (cmd_line[j] && cmd_line[j] != ' ' && !is_spec_char4(&cmd_line[j])) // A VOIR SI PAS D'erreur
 	{
 		tmp = ft_strndup(&cmd_line[*i], j - *i);
 		ft_add_lex_node(head, tmp, WMERGE);

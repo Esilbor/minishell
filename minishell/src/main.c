@@ -3,14 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/25 12:06:41 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/27 18:41:02 by zaquedev         ###   ########.fr       */
+/*   Created: 2023/11/26 23:02:12 by esilbor           #+#    #+#             */
+/*   Updated: 2023/11/28 10:00:45 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
 
 // Handle SIGINT signal and print a prompt
 void	sigint_handler(int signum)
@@ -111,6 +110,7 @@ int	shell_loop(t_env *envb)
 	t_lexer	*lexer;
 	char	*input;
 	t_cmd	**cmd_struct_tab;
+	// t_set	*set;
 //	char	**cmd_tab;
 	t_data *data;
 
@@ -125,11 +125,18 @@ int	shell_loop(t_env *envb)
 			return (add_history(input), 1);
 		add_history(input);
 		ft_expander(&lexer, envb);
-		print_lexer(&lexer); /// PRINT
+		// print_lexer(&lexer); /// PRINT
+		if (!lexer)
+			return (add_history(input), 1);
 		cmd_struct_tab = command_builder(&lexer);
+		ft_print_struct_tab(cmd_struct_tab);
 /*************************************************************/
 //				EXECUTION PART HERE
-//
+
+		// init_set(&set, cmd_struct_tab, envb);
+		// ft_printf("ENV TO TAB\n");
+		// ft_print_tab((void **)env_to_tab(envb), "env_tab");
+
 //		cmd_tab = ft_split(input, ' '); // to be deleted
 		if (cmd_struct_tab[0]->cmd[0])
 			do_builtins(cmd_struct_tab[0]->cmd, &envb);

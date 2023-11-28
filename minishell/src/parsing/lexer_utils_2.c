@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:12:40 by esilbor           #+#    #+#             */
-/*   Updated: 2023/11/21 14:39:40 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/11/26 23:01:35 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,29 +51,28 @@ t_lexer	*syntax_error(t_lexer *lexer, t_lexer **lexer_head)
 // Check validity of lexer tokens in the input
 t_lexer	*check_valid_input(t_lexer **lexer_head)
 {
-	t_lexer	*lexer;
+	t_lexer	*x;
 	int		i;
 
-	lexer = *lexer_head;
+	x = *lexer_head;
 	i = 0;
-	if (!lexer)
+	if (!x)
 		return (NULL);
-	while (lexer)
+	while (x)
 	{
-		if (lexer->type == 1 && !i)
-			return (syntax_error(lexer, lexer_head));
-		if (lexer->type >= 1 && lexer->type <= 5 && lexer->next)
+		if (x->type == PIPE && !i)
+			return (syntax_error(x, lexer_head));
+		if (x->type >= PIPE && x->type <= 5 && x->next)
 		{
-			if ((lexer->next->type >= 1 && lexer->next->type < 5))
-				return (syntax_error(lexer, lexer_head));
+			if ((x->next->type >= 1 && x->next->type < 5))
+				return (syntax_error(x, lexer_head));
 		}
-		else if (lexer->type == LESS_LESS
-			&& (!lexer->next || lexer->next->type != WORD))
-			return (syntax_error(lexer, lexer_head));
-		if (!lexer->next && lexer->type && lexer->type <= 5)
-			return (syntax_error(lexer, lexer_head));
+		else if (x->type == LESS_LESS && (!x->next || x->next->type != WORD))
+			return (syntax_error(x, lexer_head));
+		if (!x->next && x->type && x->type <= 5)
+			return (syntax_error(x, lexer_head));
 		i++;
-		lexer = lexer->next;
+		x = x->next;
 	}
 	return (*lexer_head);
 }
@@ -86,7 +85,9 @@ t_lexer	*ft_lexer(char *line)
 
 	lexer_list = NULL;
 	epur_line = ft_epur_str(line);
-	ft_printf("epur_str = [%s]\n", epur_line);
+	if (!epur_line)
+		return (NULL);
+	// ft_printf(CYAN"epur_line = [%s]\n"RESET, epur_line);
 	if (ft_fill_lexer(&lexer_list, epur_line))
 	{
 		free (epur_line);
@@ -94,5 +95,7 @@ t_lexer	*ft_lexer(char *line)
 		return (NULL);
 	}
 	free(epur_line);
+	if (lexer_list->word[0] == '\0')
+		lexer_list = ft_remove_lex_node(&lexer_list, lexer_list);
 	return (check_valid_input(&lexer_list));
 }

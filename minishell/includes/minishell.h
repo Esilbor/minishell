@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/27 20:23:39 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/11/28 10:04:59 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -273,9 +273,10 @@ void	handle_quote(char *str, int *i, int *j, char *epur_str);
 
 /*	lexer_spec_chars.c	*/
 
-t_tokens is_spec_char(char *c);
-t_tokens is_spec_char2(char *c);
-t_tokens is_spec_char3(char *c);
+t_tokens	is_spec_char(char *c);
+t_tokens	is_spec_char2(char *c);
+t_tokens	is_spec_char3(char *c);
+t_tokens	is_spec_char4(char *c);
 
 /*	lexer_utils_1.c	*/
 
@@ -297,7 +298,7 @@ t_lexer	*ft_lexer(char *line);
 	/*to be deleted */
 
 char	*print_token(t_tokens token);
-void 	print_lexer(t_lexer **head);
+void 	print_lexer(t_lexer **head, char *loc);
 void 	ft_print_struct_tab(t_cmd **struct_tab);
 
 
@@ -313,6 +314,8 @@ void	ft_quit_shell(t_env *envb, t_cmd **cmd_struct_tab);
 void	free_cmd_struct_tab(t_cmd **cmd_struct_tab);
 void	free_shell(char **cmd_tab, t_lexer *lexer, char *input, t_cmd **cmd_struct_tab);
 int		shell_loop(t_env *envb);
+t_set   *init_set(t_set **set, t_cmd **cmd_struct_tab, t_env *envb);
+char	**env_to_tab(t_env *lst);
 
 
 

@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 15:14:20 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/21 14:38:31 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/11/26 22:51:48 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,11 @@ char	*ft_epur_str(char *str)
 	epur_str = malloc(sizeof(char) * (strlen(str) + 1));
 	if (!str || !epur_str)
 		return (NULL);
-	while (str[i])
+	while (str[i]/*  && str[i + 1] */)
 	{
 		while (is_wspace(str[i]) && is_wspace(str[i + 1]))
+			i++;
+		if (is_wspace(str[i]))
 			i++;
 		if (is_quote(str[i]))
 			handle_quote(str, &i, &j, epur_str);
@@ -62,7 +64,10 @@ char	*ft_epur_str(char *str)
 			handle_non_quote(str, &i, &j, epur_str);
 	}
 	epur_str[j] = '\0';
-	return (epur_str);
+	if (epur_str[0])
+		return (epur_str);
+	free (epur_str);
+	return (NULL);
 }
 
 // Fill lexer list from cmd_line string
@@ -78,12 +83,12 @@ int	ft_fill_lexer(t_lexer **lexer_lst, char *cmd_line)
 		if (cmd_line[i] == '\"')
 		{
 			if (handle_dquotes(cmd_line, &i, &head))
-				return (1);
+				return (*lexer_lst = head, 1);
 		}
 		else if (cmd_line[i] == '\'')
 		{
 			if (handle_squotes(cmd_line, &i, &head))
-				return (1);
+				return (*lexer_lst = head, 1);
 		}
 		else
 			handle_words_spec_char(cmd_line, &i, &head);
@@ -91,9 +96,9 @@ int	ft_fill_lexer(t_lexer **lexer_lst, char *cmd_line)
 			i++;
 	}
 	*lexer_lst = head;
+	// print_lexer(lexer_lst, "after ft_fill_lexer");
 	return (0);
 }
-
 
 /*******************************************************************/
 /******************PRINT FUNCTIONS TO BE DELETED********************/
@@ -141,14 +146,14 @@ char	*print_token(t_tokens token)
 	return ("ERROR");
 }
 
-void	print_lexer(t_lexer **head)
+void	print_lexer(t_lexer **head, char *loc)
 {
 	t_lexer	*lst;
 	int		i;
 
 	lst = *head;
 	i = 0;
-	ft_printf("\n\n");
+	ft_printf("\n%s\n", loc);
 	ft_printf(WHITE"CMD[%d] = ", i++);
 	while (lst)
 	{

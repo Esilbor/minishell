@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 10:53:54 by esilbor           #+#    #+#             */
-/*   Updated: 2023/11/21 10:54:41 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/11/25 00:17:47 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,56 +14,31 @@
 
 //merge two nodes when they are of same type and next to each other
 //UNUSED
-void	merge_lex_nodes(t_lexer **lexer, t_tokens type)
-{
-	t_lexer	*lex;
-	char	*tmp;
-	
-	if (!lexer)
-		return ;
-	lex = *lexer;
-	while (lex && lex->next)
-	{
-		if (lex->type == type && lex->next->type == type)
-		{
-			tmp = ft_strjoin(lex->word, lex->next->word);
-			free(lex->word);
-			lex->word = ft_strdup(tmp);
-			ft_remove_lex_node(lexer, lex->next);
-			free(tmp);
-			// Continue from the current node as the next node is now different
-		}
-		else
-		{
-			// Progress to the next node only if no merge happened
-			lex = lex->next;
-		}
-	}
-}
-
 void	merge_nodes(t_lexer **lexer)
 {
 	t_lexer	*lex;
-	char	*tmp;
-	char	*tmp2;
+	t_lexer	*node_to_remove;
+	char	*merged_word;
 
 	lex = *lexer;
 	while (lex && lex->next)
 	{
-		while (lex->type >= 14)
+		if (lex->type >= SMERGE && lex->type <= EMERGE)
 		{
-			tmp = ft_strdup(lex->word);
-			lex = ft_remove_lex_node(lexer, lex);
-			lex = lex->next; // since ft_remove_lex_node return the previous node
-			tmp2 = ft_strdup(lex->word);
-			free (lex->word);
-			lex->word = ft_strjoin(tmp, tmp2);
-			free (tmp);
+			merged_word = ft_strjoin(lex->word, lex->next->word);
+			free(lex->next->word);
+			lex->next->word = merged_word;
+			node_to_remove = lex;
+			lex = lex->next;
+			if (lex == *lexer)
+				*lexer = lex;
+			ft_remove_lex_node(lexer, node_to_remove);
 		}
-		lex = lex->next;
+		else
+			lex = lex->next;
 	}
-	
 }
+
 //finally change SQUOTES and DQUOTES into WORDS before cleaning
 void	quotes_to_words(t_lexer **lexer)
 {
@@ -78,11 +53,27 @@ void	quotes_to_words(t_lexer **lexer)
 	}
 }
 
+// remove \ pointed by esc from lex->word
+void	clean_esc(t_lexer **lex, char **esc)
+{
+	char	*before;
+	char	*after;
+
+	before = ft_strpcpy((*lex)->word, *esc);
+	after = ft_strdup(*esc + 1);
+	free ((*lex)->word);
+	(*lex)->word = ft_strjoin(before, after);
+	*esc = ft_strchr((*lex)->word, '\\');
+	free (before);
+	free (after);
+}
+
 // replace the value of expand nodes to the matching environment value
 void	ft_expander(t_lexer **lexer, t_env *envb)
 {
 	t_lexer	*lst;
 	char	*tmp;
+	char	*esc;
 
 	lst = *lexer;
 	while (lst)
@@ -92,6 +83,9 @@ void	ft_expander(t_lexer **lexer, t_env *envb)
 			tmp = dol_to_expand(lst->word);
 			if (tmp)
 				lst = expand_dquote(tmp, lst, envb);
+			esc = ft_strchr(lst->word, '\\');
+			while (esc && esc[1] != '\"' && esc[1] != '?')
+				clean_esc(&lst, &esc);
 			lst = clean_quotes(lst);
 		}
 		else if (lst->type == EXPAND || lst->type == EMERGE)
@@ -99,6 +93,9 @@ void	ft_expander(t_lexer **lexer, t_env *envb)
 			tmp = dol_to_expand(lst->word);
 			if (tmp)
 				lst = expand_node2(tmp, lst, envb);
+			esc = ft_strchr(lst->word, '\\');
+			while (esc && esc[1])
+				clean_esc(&lst, &esc);
 		}
 		lst = lst->next;
 	}

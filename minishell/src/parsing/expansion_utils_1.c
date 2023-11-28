@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:36:38 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/21 14:25:35 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/11/25 00:21:03 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ t_lexer	*ft_remove_lex_node(t_lexer **lexer, t_lexer *node_to_remove)
 	prev = NULL;
 	if (current != NULL && current == node_to_remove)
 	{
-		*lexer = current->next; // Change head
-		free(node_to_remove->word); // Free the memory of the word
-		free(node_to_remove); // Free the memory of the node
+		*lexer = current->next;
+		free(node_to_remove->word);
+		free(node_to_remove);
 		return (*lexer);
 	}
 	while (current != NULL && current != node_to_remove)
@@ -32,11 +32,11 @@ t_lexer	*ft_remove_lex_node(t_lexer **lexer, t_lexer *node_to_remove)
 		prev = current;
 		current = current->next;
 	}
-	if (current == NULL) // If the node was not found, return
+	if (current == NULL)
 		return (node_to_remove);
-	prev->next = current->next; // Unlink the node from the linked list
-	free(current->word); // Free the memory of the word
-	free(current); // Free the memory of the node
+	prev->next = current->next;
+	free(current->word);
+	free(current);
 	return (prev);
 }
 
@@ -50,11 +50,11 @@ t_lexer	*expand_node(t_lexer **lexer, t_lexer *lst, t_env *envb)
 	if (var)
 	{
 		tmp = ft_strchr(var->var_str, '=');
-		if (tmp) // i dont think it is necessary
+		if (tmp)
 		{
 			tmp++;
 			free(lst->word);
-			lst->word = ft_strdup(tmp); // to protect
+			lst->word = ft_strdup(tmp);
 			lst->type = WORD;
 		}
 	}
@@ -71,24 +71,24 @@ t_lexer	*expand_node2(char *tmp, t_lexer *node, t_env *envb)
 	char	*tmp_str;
 	char	*ptr;
 
-	var = extract_var(tmp + 1, &ptr); //get USER and set ptr to the remainder
-	tmp_str = ft_strpcpy(node->word, tmp);//copies everthing before $
-	get_env_value(envb, &var); //updates USER into bbresil
+	var = extract_var(tmp + 1, &ptr);
+	tmp_str = ft_strpcpy(node->word, tmp);
+	get_env_value(envb, &var);
 	if (var)
-		new_str = ft_strjoin(tmp_str, var); //join "this is \0 with bbresil
+		new_str = ft_strjoin(tmp_str, var);
 	else
 		new_str = ft_strdup(tmp_str);
-	free (var); // if var is NULL nothing will occur :)
+	free (var);
 	free (tmp_str);
 	if (ptr)
-		tmp_str = ft_strjoin(new_str, ptr);// "this is bbresil"
+		tmp_str = ft_strjoin(new_str, ptr);
 	free (node->word);
 	free (new_str);
 	node->word = ft_strdup(tmp_str);
 	free (tmp_str);
 	tmp = dol_to_expand(node->word);
 	if (tmp)
-		node = expand_node2(tmp, node, envb); // RECURSIVITÉ
+		node = expand_node2(tmp, node, envb);
 	return (node);
 }
 
