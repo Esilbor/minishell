@@ -6,7 +6,11 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:06:41 by bbresil           #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/11/28 15:06:36 by zaquedev         ###   ########.fr       */
+=======
+/*   Updated: 2023/11/28 14:31:02 by zaquedev         ###   ########.fr       */
+>>>>>>> b8dd15f (test push)
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +179,7 @@ int	shell_loop(t_env *envb, char **envp)
 		
 		printf("\n\n========main --> EXECUTIONS ==================\n\n");
 		
-		
+		//ft_init_execution(data, index);
 
 		 data->env_arr = envp;
 		// char **envtab;
@@ -184,7 +188,7 @@ int	shell_loop(t_env *envb, char **envp)
 		
   		ft_print_char_tab(data->env_arr);
 		
-		//ft_init_execution(data, index);
+		
 			/*
 			valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose ./minishell
 			*/
