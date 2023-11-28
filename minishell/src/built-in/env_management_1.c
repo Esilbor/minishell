@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 19:51:29 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/21 12:47:10 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/11/25 00:07:47 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,12 @@ void	ft_add_env_node(t_env **env, char *varp)
 		ft_putstr_fd(strerror(errno), 2);
 		return ;
 	}
-	new_node->var_str = ft_strdup(varp); //ft_strdup can fail and return NULL
+	new_node->var_str = ft_strdup(varp);
+	if (!new_node->var_str)
+	{
+		free(new_node);
+		return ;
+	}
 	new_node->next = NULL;
 	if (!*env)
 		*env = new_node;

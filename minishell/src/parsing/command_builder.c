@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 12:12:12 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/21 14:27:38 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/11/25 00:11:54 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,8 +125,7 @@ t_cmd	**command_builder(t_lexer **lexer)
 	fill_cmd_tab(*lexer, cmd_struct_tab, cmd_nb, tok_nb);
 	fill_eof_tab(*lexer, cmd_struct_tab, cmd_nb, tok_nb);
 	fill_input_tab(*lexer, cmd_struct_tab, cmd_nb, tok_nb);
-	// fill_output_tab(*lexer, cmd_struct_tab, cmd_nb, tok_nb);
 	fill_output_lst(*lexer, cmd_struct_tab, cmd_nb);
-	ft_print_struct_tab(cmd_struct_tab); // IMPRIMER LES TABLEAUX DE COMMANDE
+	// ft_print_struct_tab(cmd_struct_tab); // IMPRIMER LES TABLEAUX DE COMMANDE
 	return (cmd_struct_tab);
 }
