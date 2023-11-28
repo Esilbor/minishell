@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:06:41 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/28 15:29:20 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/11/28 15:43:38 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,18 +146,41 @@ int	shell_loop(t_env *envb, char **envp)
 			do_builtins(cmd_struct_tab[0]->cmd, &envb);
 
 
-		 //ft_init_data(&data, envb);
+		 
+		
+		
+		printf("\n\n========main --> EXECUTIONS ==================\n\n");
 		
 
-		 data = init_set(&data,cmd_struct_tab, envb);
+		//ft_init_data(&data, envb);
 		
+		 data = init_set(&data,cmd_struct_tab, envb);
+
+
 		 
+		//ft_init_execution(data, index);
+
+		
+		// char **envtab;
+		// envtab = env_to_tab(envb);
+		// printf("envp \n ft_print_char_tab = \n");
+
+		data->env_arr = envp;
+  		ft_print_char_tab(data->env_arr);
+		
+		
+			/*
+			valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose ./minishell
+			*/
+		
+		printf("\n\n========main --> cmd_pah ==================\n\n");
+	 
 
 		// recuperer la cmd_path ????
 
 		// cmds_nb
 
-		printf("data->cmds_nb = %d\n", data->cmds_nb);
+		printf("\n\ndata->cmds_nb = %d\n", data->cmds_nb);
 		int cpt = data->cmds_nb;
 		
 		
@@ -172,24 +195,6 @@ int	shell_loop(t_env *envb, char **envp)
 		//ft_print_struct_tab(cmd_struct_tab);
 		
 		printf("data->cmd_path ??????? = %s\n", data->cmd_path);
-		
-		
-		printf("\n\n========main --> EXECUTIONS ==================\n\n");
-		
-		//ft_init_execution(data, index);
-
-		 data->env_arr = envp;
-		// char **envtab;
-		// envtab = env_to_tab(envb);
-		// printf("envp \n ft_print_char_tab = \n");
-		
-  		ft_print_char_tab(data->env_arr);
-		
-		
-			/*
-			valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose ./minishell
-			*/
-		
 		
 			
 		
