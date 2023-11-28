@@ -5,12 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/25 12:06:41 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/26 23:02:12 by esilbor          ###   ########.fr       */
+/*   Created: 2023/11/26 23:02:12 by esilbor           #+#    #+#             */
+/*   Updated: 2023/11/28 09:51:04 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
 
 // Handle SIGINT signal and print a prompt
 void	sigint_handler(int signum)
