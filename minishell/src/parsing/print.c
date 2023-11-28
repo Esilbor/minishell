@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 18:19:41 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/21 14:41:07 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/11/28 14:55:56 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	ft_print_struct_tab(t_cmd **struct_tab)
 		if (struct_tab[i]->output)
 		{
 			ft_printf(YELLOW"OUTPUT_LST[%d]\n", i);
-			print_lexer(&(struct_tab[i])->output);
+			print_lexer(&(struct_tab[i])->output, "example");
 			ft_printf("***************\n\n"RESET);
 		}
 		i++;

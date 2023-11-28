@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/28 10:04:59 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/11/28 14:59:06 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,8 @@ typedef struct s_data
 	// get_env()
 	// get_path()
 	t_env	*lst_env;
-	char **env;
+	char		**env_arr;
+	//char **env;
 	char			**paths;
 	char *path;
 	char	*cmd_path;
@@ -298,7 +299,10 @@ t_lexer	*ft_lexer(char *line);
 	/*to be deleted */
 
 char	*print_token(t_tokens token);
+//void 	print_lexer(t_lexer **head, char *loc);
+
 void 	print_lexer(t_lexer **head, char *loc);
+
 void 	ft_print_struct_tab(t_cmd **struct_tab);
 
 
@@ -313,10 +317,8 @@ void	ft_handle_signals(void);
 void	ft_quit_shell(t_env *envb, t_cmd **cmd_struct_tab);
 void	free_cmd_struct_tab(t_cmd **cmd_struct_tab);
 void	free_shell(char **cmd_tab, t_lexer *lexer, char *input, t_cmd **cmd_struct_tab);
-int		shell_loop(t_env *envb);
-t_set   *init_set(t_set **set, t_cmd **cmd_struct_tab, t_env *envb);
-char	**env_to_tab(t_env *lst);
-
+//int		shell_loop(t_env *envb);
+int		shell_loop(t_env *envb, char **envp);
 
 
 
@@ -346,6 +348,8 @@ int				ft_nb_cmd(char *str);
 //char 	**set_tab_paths(t_data *data);
 char *set_path_cmd(t_data *data, char *cmd);
 void	ft_init_execution(t_data *data, int index);
+char    **env_to_tab(t_env *lst);
+void	ft_print_char_tab(char **tab);
 
 
 

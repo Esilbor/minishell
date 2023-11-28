@@ -215,8 +215,8 @@ char    **env_to_tab(t_env *lst)
      //tab = (char **)malloc(sizeof(char *) * (4096)); // 64 *
 
    
-    tab = ft_calloc(len + 1, sizeof(char *));
-   // tab = (char **)malloc((len + 1) * sizeof(char *));
+   // tab = ft_calloc(len + 1, sizeof(char *));
+    tab = (char **)malloc((len + 1) * sizeof(char *));
     if (!tab)
     {
       printf("Unable to allocate memory.\n");
@@ -238,7 +238,7 @@ char    **env_to_tab(t_env *lst)
 }
 
 
-
+/*
 void	ft_print_char_tab(char **tab)
 {
 	int	i;
@@ -256,41 +256,67 @@ void	ft_print_char_tab(char **tab)
 	else
 		printf("(NULL)\n");
 }
+*/
 
-void	ft_init_execution(t_data *data, int index)
+void	ft_print_char_tab(char **tab)
+{
+  
+  int i;
+  int j;
+  
+  if (tab == NULL) {
+        printf("Tableau vide.\n");
+        return;
+  }
+  
+  i = 0;
+ 
+  while (tab[i] != NULL)
+  {
+    j = 0;
+    while (tab[i][j] != '\0')
+    {
+      printf("%c",tab[i][j]);
+			j++;
+    }
+    printf("\n");
+    i++;
+  }
+
+
+
+}
+
+
+
+
+
+/*void	ft_init_execution(t_data *data, int index)
 {
 
   printf("---------------------ft_init_execution*****************\n");
 
   // init data , cmd ...
 
-  // int	ft_fill_lexer(t_lexer **lexer_lst, char *cmd_line)
+ 
 
-  //ft_init_data(data, lst_env);
+ // char **envp;
+
   
-  
-  //printf("data->cmd_path = %s\n", data->cmd_path);
-
-  char **envp;
-
-  // data->paths = ft_split(data->path, ':');
-  // if (!data->paths)
-	// 		printf("ERR_SPLIT\n");
-
 
   // envp = ft_get_env(data); // , index);
  
- envp = env_to_tab(data->lst_env);
-  printf("envp \n ft_print_char_tab = \n");
-  ft_print_char_tab(envp);
+  // envp = env_to_tab(data->lst_env);
+  // printf("envp \n ft_print_char_tab = \n");
+  // ft_print_char_tab(envp);
 
 
 
 
-	if (data->paths && !ft_strchr(data->lst_cmd[index]->cmd[0], '/'))
-		ft_path_ok_cmd(data, data->lst_cmd[index]->cmd, envp, index);
+	// if (data->paths && !ft_strchr(data->lst_cmd[index]->cmd[0], '/'))
+	// 	ft_path_ok_cmd(data, data->lst_cmd[index]->cmd, envp, index);
 	// else
 	
 
 
-}
+}*/

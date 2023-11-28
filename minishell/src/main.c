@@ -3,12 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/26 23:02:12 by esilbor           #+#    #+#             */
-/*   Updated: 2023/11/28 10:00:45 by esilbor          ###   ########.fr       */
+/*   Created: 2023/10/25 12:06:41 by bbresil           #+#    #+#             */
+/*   Updated: 2023/11/28 15:06:36 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "../includes/minishell.h"
 
 
 // Handle SIGINT signal and print a prompt
@@ -105,7 +107,7 @@ void	free_shell(char **cmd_tab, t_lexer *lexer, char *input,
 	free(input);
 }
 
-int	shell_loop(t_env *envb)
+int	shell_loop(t_env *envb, char **envp)
 {
 	t_lexer	*lexer;
 	char	*input;
@@ -138,11 +140,13 @@ int	shell_loop(t_env *envb)
 		// ft_print_tab((void **)env_to_tab(envb), "env_tab");
 
 //		cmd_tab = ft_split(input, ' '); // to be deleted
+		// echo / cd / ****
 		if (cmd_struct_tab[0]->cmd[0])
 			do_builtins(cmd_struct_tab[0]->cmd, &envb);
 
 
 		 //ft_init_data(&data, envb);
+		
 
 		 data = init_set(&data,cmd_struct_tab, envb);
 		
@@ -150,11 +154,14 @@ int	shell_loop(t_env *envb)
 
 		// recuperer la cmd_path ????
 
+		// cmds_nb
+
 		printf("data->cmds_nb = %d\n", data->cmds_nb);
-		// cmd?
 		int cpt = data->cmds_nb;
+		
+		
+		// cmd?  ---> cmd_struct_tab[c]->cmd[0])
 		int i = 0;
-		//while (cmd_struct_tab[c]->cmd[0])
 		while (i < cpt)
 		{
 			printf("cmd_struct_tab[c]->cmd = %s\n", cmd_struct_tab[i]->cmd[0]);
@@ -168,21 +175,27 @@ int	shell_loop(t_env *envb)
 		
 		printf("\n\n========main --> EXECUTIONS ==================\n\n");
 		
-		int index = 0;
-		while (index < data->cmds_nb)
-		{
-			ft_init_execution( data, index);
+		
+
+		 data->env_arr = envp;
+		// char **envtab;
+		// envtab = env_to_tab(envb);
+		// printf("envp \n ft_print_char_tab = \n");
+		
+  		ft_print_char_tab(data->env_arr);
+		
+		//ft_init_execution(data, index);
 			/*
 			valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose ./minishell
-			
 			*/
-			index++;
-		}
+		
 		
 			
 		
-/*************************************************************/
-//
+		/*************************************************************/
+		//				suite du programme
+
+
 		free_shell(NULL, lexer, input, cmd_struct_tab);
 	}
 	else
@@ -194,14 +207,17 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_env	*envb;
 	int		status;
+	
 
 	(void)argc;
 	(void)argv;
 	ft_handle_signals();
 	envb = get_env(envp);
+
+	
 	while (1)
 	{
-		status = shell_loop(envb);
+		status = shell_loop(envb, envp);
 		if (status == 1)
 			continue ;
 		if (status == 2)
