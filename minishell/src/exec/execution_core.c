@@ -6,30 +6,56 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 19:40:11 by zaquedev          #+#    #+#             */
-/*   Updated: 2023/11/28 20:55:57 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/11/29 19:43:54 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../includes/minishell.h"
 
+// first --> parsing1
+// get the input and figures out the structure of cmds
+// is builtin? --> run_builtin
 
+// *************************
+
+
+
+
+
+
+
+// second --> parsing2
+
+// recuperer les differents arguments et les classifier
+// ex : ls | cat > file1
+// besoin d'un pipe, output, 2 cmds
 
 /*
-int	execution(t_data *data, t_cmd *cmd)
-{
 
-	int fork_nb = 0;
-	int pid;
+ls | cat > file1
 
-	while (cmd)
-	{
-		//fork_nb = ?
+********index = 0 ********
 
-		
-	}
-	
-}
+CMD[0]
+cmd[0] = ls
+
+********index = 1 ********
+
+CMD[1]
+cmd[0] = cat
+
+***************
+
+OUTPUT_LST[1]
+
+example
+CMD[0] = [file1__OUTPUT__]
+************
+
+
+
+
 */
 
 
@@ -41,9 +67,38 @@ int	execution(t_data *data, t_cmd *cmd)
 
 
 
+/*
+
+int single_cmd(t_data *data, t_cmd **lst_cmd);
+
+int pipeline_cmd(t_data *data);
 
 
 
+int exec_cmd(t_data *data)
+{
+  int res;
+
+  if (data->cmds_nb == 1)
+      res = single_cmd(data, data->lst_cmd[0]->cmd[0]);
+  else
+      res = pipeline_cmd(data);
+  return (res);
+}
+*/
+
+
+
+int ft_exexution(t_data *data)
+{
+  int res = 0;
+  
+  if (!data->cmds_nb)
+		{
+      //res = exec_cmd(data);        
+		}
+    return (res);  
+}
 
 
 

@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:06:41 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/28 19:43:49 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/11/29 20:37:39 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,23 @@ void	free_shell(char **cmd_tab, t_lexer *lexer, char *input,
 	free(input);
 }
 
+ // a completer avec les signals
+int check_first(t_data *data, int argc, char **envp)
+{
+	if (argc <= 0)
+		return (printf("ERR_NOARG"),-1);
+	//init_data --> 0;
+	if (envp == NULL )
+		return (printf("ERR_NOARG"),-1);
+	if (data->exit == -1)
+		return (printf("ERR_NOARG"),-1);
+	//if ft_handle_signals();
+	return (0);
+
+	
+}
+
+
 int	shell_loop(t_env *envb, char **envp)
 {
 	t_lexer	*lexer;
@@ -133,21 +150,16 @@ int	shell_loop(t_env *envb, char **envp)
 			return (add_history(input), 1);
 		cmd_struct_tab = command_builder(&lexer);
 		ft_print_struct_tab(cmd_struct_tab);
+
+		
 /*************************************************************/
 //				EXECUTION PART HERE
 
-		// init_set(&set, cmd_struct_tab, envb);
-		// ft_printf("ENV TO TAB\n");
-		// ft_print_tab((void **)env_to_tab(envb), "env_tab");
 
 //		cmd_tab = ft_split(input, ' '); // to be deleted
 		// echo / cd / ****
 		if (cmd_struct_tab[0]->cmd[0])
 			do_builtins(cmd_struct_tab[0]->cmd, &envb);
-
-
-		 
-		
 		
 		printf("\n\n========main --> EXECUTIONS ==================\n\n");
 		
@@ -155,31 +167,23 @@ int	shell_loop(t_env *envb, char **envp)
 		//ft_init_data(&data, envb);
 		
 		 data = init_set(&data,cmd_struct_tab, envb);
-
-
-		 
-		//ft_init_execution(data, index);
-
+		
 		
 		// char **envtab;
-		// envtab = env_to_tab(envb);
+		// envtab = env_to_tab(envb); // === > ne fonctionne pas !!!
 		// printf("envp \n ft_print_char_tab = \n");
+
+		  printf("\n\n======================= data->env_arr = envp ==========================\n");
 
 		data->env_arr = envp;
   		ft_print_char_tab(data->env_arr);
 		
-		
 			/*
 			valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose ./minishell
 			*/
-		
-		
-
-		// char *set_path_cmd(t_data *data, char *cmd)
 
 		printf("\n\ndata->cmds_nb = %d\n", data->cmds_nb);
 		int cpt = data->cmds_nb;
-		
 		
 		// cmd?  ---> cmd_struct_tab[c]->cmd[0])
 		int i = 0;
@@ -190,18 +194,15 @@ int	shell_loop(t_env *envb, char **envp)
 		}
 		
 		// char *set_path_cmd(t_data *data, char *cmd)
-
 		printf("\n\n========main --> set_path_cmd ==================\n\n");
 
 		i = 0;
-		
 		while (i < cpt)
 		{
 			data->cmd_path = set_path_cmd(data,cmd_struct_tab[i]->cmd[0] );
 			i++;
 		}
 		
-		//printf("data->cmd_path ??????? = %s\n", data->cmd_path);
 		
 		/*************************************************************/
 		//				TRAITEMENT DES CMD (cmd / builtin)
@@ -209,9 +210,30 @@ int	shell_loop(t_env *envb, char **envp)
 		//						==> executer une commande (FORK / WAIT / EXECVE)
 
 		
-
-
-
+		
+		/* 				avant --> cas d'erreurs :
+		
+			init_data --> 0;
+				if (check_first (data->exit , argc , envp) == -1)
+					return (1); // exit
+					
+				if data->exit === -1 --> return (1)
+				if envp == -1  --> return (1)
+				if argc == -1 --> return (1)
+	
+		*/ 
+		
+		if (isatty(STDIN_FILENO) == 0)
+				return (0);
+	
+	
+		// a completer avec les signals
+		// pre-processing // check if exit??? signals ...
+		if (check_first(data, data->cmds_nb, envp) == -1)
+			return (1);
+		// parsing the cmds --> stdin ? redirection? pipe?
+		//int res = ft_exexution(data);
+		
 		
 		
 		/*************************************************************/
@@ -225,11 +247,15 @@ int	shell_loop(t_env *envb, char **envp)
 	return (0);
 }
 
+
+
+
+//int	main(int argc, t_data *data, char **envp)
 int	main(int argc, char **argv, char **envp)
 {
 	t_env	*envb;
 	int		status;
-	
+	//t_data	*data;
 
 	(void)argc;
 	(void)argv;

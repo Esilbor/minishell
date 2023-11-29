@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/28 18:36:34 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/11/29 19:35:39 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,18 +124,16 @@ typedef struct s_cmd
 
 typedef struct s_data
 {
-	// get_env()
-	// get_path()
+	
 	t_env	*lst_env;
 	char		**env_arr;
-	//char **env;
 	char			**paths;
 	char *path;
 	char	*cmd_path;
-	
-	//t_lexer		*lexer; // struct s_token	*token;
+
 	 t_cmd	**lst_cmd;
 	 int				cmds_nb;
+	 int			exit;
 	 
 	 //char			*cmd_line; // char  *line; // data->line = readline("Candy_$hell$ ");
 	// char			**builtins_tab;
@@ -350,7 +348,11 @@ void	ft_init_execution(t_data *data, int index);
 char    **env_to_tab(t_env *lst);
 void	ft_print_char_tab(char **tab);
 
+// pre-processing
+int check_first(t_data *data, int argc, char **envp);
 
 
+// int ft_exexution(t_data *data);
+// int exec_cmd(t_data *data);
 
 #endif

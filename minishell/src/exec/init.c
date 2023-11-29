@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 19:41:10 by zaquedev          #+#    #+#             */
-/*   Updated: 2023/11/28 19:45:43 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/11/29 17:32:50 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,7 @@ t_data   *init_set(t_data **data, t_cmd **cmd_struct_tab, t_env *envb)
 {
    // t_env    *p;
     char    *path;
-    //char *path_to_check;
-    //path = ft_get_path(envb);
-    
-    // p = get_env_node(envb, "PATH");
-    // if (!p || !p->var_str)
-    //     return (NULL);
-    // path = ft_strdup(ft_strchr(p->var_str, '=') + 1);
-    // if (!path)
-    //     return (NULL);
+   
 
     printf("*********** INIT_SET **************\n");
 
@@ -37,6 +29,7 @@ t_data   *init_set(t_data **data, t_cmd **cmd_struct_tab, t_env *envb)
 
     path = ft_get_path(envb); // la liste des chemins tous confondus : char * 
 
+    printf("\n\n=======================DATA / malloc ==========================\n");
    
     *data = malloc(sizeof(t_data));
     if (!(*data))
@@ -101,7 +94,7 @@ t_data   *init_set(t_data **data, t_cmd **cmd_struct_tab, t_env *envb)
 
     
 
-     printf("\n\n======================= tabenv = env_to_tab(envb)==========================\n");
+     //printf("\n\n======================= tabenv = env_to_tab(envb)==========================\n");
 
     // tabenv = env_to_tab(envb);
     // printf("envp \n ft_print_char_tab = \n");
@@ -111,6 +104,7 @@ t_data   *init_set(t_data **data, t_cmd **cmd_struct_tab, t_env *envb)
 
 
     (*data)->lst_cmd = cmd_struct_tab;
+     (*data)->exit = 0;
 
     // cmd ?? <--- cmd_struct_tab[index][0]
      // (*data)->cmd_path = set_path_cmd(*data, cmd_struct_tab[0]->cmd[0]);
