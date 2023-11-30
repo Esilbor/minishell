@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/29 19:35:39 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/11/30 19:57:59 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ typedef struct s_data
 	 t_cmd	**lst_cmd;
 	 int				cmds_nb;
 	 int			exit;
-	 
+		
 	 //char			*cmd_line; // char  *line; // data->line = readline("Candy_$hell$ ");
 	// char			**builtins_tab;
 	 
@@ -354,5 +354,7 @@ int check_first(t_data *data, int argc, char **envp);
 
 // int ft_exexution(t_data *data);
 // int exec_cmd(t_data *data);
+
+void run_execution(t_data *data);
 
 #endif

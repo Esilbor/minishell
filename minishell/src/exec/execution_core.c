@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 19:40:11 by zaquedev          #+#    #+#             */
-/*   Updated: 2023/11/29 19:43:54 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/11/30 20:03:23 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,45 +19,82 @@
 
 // *************************
 
+        // preparation de l'execution --> 
+        // recuperer a la strucutre initiee, (t_cmd **cmd_struct_tab)
+        // checker en chaque cmd_struct_tab[0] si (is_builtins() == 1)  ?
+				// charger les fonctions des builtins 
+				//    initier les fd_opens , les pipes , les here_docs ?
+				//    (tous elements utiles pour le fork() )
+				// 	execution
+        
+// *****************************************     
 
+static int		is_builtin(char **command)
+{
+	if (ft_strncmp(command[0], "exit", 5))
+		  return (-1);
+	else if (ft_strncmp(command[0], "echo", 5))
+		  return (1);
+	else if (ft_strncmp(command[0], "cd", 3))
+		  return (1);
+ else if (ft_strncmp(command[0], "pwd", 4))
+		  return (1);
+   else if (ft_strncmp(command[0], "export", 7))
+    return (1);
+	else if (ft_strncmp(command[0], "unset", 6))
+		return (1);
+	else if (ft_strncmp(command[0], "env",4))
+		return (1);
+	return (0);
+}
 
-
-
-
-
-// second --> parsing2
-
-// recuperer les differents arguments et les classifier
-// ex : ls | cat > file1
-// besoin d'un pipe, output, 2 cmds
 
 /*
 
-ls | cat > file1
+  if cmd valid 
+  while (cmd[0] et pas signal)
+  {
+    // regarder si on a un pipe 
+      -- > pour lancer l'initialisation/processing du pipe, fork() , pid (pipex)
+    // verifier si c'est pas une redirection suivi d'une mot
+        (ou inversement a verifier ?)
+      ---> avancer
 
-********index = 0 ********
+    // verifier d'abord si c'est un builtin
+      --> executer builtin // do_builtin
+    // sinon si c'est une cmd
+    // recuperer le path
+    // executer + fork() 
+     
+  }
 
-CMD[0]
-cmd[0] = ls
 
-********index = 1 ********
-
-CMD[1]
-cmd[0] = cat
-
-***************
-
-OUTPUT_LST[1]
-
-example
-CMD[0] = [file1__OUTPUT__]
-************
 
 
 
 
 */
+  
+void run_execution(t_data *data)
+{
+    int index;
+    index = 0; 
+    
+    if (is_redirction())
+    {
 
+      
+    }
+    // cmd_struct_tab[i]->cmd[0]
+    if (is_builtin(&data->lst_cmd[index]->cmd[0]) == 1)
+    {
+      do_builtins(&data->lst_cmd[index]->cmd[0], &data->lst_env);
+    }
+      
+
+
+  
+}
 
 
 

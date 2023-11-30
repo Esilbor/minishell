@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:06:41 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/29 20:37:39 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/11/30 19:42:41 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,13 +158,11 @@ int	shell_loop(t_env *envb, char **envp)
 
 //		cmd_tab = ft_split(input, ' '); // to be deleted
 		// echo / cd / ****
-		if (cmd_struct_tab[0]->cmd[0])
-			do_builtins(cmd_struct_tab[0]->cmd, &envb);
+		// if (cmd_struct_tab[0]->cmd[0])
+		// 	do_builtins(cmd_struct_tab[0]->cmd, &envb);
 		
 		printf("\n\n========main --> EXECUTIONS ==================\n\n");
 		
-
-		//ft_init_data(&data, envb);
 		
 		 data = init_set(&data,cmd_struct_tab, envb);
 		
@@ -233,7 +231,31 @@ int	shell_loop(t_env *envb, char **envp)
 			return (1);
 		// parsing the cmds --> stdin ? redirection? pipe?
 		//int res = ft_exexution(data);
+
+		data->lst_cmd = cmd_struct_tab;
+
+		run_execution(data);
+
+		//*******************************************/
 		
+		// check_args (input)--> position des pipes par rapport aux reste? 
+
+
+
+		// if (check_args (input) == 0) // si toute la structure des args est bonne
+		// {
+				
+				// init data 
+				// cmd_struct_tab = command_builder(&lexer);
+				
+				
+				// preparation de l'execution --> rajouter a la strucutre initiee, 
+				// charger les fonctions des builtins 
+				//    initier les fd_opens , les pipes , les here_docs ?
+				//    (tous elements utiles pour le fork() )
+				// 	execution
+		// }
+
 		
 		
 		/*************************************************************/
