@@ -6,11 +6,11 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 16:58:25 by zaquedev          #+#    #+#             */
-/*   Updated: 2023/11/29 16:59:17 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/01 20:37:53 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
+#include "../includes/minishell.h"
 
 
 /*
@@ -134,11 +134,75 @@ void execute_pipeline(char*** pipeline)
 */
 
 
+int **pipes_alloc(t_data *data)
+{
+    int count;
+    int **fds;
+    int index;
+    
+
+    count = data->cmds_nb;
+    fds = malloc(sizeof(int *) * (count - 1));
+    if (!fds)
+        return (0);
+    index = 0;
+    while (index < (count - 1))
+    {
+        fds[index] = malloc(sizeof(int) * 2);
+        if (!fds[index])
+            return (0);
+        pipe(fds[index]);
+        index++;
+    }
+    return (fds);
+}
+
+void init_fd(int **fd, t_cmd *cmd, int index)
+{
+    if (index == 0 && cmd)
+    {
+		if (cmd->fd_out == 1)
+			cmd->fd_out = fd[index][1];     
+    }
+    else if (index != 0 && cmd)
+	{
+		if (cmd->fd_in == 0)
+			cmd->fd_in = fd[index - 1][0];
+		if (cmd->fd_out == 1)
+			cmd->fd_out = fd[index][1];
+	}
+	else if (index != 0 && !cmd)
+		if (cmd->fd_in == 0)
+			cmd->fd_in = fd[index - 1][0];    
+}
+
+
+int **init_pipes(t_data *data)
+{
+
+    int i;
+    int cpt;
+    int **fd;
+    t_cmd **cmd;
+
+
+    i = 0;
+    cmd = data->lst_cmd;
+    cpt = data->cmds_nb;
+    
+    fd = pipes_alloc(data);
+    if (!fd)
+		exit(1);
+    while (cmd[cpt])
+	{
+		init_fd(fd, *cmd, i);
+		i++;
+		cpt++;
+	}
+	return (fd);
 
 
 
-
-
-
+}
 
 

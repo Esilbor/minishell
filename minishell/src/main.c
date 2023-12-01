@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:06:41 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/01 16:58:10 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/01 20:43:53 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,13 +162,11 @@ int	shell_loop(t_env *envb, char **envp)
 		if (cmd_struct_tab[0]->cmd[0])
 			do_builtins(cmd_struct_tab[0]->cmd, &envb);
 
-		// recuperer les cmds
-		
-		
-
 		// print "cmd_struct_tab" = cmd + builtins
-		//ft_print_tab((void **)cmd_struct_tab, cmd_tab_name);
 		
+printf("\n\n======================= EXECUTION PART HERE ==========================\n");
+	
+
 		
 		 data = init_set(&data,cmd_struct_tab, envb);
 		
@@ -177,7 +175,7 @@ int	shell_loop(t_env *envb, char **envp)
 		// envtab = env_to_tab(envb); // === > ne fonctionne pas !!!
 		// printf("envp \n ft_print_char_tab = \n");
 
-		  printf("\n\n======================= data->env_arr = envp ==========================\n");
+		printf("\n======================= data->env_arr = envp ==========================\n");
 
 		data->env_arr = envp;
   		ft_print_char_tab(data->env_arr);
@@ -206,7 +204,7 @@ int	shell_loop(t_env *envb, char **envp)
 			data->cmd_path = set_path_cmd(data,cmd_struct_tab[i]->cmd[0] );
 			i++;
 		}
-		
+		printf("33333\n");
 		
 		/*************************************************************/
 		//				TRAITEMENT DES CMD (cmd / builtin)
@@ -227,12 +225,13 @@ int	shell_loop(t_env *envb, char **envp)
 	
 		*/ 
 		
-		if (isatty(STDIN_FILENO) == 0)
-				return (0);
+		// if (isatty(STDIN_FILENO) == 0)
+		// 		return (0);
 	
 	
 		// a completer avec les signals
 		// pre-processing // check if exit??? signals ...
+		
 		if (check_first(data, data->cmds_nb, envp) == -1)
 			return (1);
 		// parsing the cmds --> stdin ? redirection? pipe?
@@ -240,7 +239,8 @@ int	shell_loop(t_env *envb, char **envp)
 
 		data->lst_cmd = cmd_struct_tab;
 
-		run_execution(data);
+		if (!run_execution(data,cmd_struct_tab))
+			return (0);
 
 		//*******************************************/
 		

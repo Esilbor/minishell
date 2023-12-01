@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 19:41:10 by zaquedev          #+#    #+#             */
-/*   Updated: 2023/11/29 17:32:50 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/01 19:43:46 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,9 @@
 
 t_data   *init_set(t_data **data, t_cmd **cmd_struct_tab, t_env *envb)
 {
-   // t_env    *p;
+ 
     char    *path;
+   
    
 
     printf("*********** INIT_SET **************\n");
@@ -75,32 +76,25 @@ t_data   *init_set(t_data **data, t_cmd **cmd_struct_tab, t_env *envb)
   
     printf("\n\n=======================ENVB==========================\n");
 
-    printf("\n4-ENVB[i] : **************\n");
-
     (*data)->lst_env = envb;
-    printf("\n\nenvb = \n");
-    t_env *tmpenv = envb;
+    printf("\n\nenvb = ===> printf envb\n");
     
-    while (tmpenv)
-    {
-        printf("tmpenv->var_str[] = %s\n ", tmpenv->var_str);
-        tmpenv = tmpenv->next;
-    }
-
-     printf("\n\n=======================char *ENVB[i]==========================\n");
-
-     printf("\n5- char *ENVB[i] :   char **tabenv ??? \n");
-    //char **tabenv;
-
+    // // t_env *tmpenv;
+    // tmpenv = envb;
     
+    // while (tmpenv)
+    // {
+    //     printf("tmpenv->var_str[] = %s\n ", tmpenv->var_str);
+    //     tmpenv = tmpenv->next;
+    // }
+
+     printf("\n\n======char *ENVB[i]== avec env_to_tab ne fonctionne pas !!! =============\n");    
 
      //printf("\n\n======================= tabenv = env_to_tab(envb)==========================\n");
 
     // tabenv = env_to_tab(envb);
     // printf("envp \n ft_print_char_tab = \n");
     // ft_print_char_tab(tabenv);
-
-
 
 
     (*data)->lst_cmd = cmd_struct_tab;

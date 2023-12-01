@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 19:40:11 by zaquedev          #+#    #+#             */
-/*   Updated: 2023/12/01 16:57:28 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/01 20:54:00 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,34 @@
 
         // preparation de l'execution --> 
         // recuperer a la strucutre initiee, (t_cmd **cmd_struct_tab)
-        // checker en chaque cmd_struct_tab[0] si (is_builtins() == 1)  ?
-				// charger les fonctions des builtins 
+        //Pas de commande : cmd null --> parsing
+        // checker si  cmd_struct_tab[index][0] == 0 ou NULL)
+        //     si oui ---> penser a free / quiter ...
+        // checker en chaque cmd_struct_tab[index][0] si (is_builtins() == 1)  ?
+				//    si oui ---> charger les fonctions des builtins 
+        // checker en chaque cmd_struct_tab[index][0] si on a une cmd executable
+        // si oui, 
+        //  en fonction du nbr de cmd 
+        //    pour N cmd --> initialiser (N - 1) pipes (communication entre process)
 				//    initier les fd_opens , les pipes , les here_docs ?
 				//    (tous elements utiles pour le fork() )
-				// 	execution
+				// 	
+        // execution
+        // Pour executer la cmd --> verifier si sa path  est complete ou non
+        //    si paht relative / absolute
+          // --> if (cmd->cmd && ft_strchr(cmd->cmd, '/'))
+		                  //execve(cmd->cmd, cmd->arg, data->env_copy);
+        //      else --> passer par get_cmd/path
+          // path => path = get_path(cmd->cmd, data);
+          /*
+            if (path)
+            {
+              execve(path, cmd->arg, data->env_copy);
+              free(path);
+            }
+          
+          */
+        // 
         
 // *****************************************     
 
@@ -75,11 +98,29 @@ static int		is_builtin(char **command)
 
 */
   
-void run_execution(t_data *data)
+int run_execution(t_data *data,t_cmd **cmd_struct_tab)
 {
+    
+    printf ("=======================run execution()===================\n");
     int index;
     index = 0; 
+    (void)cmd_struct_tab;
+     //data->lst_cmd = cmd_struct_tab;
+
+   // if (data->lst_cmd == NULL || data->cmds_nb == 0)
+   if (!data->lst_cmd || data->lst_cmd[index]->cmd == NULL)
+   {
+    //free_cmd_struct_tab(cmd_struct_tab);
+      return (0);
+   } 
+   else if (data->lst_cmd && data->lst_cmd[0] != (void*)'\0')
+   {
+      data->pipes = init_pipes(data);
+   }
+   // if heredoc ---> 
+   
     
+   
     // if (is_redirction())
     // {
 
@@ -93,7 +134,7 @@ void run_execution(t_data *data)
       
 
 
-  
+  return (1);
 }
 
 

@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/30 19:57:59 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/01 20:36:27 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,8 @@ typedef struct s_cmd
 	char	**input_redir; // derniers input des cmds
 	// char	**output_redir; // liste des output a creer et a ecrire ds le dernier fd_out
 	t_lexer	*output;
+	int				fd_out;
+	int				fd_in;
 
 }	t_cmd;
 
@@ -138,7 +140,7 @@ typedef struct s_data
 	 //char			*cmd_line; // char  *line; // data->line = readline("Candy_$hell$ ");
 	// char			**builtins_tab;
 	 
-	// int				**pipes;
+		int				**pipes;
 	// char			**builtins_tab;
 	// char			*readline;
 	// char			*path;
@@ -355,6 +357,10 @@ int check_first(t_data *data, int argc, char **envp);
 // int ft_exexution(t_data *data);
 // int exec_cmd(t_data *data);
 
-void run_execution(t_data *data);
+//void run_execution(t_data *data);
+int run_execution(t_data *data,t_cmd **cmd_struct_tab);
+int **init_pipes(t_data *data);
+void init_fd(int **fd, t_cmd *cmd, int index);
+int **pipes_alloc(t_data *data);
 
 #endif
