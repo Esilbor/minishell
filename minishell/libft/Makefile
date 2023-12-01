@@ -13,9 +13,9 @@ ft_memcpy.c ft_memmove.c ft_strchr.c ft_strrchr.c ft_strlcpy.c ft_memcmp.c ft_st
 ft_memchr.c ft_calloc.c ft_strdup.c ft_substr.c ft_strncmp.c ft_strjoin.c ft_strtrim.c \
 ft_itoa.c ft_putchar_fd.c ft_strmapi.c ft_striteri.c ft_putstr_fd.c ft_putendl_fd.c \
 ft_putnbr_fd.c ft_split.c ft_atol.c ft_free_tab.c ft_free_n_tab.c ft_strndup.c \
-ft_tab_len.c ft_strcmp.c ft_strccmp.c ft_strlen3.c\
+ft_tab_len.c ft_strcmp.c ft_strccmp.c ft_strlen3.c ft_lstsize.c \
 $(FT_PRINTF_PATH)ft_printf.c ft_is_c.c ft_strsjoin.c ft_strccpy.c ft_strpcpy.c\
-ft_print_tab.c \
+ft_print_tab.c ft_lstsize.c\
 
 OBJ_DIR = ./obj/
 FT_PRINTF_NAME = libftprintf.a
@@ -24,7 +24,7 @@ FT_PRINTF = $(addprefix $(FT_PRINTF_PATH), $(FT_PRINTF_NAME))
 # OBJ = $(addprefix $(OBJ_DIR), $(notdir $(SRC:.c=.o)))
 OBJ = $(addprefix $(OBJ_DIR), $(SRC:.c=.o))
 
-BONUS = ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c ft_lstadd_back.c \
+BONUS = ft_lstnew.c ft_lstadd_front.c ft_lstlast.c ft_lstadd_back.c \
 ft_lstdelone.c ft_lstclear.c ft_lstiter.c ft_lstmap.c get_next_line.c
 
 BONUS_OBJ = $(addprefix $(OBJ_DIR), $(BONUS:.c=.o))
