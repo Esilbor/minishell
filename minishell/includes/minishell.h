@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/26 20:55:49 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/01 07:18:14 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,6 +185,7 @@ int		token_nb(t_lexer **lexer, t_tokens token);
 
 /*	expansion_cleanup.c	*/
 
+void	clean_lexer4(t_lexer **lexer);
 void	clean_lexer(t_lexer **lexer);
 void	clean_lexer2(t_lexer **lexer);
 void	clean_lexer3(t_lexer **lexer);
@@ -194,8 +195,11 @@ void	clean_squotes(t_lexer **lexer);
 /*	expansion_merge.c	*/
 
 void	merge_nodes(t_lexer **lexer);
+t_lexer	*parsing(char *input, t_lexer **lexer, t_env *envb);
 void	quotes_to_words(t_lexer **lexer);
 void	ft_expander(t_lexer **lexer, t_env *envb);
+void	lexer_polish(t_lexer **lexer);
+t_lexer	**clean_empty_nodes(t_lexer **lexer);
 
 /*	expansion_utils_1.c	*/
 

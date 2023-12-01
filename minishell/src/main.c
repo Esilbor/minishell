@@ -6,10 +6,11 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 23:02:12 by esilbor           #+#    #+#             */
-/*   Updated: 2023/11/28 09:51:04 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/01 08:48:36 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../includes/minishell.h"
 
 // Handle SIGINT signal and print a prompt
 void	sigint_handler(int signum)
@@ -86,8 +87,6 @@ void	free_cmd_struct_tab(t_cmd **cmd_struct_tab)
 				ft_free_tab((void **)cmd_struct_tab[i]->eof);
 			if (cmd_struct_tab[i]->input_redir)
 				ft_free_tab((void **)cmd_struct_tab[i]->input_redir);
-			// if (cmd_struct_tab[i]->output_redir)
-			// 	ft_free_tab((void **)cmd_struct_tab[i]->output_redir);
 			if (cmd_struct_tab[i]->output)
 				free_lexer_list(&(cmd_struct_tab[i])->output);
 			i++;
@@ -110,32 +109,26 @@ int	shell_loop(t_env *envb)
 	t_lexer	*lexer;
 	char	*input;
 	t_cmd	**cmd_struct_tab;
-	// t_set	*set;
-//	char	**cmd_tab;
-	
-	// set = NULL;
+
 	cmd_struct_tab = NULL;
 	input = ft_prompt(envb);
 	if (input)
 	{
-		lexer = ft_lexer(input);
-		if (!lexer)
-			return (add_history(input), 1);
-		add_history(input);
-		ft_expander(&lexer, envb);
-		// print_lexer(&lexer); /// PRINT
+		lexer = parsing(input, &lexer, envb);
 		if (!lexer)
 			return (add_history(input), 1);
 		cmd_struct_tab = command_builder(&lexer);
-		ft_print_struct_tab(cmd_struct_tab);
+		// ft_print_struct_tab(cmd_struct_tab);
 /*************************************************************/
 //				EXECUTION PART HERE
-
-		// init_set(&set, cmd_struct_tab, envb);
-		// ft_printf("ENV TO TAB\n");
-		// ft_print_tab((void **)env_to_tab(envb), "env_tab");
-
-//		cmd_tab = ft_split(input, ' '); // to be deleted
+//
+//
+//
+//
+//
+//
+//
+//
 		if (cmd_struct_tab[0]->cmd[0])
 			do_builtins(cmd_struct_tab[0]->cmd, &envb);
 //

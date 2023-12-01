@@ -6,14 +6,12 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 10:53:54 by esilbor           #+#    #+#             */
-/*   Updated: 2023/11/25 00:17:47 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/01 07:50:32 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-//merge two nodes when they are of same type and next to each other
-//UNUSED
 void	merge_nodes(t_lexer **lexer)
 {
 	t_lexer	*lex;
@@ -23,7 +21,8 @@ void	merge_nodes(t_lexer **lexer)
 	lex = *lexer;
 	while (lex && lex->next)
 	{
-		if (lex->type >= SMERGE && lex->type <= EMERGE)
+		if (lex->type >= SMERGE && lex->type <= EMERGE
+			&& !(lex->next->type >= 9 && lex->next->type <= 12))
 		{
 			merged_word = ft_strjoin(lex->word, lex->next->word);
 			free(lex->next->word);
@@ -99,8 +98,52 @@ void	ft_expander(t_lexer **lexer, t_env *envb)
 		}
 		lst = lst->next;
 	}
+}
+
+//clean the lexer of null nodes of type WORD
+t_lexer	**clean_empty_nodes(t_lexer **lexer)
+{
+	t_lexer	*lex;
+	
+	lex = *lexer;
+	while (lex)
+	{
+		if (lex->type == WORD && lex->word[0] == '\0')
+			lex = ft_remove_lex_node(lexer, lex);
+		lex = lex->next;
+	}
+	return (lexer);
+}
+
+void	lexer_polish(t_lexer **lexer)
+{
 	clean_squotes(lexer);
-	merge_nodes(lexer);
+	// print_lexer(lexer, "clean_squotes");
 	quotes_to_words(lexer);
+	// print_lexer(lexer, "quotes_to_words");
 	clean_lexer(lexer);
+	// print_lexer(lexer, "clean_lexer");
+	clean_lexer2(lexer);
+	// print_lexer(lexer, "clean_lexer2");
+	clean_lexer3(lexer);
+	// print_lexer(lexer, "clean_lexer3");
+	merge_nodes(lexer);
+	// print_lexer(lexer, "merge_nodes");
+	clean_lexer4(lexer);
+	// print_lexer(lexer, "clean_lexer4");
+	clean_empty_nodes(lexer);
+	// print_lexer(lexer, "clean_empty_nodes");
+}
+
+t_lexer	*parsing(char *input, t_lexer **lexer, t_env *envb)
+{
+	*lexer = ft_lexer(input);
+	if (!(*lexer))
+		return (add_history(input), NULL);
+	add_history(input);
+	ft_expander(lexer, envb);
+	lexer_polish(lexer);
+	if (!(*lexer))
+		return (add_history(input), NULL);
+	return (*lexer);
 }

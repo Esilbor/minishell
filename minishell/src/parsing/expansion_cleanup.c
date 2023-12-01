@@ -6,17 +6,29 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 10:51:44 by esilbor           #+#    #+#             */
-/*   Updated: 2023/11/26 22:52:35 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/11/30 15:58:42 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+void	clean_lexer4(t_lexer **lexer)
+{
+	t_lexer	*lex;
+
+	lex = *lexer;
+	while (lex)
+	{
+		if (lex->type >= 13)
+			lex->type = WORD;
+		lex = lex->next;
+	}
+}
+
 //Processes lexer tokens, removing << < > and >> types from the list.
 void	clean_lexer3(t_lexer **lexer)
 {
 	t_lexer	*lex;
-	// print_lexer(lexer, "before clean_lexer3()");
 
 	lex = *lexer;
 	while (lex && lex->next)
@@ -27,6 +39,7 @@ void	clean_lexer3(t_lexer **lexer)
 			if (lex->next->type == APPEND || lex->next->type == LIMITER
 				||lex->next->type == OUTPUT || lex->next->type == INPUT)
 			{
+				// ft_printf("THIS IS Z");
 				syntax_error(lex, lexer);
 				return ; //echo a>>>b|ls
 			}
@@ -53,6 +66,8 @@ void	clean_redir(t_lexer **lexer, t_lexer **lex, t_tokens type)
 		ft_putstr_fd("invalid clean_redir type\n", 2);
 		return ;
 	}
+	if ((*lex)->type >= PIPE && (*lex)->type <= LESS_LESS)
+		*lex = ft_remove_lex_node(lexer, *lex);
 	*lex = (*lex)->next;
 	if (!(*lex)->word[0])
 	{
@@ -80,7 +95,7 @@ void	clean_lexer2(t_lexer **lexer)
 		if (lex)
 			lex = lex->next;
 	}
-	clean_lexer3(lexer);
+	// clean_lexer3(lexer);
 }
 
 void	clean_squotes(t_lexer **lexer)
@@ -113,5 +128,5 @@ void	clean_lexer(t_lexer **lexer)
 		if (lex)
 			lex = lex->next;
 	}
-	clean_lexer2(lexer);
+	// clean_lexer2(lexer);
 }

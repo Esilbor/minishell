@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:12:40 by esilbor           #+#    #+#             */
-/*   Updated: 2023/11/26 23:01:35 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/01 08:29:28 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	ft_add_lex_node(t_lexer **lexer, char *word, t_tokens type)
 
 t_lexer	*syntax_error(t_lexer *lexer, t_lexer **lexer_head)
 {
-	ft_putstr_fd("syntax error near unexpected token '", 2);
+	ft_putstr_fd("syntax error near unexpected A token '", 2);
 	ft_putstr_fd(lexer->word, 2);
 	ft_putstr_fd("'\n", 2);
 	free_lexer_list(lexer_head);
@@ -60,11 +60,12 @@ t_lexer	*check_valid_input(t_lexer **lexer_head)
 		return (NULL);
 	while (x)
 	{
-		if (x->type == PIPE && !i)
+		if ((x->type == PIPE && !i)|| (x->next && x->type == PIPE
+			&& x->next->type == PIPE))			
 			return (syntax_error(x, lexer_head));
-		if (x->type >= PIPE && x->type <= 5 && x->next)
+		if (x->type >= 1 && x->type <= 5 && x->next)
 		{
-			if ((x->next->type >= 1 && x->next->type < 5))
+			if ((x->type != 1 && x->next->type >= 1 && x->next->type <= 5))
 				return (syntax_error(x, lexer_head));
 		}
 		else if (x->type == LESS_LESS && (!x->next || x->next->type != WORD))
@@ -97,5 +98,7 @@ t_lexer	*ft_lexer(char *line)
 	free(epur_line);
 	if (lexer_list->word[0] == '\0')
 		lexer_list = ft_remove_lex_node(&lexer_list, lexer_list);
+	clean_empty_nodes(&lexer_list);
+	// print_lexer(&lexer_list, "before valid input");
 	return (check_valid_input(&lexer_list));
 }

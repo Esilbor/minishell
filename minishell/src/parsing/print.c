@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 18:19:41 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/21 14:41:07 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/11/27 19:41:27 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	ft_print_struct_tab(t_cmd **struct_tab)
 		if (struct_tab[i]->output)
 		{
 			ft_printf(YELLOW"OUTPUT_LST[%d]\n", i);
-			print_lexer(&(struct_tab[i])->output);
+			print_lexer(&(struct_tab[i])->output, "out");
 			ft_printf("***************\n\n"RESET);
 		}
 		i++;
