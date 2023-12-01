@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:06:41 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/26 23:02:12 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/01 06:41:29 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,9 +112,11 @@ int	shell_loop(t_env *envb)
 	char	*input;
 	t_cmd	**cmd_struct_tab;
 	// t_set	*set;
+	// char	**envc;
+	// int		i;
 //	char	**cmd_tab;
 	
-	// set = NULL;
+	// i = 0;
 	cmd_struct_tab = NULL;
 	input = ft_prompt(envb);
 	if (input)
@@ -124,7 +126,6 @@ int	shell_loop(t_env *envb)
 			return (add_history(input), 1);
 		add_history(input);
 		ft_expander(&lexer, envb);
-		// print_lexer(&lexer); /// PRINT
 		if (!lexer)
 			return (add_history(input), 1);
 		cmd_struct_tab = command_builder(&lexer);
@@ -133,8 +134,16 @@ int	shell_loop(t_env *envb)
 //				EXECUTION PART HERE
 
 		// init_set(&set, cmd_struct_tab, envb);
-		// ft_printf("ENV TO TAB\n");
-		// ft_print_tab((void **)env_to_tab(envb), "env_tab");
+		// ft_print_tab((void **)set->envb, "data_env");
+		// envc = env_to_tab(envb);
+		// ft_print_tab((void **)envc, "ENVC");
+		// execve("/usr/bin/cat", set->cmd_set[i]->cmd , envc);
+		// // execve(path_to_cmd, set->cmd_set[i]->cmd , envc);
+
+		// // ft_print_tab((void **)envc, "env_tab");
+		// ft_free_tab((void **) set->paths);
+		// ft_free_tab((void **)envc);
+		// free (set);
 
 //		cmd_tab = ft_split(input, ' '); // to be deleted
 		if (cmd_struct_tab[0]->cmd[0])

@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 10:53:54 by esilbor           #+#    #+#             */
-/*   Updated: 2023/11/25 00:17:47 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/11/30 15:55:10 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,19 @@ void	ft_expander(t_lexer **lexer, t_env *envb)
 		}
 		lst = lst->next;
 	}
+	print_lexer(lexer, "before clean_squotes");
 	clean_squotes(lexer);
-	merge_nodes(lexer);
+	// print_lexer(lexer, "before merge_nodes");
+	// merge_nodes(lexer);
+	print_lexer(lexer, "before quotes_to_words");
 	quotes_to_words(lexer);
+	print_lexer(lexer, "before clean_lexer");
 	clean_lexer(lexer);
+	print_lexer(lexer, "before clean_lexer2");
+	clean_lexer2(lexer);
+	print_lexer(lexer, "before clean_lexer3");
+	clean_lexer3(lexer);
+	print_lexer(lexer, "before clean_lexer4");
+	clean_lexer4(lexer);
+	print_lexer(lexer, "after clean_lexer4");
 }
