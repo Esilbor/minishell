@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/25 12:06:41 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/01 08:29:58 by esilbor          ###   ########.fr       */
+/*   Created: 2023/11/26 23:02:12 by esilbor           #+#    #+#             */
+/*   Updated: 2023/12/01 08:48:36 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,20 +121,14 @@ int	shell_loop(t_env *envb)
 		// ft_print_struct_tab(cmd_struct_tab);
 /*************************************************************/
 //				EXECUTION PART HERE
-
-		// init_set(&set, cmd_struct_tab, envb);
-		// ft_print_tab((void **)set->envb, "data_env");
-		// envc = env_to_tab(envb);
-		// ft_print_tab((void **)envc, "ENVC");
-		// execve("/usr/bin/cat", set->cmd_set[i]->cmd , envc);
-		// // execve(path_to_cmd, set->cmd_set[i]->cmd , envc);
-
-		// // ft_print_tab((void **)envc, "env_tab");
-		// ft_free_tab((void **) set->paths);
-		// ft_free_tab((void **)envc);
-		// free (set);
-
-//		cmd_tab = ft_split(input, ' '); // to be deleted
+//
+//
+//
+//
+//
+//
+//
+//
 		if (cmd_struct_tab[0]->cmd[0])
 			do_builtins(cmd_struct_tab[0]->cmd, &envb);
 //
