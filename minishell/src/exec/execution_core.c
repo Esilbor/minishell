@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 19:40:11 by zaquedev          #+#    #+#             */
-/*   Updated: 2023/12/01 20:54:00 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/01 22:19:55 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,28 +113,35 @@ int run_execution(t_data *data,t_cmd **cmd_struct_tab)
     //free_cmd_struct_tab(cmd_struct_tab);
       return (0);
    } 
-   else if (data->lst_cmd && data->lst_cmd[0] != (void*)'\0')
-   {
-      data->pipes = init_pipes(data);
-   }
-   // if heredoc ---> 
-   
-    
-   
-    // if (is_redirction())
-    // {
-
-      
-    // }
-    // cmd_struct_tab[i]->cmd[0]
-    if (is_builtin(&data->lst_cmd[index]->cmd[0]) == 1)
+   // cmd_struct_tab[i]->cmd[0]
+    else if (is_builtin(&data->lst_cmd[index]->cmd[0]) == 1)
     {
       do_builtins(&data->lst_cmd[index]->cmd[0], &data->lst_env);
     }
+    else if (data->lst_cmd && data->lst_cmd[0] != (void*)'\0')
+    {
+      data->pipes = init_pipes(data);
+     }
+   // if heredoc ---> 
+   //ft_forks(data,cmd_struct_tab[index]);  
+    // if (is_redirction())
+    index = -1;
+    char **envp = data->env_arr;
+    while (++index < data->cmds_nb)
+	  {
+		  if (pipe(data->fd) == -1)
+		    	return (write(2, "pipe failed\n", 13), 0);
+		  //signal
+		   data->pid[index] = fork();
+		  if (data->pid[index] == 0)
+			      //ft_child(data, argv, index, env);
+	  	else if (data->pid[index] > 0)
+			    //ft_parent(data, index);
+	  }
       
+    //free
 
-
-  return (1);
+      return (1);
 }
 
 

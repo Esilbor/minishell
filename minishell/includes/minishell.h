@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/01 20:36:27 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/01 22:12:08 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,8 @@ typedef struct s_data
 	// char			**builtins_tab;
 	 
 		int				**pipes;
+		int						*pid;
+		int				fd[2];
 	// char			**builtins_tab;
 	// char			*readline;
 	// char			*path;

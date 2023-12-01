@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 19:41:10 by zaquedev          #+#    #+#             */
-/*   Updated: 2023/12/01 19:43:46 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/01 21:57:23 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ t_data   *init_set(t_data **data, t_cmd **cmd_struct_tab, t_env *envb)
 
     (*data)->lst_cmd = cmd_struct_tab;
      (*data)->exit = 0;
+     (*data)->pid = NULL;
 
     // cmd ?? <--- cmd_struct_tab[index][0]
      // (*data)->cmd_path = set_path_cmd(*data, cmd_struct_tab[0]->cmd[0]);
