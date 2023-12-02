@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 19:42:21 by zaquedev          #+#    #+#             */
-/*   Updated: 2023/12/01 17:03:15 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/02 19:43:33 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,54 +33,56 @@ int ft_nb_cmd(char *str)
 }
 
 
-/*
-//void    ft_init_data(t_data *data, char **envp)
-void    ft_init_data(t_data *data, t_env *lst_env)
-{
-
-  //char			*get_env_value(t_env *envb, char **str);
- //t_env			*get_env_node(t_env *lst, char *str);
-
- *data = (t_data){0, 0, 0, 0, 0, 0,0 ,0};
-
- data->lst_env = get_env(&lst_env->var_str);
- print_env(&data->lst_env);
- data->cmd_path = ft_read_path(data);   // data->paths = a faire ;
- printf("data->cmd_path = %s\n", data->cmd_path);
-//data->cmds = a faire;
-// px->cmd = get_cmd(px, px->cmd_paths, px->cmd_args[0], env); pipex
-// px->cmd_paths = ft_split(px->paths, ':');
-data->paths = set_tab_paths(data);
-//printf("data->paths = %s\n", data->paths);
-data->lexer= ft_lexer(data->cmd_line); // t_lexer	*ft_lexer(char *line)
-data->lst_cmd = command_builder(&data->lexer);
-data->cmds_nb = ft_nb_cmd(data->lexer->word); // cmd + builtins
-
-
-}
-*/
-
-
-// void ft_isbuiltin(t_data *data, int index)
+// void	ft_path_ok_cmd(t_data *data, char **cmd, char **envp, int index)
 // {
-  
+// 	char	*cmd_find;
 
-
+// 	printf(" *********** ft_path_ok_cmd **********\n");
+// 	cmd_find = set_path_cmd(data, cmd[0]);
+// 	if (!cmd_find)
+// 	{
+// 		//free , exit ?
+// 		// ft_free_tab((void **)envp);
+// 		printf(" cmd_path //  = %s\n", data->lst_cmd[index]->cmd[0]);
+// 		//ft_free_char_tab(envp);
+// 	}
 // }
-//void	ft_execution(t_data *data, char **envp)
-// void	ft_execution(t_data *data, t_env *lst_env)
-// {
+ void ft_exec_cmd(t_data *data, int index)
+ {
 
-//   // init data , cmd ...
+	char	*cmd_find;
 
-//   // int	ft_fill_lexer(t_lexer **lexer_lst, char *cmd_line)
+	cmd_find = set_path_cmd(data, data->lst_cmd[index]->cmd[0]);
+	if (!cmd_find)
+	{
+		printf(" cmd_path //  = %s\n", data->lst_cmd[index]->cmd[0]);
+		//ft_free_char_tab(envp); //free , exit ?
+	}
+	
+	if (data->path && !ft_strchr(cmd_find, '/')) // avec path
+	{
+		if (execve(cmd_find, data->lst_cmd[index]->cmd, data->env_arr)== -1)
+		{
+			//if (errno == ? ) 
+			printf("candyshell: %s: Permission denied\n", cmd_find);
+			printf("candyshell: %s:command not found\n", cmd_find);
+			printf("candyshell: %s: No such file or directory\n",cmd_find);
+			//free  tab env ...// close pipes
+			exit(127);
+		}
+	}
+	else if (access(cmd_find, F_OK | X_OK| R_OK)) // sans path
+	{
+		if (execve(cmd_find, data->lst_cmd[index]->cmd, data->env_arr)== -1)
+		{
+			//if (errno == ? ) 
+			printf("candyshell: %s: Permission denied\n", cmd_find);
+			printf("candyshell: %s:command not found\n", cmd_find);
+			printf("candyshell: %s: No such file or directory\n",cmd_find);
+			//free // close pipes
+			exit(127);
+		}
+	}
+	
+ }
 
-//  // ft_init_data(data, lst_env);
-  
-//   printf("data->cmd_path = %s\n", data->cmd_path);
-
-
-
-
-
-// }

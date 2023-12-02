@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:06:41 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/01 20:43:53 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/02 16:22:36 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,8 +130,7 @@ int	shell_loop(t_env *envb, char **envp)
 	t_lexer	*lexer;
 	char	*input;
 	t_cmd	**cmd_struct_tab;
-	// t_set	*set;
-//	char	**cmd_tab;
+	
 	t_data *data;
 
 	
@@ -204,7 +203,6 @@ printf("\n\n======================= EXECUTION PART HERE ========================
 			data->cmd_path = set_path_cmd(data,cmd_struct_tab[i]->cmd[0] );
 			i++;
 		}
-		printf("33333\n");
 		
 		/*************************************************************/
 		//				TRAITEMENT DES CMD (cmd / builtin)
@@ -222,11 +220,12 @@ printf("\n\n======================= EXECUTION PART HERE ========================
 				if data->exit === -1 --> return (1)
 				if envp == -1  --> return (1)
 				if argc == -1 --> return (1)
-	
+
+			if (isatty(STDIN_FILENO) == 0)
+		 		return (0);
 		*/ 
 		
-		// if (isatty(STDIN_FILENO) == 0)
-		// 		return (0);
+		
 	
 	
 		// a completer avec les signals
@@ -235,33 +234,15 @@ printf("\n\n======================= EXECUTION PART HERE ========================
 		if (check_first(data, data->cmds_nb, envp) == -1)
 			return (1);
 		// parsing the cmds --> stdin ? redirection? pipe?
-		//int res = ft_exexution(data);
-
+	
 		data->lst_cmd = cmd_struct_tab;
-
+		
+		// on considere que tout le parsing est fait ?
 		if (!run_execution(data,cmd_struct_tab))
 			return (0);
 
-		//*******************************************/
 		
-		// check_args (input)--> position des pipes par rapport aux reste? 
-
-
-
-		// if (check_args (input) == 0) // si toute la structure des args est bonne
-		// {
-				
-				// init data 
-				// cmd_struct_tab = command_builder(&lexer);
-				
-				
-				// preparation de l'execution --> rajouter a la strucutre initiee, 
-				// charger les fonctions des builtins 
-				//    initier les fd_opens , les pipes , les here_docs ?
-				//    (tous elements utiles pour le fork() )
-				// 	execution
-		// }
-
+	
 		
 		
 		/*************************************************************/

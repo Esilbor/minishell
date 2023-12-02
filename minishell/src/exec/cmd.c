@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 20:54:18 by zaquedev          #+#    #+#             */
-/*   Updated: 2023/12/01 17:04:52 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/02 19:27:24 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,20 +26,7 @@ void	ft_free_char_tab(char **tab)
 	tab = NULL;
 }
 
-void	ft_path_ok_cmd(t_data *data, char **cmd, char **envp, int index)
-{
-	char	*cmd_find;
 
-	printf(" *********** ft_path_ok_cmd **********\n");
-	cmd_find = set_path_cmd(data, cmd[0]);
-	if (!cmd_find)
-	{
-		//free , exit ?
-		// ft_free_tab((void **)envp);
-		printf(" cmd_path //  = %s\n", data->lst_cmd[index]->cmd[0]);
-		ft_free_char_tab(envp);
-	}
-}
 
 char	**env_to_tab(t_env *lst)
 {
