@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/03 20:48:59 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/03 22:47:51 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,10 +99,11 @@ typedef struct s_cmd
 
 typedef struct t_set
 {
-	char			**paths;
+	char			**paths; 	//tab of var PATH
 	int				cmd_nb;
-	struct s_env	*envb;
-	struct s_cmd	**cmd_set;
+	struct s_env	*env_lst;		//ptr to envb
+	struct s_cmd	**cmd_set;	//ptr to cmd_struct_tab;
+	char			**envp;
 }	t_set;
 
 
@@ -110,9 +111,9 @@ typedef struct t_set
 /******************************************/
 /***************BUILT-IN*******************/
 /******************************************/
+void	candy_crush(t_set *set);
 
-
-void	do_exit(char **cmd_tab, t_env **env);
+void	do_exit(t_set *set, int index);
 
 /*	cd_echo_pwd_builtins.c	*/
 
@@ -268,7 +269,8 @@ void 	ft_print_struct_tab(t_cmd **struct_tab);
 
 void	sigint_handler(int signum);
 void	sigquit_handler(int signum);
-void	do_builtins(char **cmd_tab, t_env **envb);
+void	do_builtins(t_set *set, int index);
+// void	do_builtins(char **cmd_tab, t_env **envb);
 void	ft_handle_signals(void);
 void	ft_quit_shell(t_env *envb, t_cmd **cmd_struct_tab);
 void	free_cmd_struct_tab(t_cmd **cmd_struct_tab);

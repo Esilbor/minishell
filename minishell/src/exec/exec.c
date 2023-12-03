@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 09:45:47 by esilbor           #+#    #+#             */
-/*   Updated: 2023/11/27 22:48:41 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/03 21:31:10 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ t_set	*init_set(t_set **set, t_cmd **cmd_struct_tab, t_env *envb)
 	(*set)->cmd_nb = ft_tab_len((char **)cmd_struct_tab);
 	(*set)->paths = ft_split(path, ':');
 	free (path);
-	(*set)->envb = envb;
+	(*set)->env_lst = envb;
+	(*set)->envp = env_to_tab(envb);
 	(*set)->cmd_set = cmd_struct_tab;
 	// ft_print_tab((void **)(*set)->paths, "envb");
 	// ft_print_struct_tab((*set)->cmd_set);

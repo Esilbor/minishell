@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 15:11:36 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/03 20:48:52 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/03 22:17:35 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,18 +101,19 @@ void	exit_parser(char **cmd_tab)
 	}
 }
 
-void	do_exit(char **cmd_tab, t_env **env)
+// void	do_exit(char **cmd_tab, t_env **env)
+void	do_exit(t_set *set, int index)
 {
 	int	exit_ret;
 
 	exit_ret = 0;
-	exit_parser(cmd_tab);
-	if (ft_tab_len(cmd_tab) > 1  && cmd_tab[1])
+	exit_parser(set->cmd_set[index]->cmd);
+	if (ft_tab_len(set->cmd_set[index]->cmd) > 1  && set->cmd_set[index]->cmd[1])
 	{
-		if (ft_atol(cmd_tab[1]) > 255)
-			exit_ret = ft_atol(cmd_tab[1]) % 256;
+		if (ft_atol(set->cmd_set[index]->cmd[1]) > 255)
+			exit_ret = ft_atol(set->cmd_set[index]->cmd[1]) % 256;
 		else
-			exit_ret = ft_atol(cmd_tab[1]);
+			exit_ret = ft_atol(set->cmd_set[index]->cmd[1]);
 	}
 	// candy_crush
 	exit(exit_ret);
