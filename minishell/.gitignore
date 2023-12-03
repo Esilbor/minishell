@@ -4,6 +4,9 @@
 # VSC environment
 .vscode/
 
+# History
+.history/
+
 # Executables
 *.out
 
