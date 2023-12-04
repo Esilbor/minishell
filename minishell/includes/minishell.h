@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/04 10:10:28 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/04 18:01:57 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ typedef struct s_cmd
 {
 	int		index;
 	char	**cmd;
-	char	**eof; 
+	char	**eof;
 	bool	append;
 	char	*heredoc_path;
 	char	**input_redir;
@@ -104,11 +104,31 @@ typedef struct t_set
 	struct s_env	*env_lst;		//ptr to envb
 	struct s_cmd	**cmd_set;	//ptr to cmd_struct_tab;
 	char			**envp;
+	pid_t			*pid;
+	int				**pipe;
 }	t_set;
+
+/******************************************/
+/***************TO ORDER*******************/
+/******************************************/
+
+void	ft_pipe_close(t_set *set, int index);
+pid_t	ft_fork(t_set *set, int index);
+void	ft_pipex(t_set *set);
+void	init_pipe_set(t_set *set);
+void	init_pid_tab(t_set *set);
+void	ft_execve(t_set *set, int index);
+char	*set_path_cmd(t_set *set, char *cmd);
+void	ft_dup2(t_set *set, int index);
 
 /******************************************/
 /***************BUILT-IN*******************/
 /******************************************/
+
+/*do_builtins.c*/
+
+void	do_builtins(t_set *set, int index);
+int		is_builtin(char **command);
 
 /*exit_builtins.c*/
 void	exit_parser(t_set *set, char **cmd_tab);
@@ -284,7 +304,7 @@ void 	ft_print_struct_tab(t_cmd **struct_tab);
 /******************MAIN********************/
 /******************************************/
 
-void	do_builtins(t_set *set, int index);
+void	execution(t_set *set, t_cmd **cmd_struct_tab, t_env *envb);
 int		shell_parser(char *input, t_lexer **lexer, t_env *envb, t_cmd *** cmd_tab);
 int		shell_loop(t_env *envb);
 

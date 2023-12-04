@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 09:45:47 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/03 21:31:10 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/04 18:00:45 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,7 @@ t_set	*init_set(t_set **set, t_cmd **cmd_struct_tab, t_env *envb)
 	(*set)->env_lst = envb;
 	(*set)->envp = env_to_tab(envb);
 	(*set)->cmd_set = cmd_struct_tab;
-	// ft_print_tab((void **)(*set)->paths, "envb");
-	// ft_print_struct_tab((*set)->cmd_set);
+	(*set)->pid = NULL;
 	return (*set);
 }
 
@@ -60,15 +59,3 @@ char	**env_to_tab(t_env *lst)
 	}
 	return (tab);
 }
-	// t_set	*set;
-	// char	**envc;
-	
-	// init_set(&set, cmd_struct_tab, envb);
-	// envc = env_to_tab(envb);
-
-	// execve(set->cmd_set[i]->, cmd_opt, env->paths
-
-	// ft_print_tab((void **)envc, "env_tab");
-	// ft_free_tab((void **) set->paths);
-	// ft_free_tab((void **)envc);
-	// free (set);
