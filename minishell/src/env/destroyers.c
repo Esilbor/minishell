@@ -3,14 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   destroyers.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 10:03:51 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/04 10:04:33 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/04 16:43:14 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+void	ft_close_and_free(t_set *set)
+{
+
+	if (set->pipe)
+	{
+		ft_close_pipes(set);
+		free(set->pipe[0]);
+		free(set->pipe[1]);
+		free(set->pipe);
+	}
+	candy_crush(set);
+}
 
 void	ft_quit_shell(t_env *envb, t_cmd **cmd_struct_tab)
 {

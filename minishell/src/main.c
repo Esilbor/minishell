@@ -3,44 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 23:02:12 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/04 10:11:40 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/04 17:56:07 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-// Execute built-in commands based on cmd_tab (to be edited)
-void	do_builtins(t_set *set, int index)
-{
-	t_env	**env_dup;
-
-	env_dup = dup_env(&set->env_lst);
-	if (ft_strncmp(set->cmd_set[index]->cmd[0] , "pwd", 4) == 0)
-		do_pwd(set->cmd_set[index]->cmd, &set->env_lst);
-	if (ft_strncmp(set->cmd_set[index]->cmd[0] , "echo", 5) == 0)
-		do_echo(ft_tab_len(set->cmd_set[index]->cmd), set->cmd_set[index]->cmd);
-	if (ft_strncmp(set->cmd_set[index]->cmd[0] , "env", 4) == 0)
-		print_env(&set->env_lst);
-	if (ft_strncmp(set->cmd_set[index]->cmd[0] , "export", 7) == 0)
-	{
-		if (set->cmd_set[index]->cmd[1])
-			do_export(ft_tab_len(set->cmd_set[index]->cmd),
-				set->cmd_set[index]->cmd, &set->env_lst);
-		else
-			print_env(sort_env(env_dup));
-	}
-	ft_free_env_lst(*env_dup);
-	free(env_dup);
-	if (ft_strncmp(set->cmd_set[index]->cmd[0] , "unset", 6) == 0)
-		do_unset(set->cmd_set[index]->cmd, &set->env_lst);
-	if (ft_strncmp(set->cmd_set[index]->cmd[0] , "cd", 3) == 0)
-		do_cd(set->cmd_set[index]->cmd, &set->env_lst);
-	if (ft_strncmp(set->cmd_set[index]->cmd[0] , "exit", 5) == 0)
-		do_exit(set, index);
-}
 
 int	shell_parser(char *input, t_lexer **lexer, t_env *envb, t_cmd ***cmd_tab)
 {
@@ -54,30 +24,103 @@ int	shell_parser(char *input, t_lexer **lexer, t_env *envb, t_cmd ***cmd_tab)
 		return (0);
 }
 
+void	ft_pipe_close(t_set *set, int index)
+{
+	close(set->pipe[(index + 1) % 2][0]);
+	close(set->pipe[(index + 1) % 2][1]);
+}
+
+
+
+pid_t	ft_fork(t_set *set, int index)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid == -1)
+		return (printf("ERR_PID\n"));//free close ...
+	if (index < set->cmd_nb)
+	{
+		if (pipe(set->pipe[index % 2]) == -1)
+			return (printf("ERR_PIPE\n"));//free close ...
+	}
+	if (!pid)
+	{
+		ft_dup2(set, index);
+		if (is_builtin(set->cmd_set[index]->cmd))
+		{
+			do_builtins(set, index);
+			// candy_crush et free close ...
+			exit(0);
+		}
+		if (set->cmd_set[index]->cmd[0])
+		{
+			ft_execve(set, index);
+		}
+		// candy_crush et free close ...
+		exit(1);
+	}
+	if (index)
+		ft_pipe_close(set, index);
+	return (pid);
+}
+
+void	ft_pipex(t_set *set)
+{
+	int	i;
+	pid_t last_pid;
+
+	i = 0;
+	while (i < set->cmd_nb)
+	{
+		last_pid = ft_fork(set, i);
+		// if (!last_pid)
+		// 	return;
+		set->pid[i] = last_pid;
+		i++;
+	}
+	ft_waidpid(set);
+	// if (data->pid)
+	// 	free(data->pid);
+	candy_crush(set);
+}
+
+void	execution(t_set *set, t_cmd **cmd_struct_tab, t_env *envb)
+{
+	int	i;
+
+	i = 0;
+	init_set(&set, cmd_struct_tab, envb);
+	init_pipe_set(set);
+	init_pid_tab(set);
+	ft_pipex(set);
+
+
+
+	while (set->cmd_set[i] && set->cmd_set[i]->cmd[0])
+	{
+		do_builtins(set, i);
+		i++;
+	}
+	//free pid_tab
+	//free pipe_set
+	// candy_crush
+}
+
 int	shell_loop(t_env *envb)
 {
 	t_lexer	*lexer;
 	char	*input;
 	t_cmd	**cmd_struct_tab;
 	t_set	*set;
-	int		i;
 
-	i = 0;
+	set = NULL;
 	cmd_struct_tab = NULL;
 	input = ft_prompt(envb);
 	if (input)
 	{
 		shell_parser(input, &lexer, envb, &cmd_struct_tab);
-/*************************************************************/
-//				EXECUTION PART HERE
-		
-		init_set(&set, cmd_struct_tab, envb);
-		while (set->cmd_set[i] && set->cmd_set[i]->cmd[0])
-		{
-			do_builtins(set, i);
-			i++;
-		}
-/*************************************************************/
+		execution(set, cmd_struct_tab, envb);
 		free_shell(set, input, cmd_struct_tab); //should free input?
 	}
 	else
