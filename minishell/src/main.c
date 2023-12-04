@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 23:02:12 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/03 23:02:50 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/04 03:00:36 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ void	candy_crush(t_set *set)
 	if (set->env_lst)
 		ft_free_env_lst(set->env_lst);
 	ft_free_tab((void **)set->envp);
+	ft_free_tab((void **)set->paths);
 	free_cmd_struct_tab(set->cmd_set);
 	free (set);
 }
@@ -137,6 +138,7 @@ int	shell_loop(t_env *envb)
 			return (add_history(input), 1);
 		cmd_struct_tab = command_builder(&lexer);
 		// ft_print_struct_tab(cmd_struct_tab);
+		free_lexer_list(&lexer);
 /*************************************************************/
 //				EXECUTION PART HERE
 		
@@ -156,8 +158,10 @@ int	shell_loop(t_env *envb)
 		}
 //
 /*************************************************************/
-		// candy_crush(set);
-		free_shell(NULL, lexer, input, NULL);
+		ft_free_tab((void **)set->paths);
+		ft_free_tab((void **)set->envp);
+		free(set);
+		free_shell(NULL, NULL, input, cmd_struct_tab); //should free input?
 	}
 	else
 		return (ft_quit_shell(envb, cmd_struct_tab), 2);
@@ -182,7 +186,5 @@ int	main(int argc, char **argv, char **envp)
 		if (status == 2)
 			break ;
 	}
-	// candy_crush(set); // do not free things in the loop 
-
 	return (0);
 }

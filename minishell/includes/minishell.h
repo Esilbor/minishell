@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/03 22:47:51 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/04 02:44:13 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,8 +111,10 @@ typedef struct t_set
 /******************************************/
 /***************BUILT-IN*******************/
 /******************************************/
-void	candy_crush(t_set *set);
 
+/*exit_builtins.c*/
+void	candy_crush(t_set *set);
+void	exit_parser(t_set *set, char **cmd_tab);
 void	do_exit(t_set *set, int index);
 
 /*	cd_echo_pwd_builtins.c	*/

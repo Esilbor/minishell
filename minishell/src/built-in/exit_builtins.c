@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 15:11:36 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/03 22:17:35 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/04 03:06:36 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ bool	is_ll_overflow(const char *str)
 	while (str[i + len] >= '0' && str[i + len] <= '9')
 		len++;
 	if ((len > 19) || (len == 19 && sign != -1
-		&& ft_strcmp(str + i, MAX_LL) > 0))
+			&& ft_strcmp(str + i, MAX_LL) > 0))
 		return (true);
 	if (len == 19 && sign == -1 && ft_strcmp(str + i, MAX_LL) >= 0)
 		return (true);
@@ -54,49 +54,31 @@ bool	is_ll_overflow(const char *str)
 static void	exit_msg(char *arg, int msg)
 {
 	ft_putstr_fd(PROMPT, 2);
-	ft_putstr_fd(": exit: ", 2);
+	ft_putstr_fd("exit: ", 2);
 	if (msg == 1)
 	{
 		ft_putstr_fd(arg, 2);
-		ft_putstr_fd(": numeric argument required"RESET, 2);
-		return ;		
+		ft_putstr_fd(": numeric argument required\n"RESET, 2);
+		return ;
 	}
-	ft_putstr_fd("too many arguments"RESET, 2);
-}
-// check if str is numerical (allow one - or + sign before)
-bool str_is_digit(char *str)
-{
-	int	i;
-
-	i = 0;
-	if (!str)
-		return (false);
-	if ((str[0] == '-' || str[0] == '+') && str[1] && ft_isdigit(str[1]))
-		i++;
-	while (str[i])
-	{
-		if (!ft_isdigit(str[i]))
-			return (false);
-		i++;
-	}
-	return (true);
+	ft_putstr_fd("too much sugar\n"RESET, 2);
 }
 
-void	exit_parser(char **cmd_tab)
+void	exit_parser(t_set *set, char **cmd_tab)
 {
 	if (ft_tab_len(cmd_tab) > 1 && cmd_tab[1])
 	{
-		if (!str_is_digit(cmd_tab[1]) || is_ll_overflow(cmd_tab[1]))
+		if (!ft_str_isdigit(cmd_tab[1]) || is_ll_overflow(cmd_tab[1]))
 		{
 			exit_msg(cmd_tab[1], 1);
-			// candy_crush;
+			candy_crush(set);
 			exit (2);
 		}
 	}
 	if (ft_tab_len(cmd_tab) > 2)
 	{
 		exit_msg(cmd_tab[1], 0);
-		// candy_crush;
+		candy_crush(set);
 		exit (1);
 	}
 }
@@ -107,14 +89,14 @@ void	do_exit(t_set *set, int index)
 	int	exit_ret;
 
 	exit_ret = 0;
-	exit_parser(set->cmd_set[index]->cmd);
-	if (ft_tab_len(set->cmd_set[index]->cmd) > 1  && set->cmd_set[index]->cmd[1])
+	exit_parser(set, set->cmd_set[index]->cmd);
+	if (ft_tab_len(set->cmd_set[index]->cmd) > 1 && set->cmd_set[index]->cmd[1])
 	{
 		if (ft_atol(set->cmd_set[index]->cmd[1]) > 255)
 			exit_ret = ft_atol(set->cmd_set[index]->cmd[1]) % 256;
 		else
 			exit_ret = ft_atol(set->cmd_set[index]->cmd[1]);
 	}
-	// candy_crush
+	candy_crush(set);
 	exit(exit_ret);
 }
