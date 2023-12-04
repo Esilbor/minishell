@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/04 02:44:13 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/04 10:10:28 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,14 +106,11 @@ typedef struct t_set
 	char			**envp;
 }	t_set;
 
-
-
 /******************************************/
 /***************BUILT-IN*******************/
 /******************************************/
 
 /*exit_builtins.c*/
-void	candy_crush(t_set *set);
 void	exit_parser(t_set *set, char **cmd_tab);
 void	do_exit(t_set *set, int index);
 
@@ -170,6 +167,25 @@ int		do_unset(char **cmd_tab, t_env **env);
 
 char	*ft_prompt(t_env *envb);
 
+/*	signals.c	*/
+
+void	sigint_handler(int signum);
+void	sigquit_handler(int signum);
+void	ft_handle_signals(void);
+
+/*	destroyers	*/
+
+void	ft_quit_shell(t_env *envb, t_cmd **cmd_struct_tab);
+void	free_cmd_struct_tab(t_cmd **cmd_struct_tab);
+void	free_shell(t_set *set, char *input, t_cmd **cmd_struct_tab);
+void	candy_crush(t_set *set);
+
+/******************************************/
+/*******************EXEC*******************/
+/******************************************/
+
+t_set   *init_set(t_set **set, t_cmd **cmd_struct_tab, t_env *envb);
+char	**env_to_tab(t_env *lst);
 
 /******************************************/
 /****************PARSING*******************/
@@ -264,21 +280,12 @@ char	*print_token(t_tokens token);
 void 	print_lexer(t_lexer **head, char *loc);
 void 	ft_print_struct_tab(t_cmd **struct_tab);
 
-
 /******************************************/
 /******************MAIN********************/
 /******************************************/
 
-void	sigint_handler(int signum);
-void	sigquit_handler(int signum);
 void	do_builtins(t_set *set, int index);
-// void	do_builtins(char **cmd_tab, t_env **envb);
-void	ft_handle_signals(void);
-void	ft_quit_shell(t_env *envb, t_cmd **cmd_struct_tab);
-void	free_cmd_struct_tab(t_cmd **cmd_struct_tab);
-void	free_shell(char **cmd_tab, t_lexer *lexer, char *input, t_cmd **cmd_struct_tab);
+int		shell_parser(char *input, t_lexer **lexer, t_env *envb, t_cmd *** cmd_tab);
 int		shell_loop(t_env *envb);
-t_set   *init_set(t_set **set, t_cmd **cmd_struct_tab, t_env *envb);
-char	**env_to_tab(t_env *lst);
 
 #endif
