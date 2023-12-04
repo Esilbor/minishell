@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:53:40 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/14 16:45:41 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/04 03:08:02 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,5 +80,6 @@ bool		ft_is_c(char c, char d);
 char		*ft_strccpy(char *str, char c);
 char		*ft_strpcpy(char *str, char *ptr);
 void		ft_print_tab(void **tab, char *tab_name);
+bool		ft_str_isdigit(char *str);
 
 #endif

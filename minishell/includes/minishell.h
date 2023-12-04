@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/01 07:18:14 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/04 10:10:28 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 # define PROMPT1 "\001\033[38;2;255;105;280m\0021_Candy_$hell> \001\033[35m\002"
 # define PROMPT2 "\001\033[35m\0022_Candy_$hell> \001\033[34m\002"
 # define PROMPT3 "\001\033[92m\002Candy_$hell?> \001\033[34m\002"
-
+# define MAX_LL "9223372036854775807"
 
 # include <string.h>
 # include <stdlib.h>
@@ -99,17 +99,20 @@ typedef struct s_cmd
 
 typedef struct t_set
 {
-	char			**paths;
+	char			**paths; 	//tab of var PATH
 	int				cmd_nb;
-	struct s_env	*envb;
-	struct s_cmd	**cmd_set;
+	struct s_env	*env_lst;		//ptr to envb
+	struct s_cmd	**cmd_set;	//ptr to cmd_struct_tab;
+	char			**envp;
 }	t_set;
-
-
 
 /******************************************/
 /***************BUILT-IN*******************/
 /******************************************/
+
+/*exit_builtins.c*/
+void	exit_parser(t_set *set, char **cmd_tab);
+void	do_exit(t_set *set, int index);
 
 /*	cd_echo_pwd_builtins.c	*/
 
@@ -164,6 +167,25 @@ int		do_unset(char **cmd_tab, t_env **env);
 
 char	*ft_prompt(t_env *envb);
 
+/*	signals.c	*/
+
+void	sigint_handler(int signum);
+void	sigquit_handler(int signum);
+void	ft_handle_signals(void);
+
+/*	destroyers	*/
+
+void	ft_quit_shell(t_env *envb, t_cmd **cmd_struct_tab);
+void	free_cmd_struct_tab(t_cmd **cmd_struct_tab);
+void	free_shell(t_set *set, char *input, t_cmd **cmd_struct_tab);
+void	candy_crush(t_set *set);
+
+/******************************************/
+/*******************EXEC*******************/
+/******************************************/
+
+t_set   *init_set(t_set **set, t_cmd **cmd_struct_tab, t_env *envb);
+char	**env_to_tab(t_env *lst);
 
 /******************************************/
 /****************PARSING*******************/
@@ -258,20 +280,12 @@ char	*print_token(t_tokens token);
 void 	print_lexer(t_lexer **head, char *loc);
 void 	ft_print_struct_tab(t_cmd **struct_tab);
 
-
 /******************************************/
 /******************MAIN********************/
 /******************************************/
 
-void	sigint_handler(int signum);
-void	sigquit_handler(int signum);
-void	do_builtins(char **cmd_tab, t_env **envb);
-void	ft_handle_signals(void);
-void	ft_quit_shell(t_env *envb, t_cmd **cmd_struct_tab);
-void	free_cmd_struct_tab(t_cmd **cmd_struct_tab);
-void	free_shell(char **cmd_tab, t_lexer *lexer, char *input, t_cmd **cmd_struct_tab);
+void	do_builtins(t_set *set, int index);
+int		shell_parser(char *input, t_lexer **lexer, t_env *envb, t_cmd *** cmd_tab);
 int		shell_loop(t_env *envb);
-t_set   *init_set(t_set **set, t_cmd **cmd_struct_tab, t_env *envb);
-char	**env_to_tab(t_env *lst);
 
 #endif
