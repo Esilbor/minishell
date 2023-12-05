@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:13:47 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/04 17:23:58 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/05 19:05:31 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void ft_execve(t_set *set, int index)
 			ft_close_and_free(set);
 			exit(127); // a verifier avec update_ret
 		}
-		execve(cmd_path, set->cmd_set, set->envp);
+		execve(cmd_path, set->cmd_set[index]->cmd, set->envp); //mod
 	}
 	else
 	{
@@ -75,8 +75,88 @@ void ft_execve(t_set *set, int index)
 			ft_close_and_free(set);
 			exit(127); // a verifier avec update_ret
 		}
-		exeve(set->cmd_set[index]->cmd[0], set->cmd_set, set->envp);
+		execve(set->cmd_set[index]->cmd[0], set->cmd_set[index]->cmd, set->envp);
 	}
 	ft_close_and_free(set);
-	exit(update_ret(set->env_lst, 126)); // a verifier
+	exit(update_ret(&set->env_lst, 126)); // a verifier
+}
+
+
+void	close_pipe(t_set *set, int index)
+{
+	close(set->pipe[(index + 1) % 2][0]);
+	close(set->pipe[(index + 1) % 2][1]);
+}
+
+
+
+pid_t	ft_fork(t_set *set, int index)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid == -1)
+		return (printf("ERR_PID\n"));//free close ...
+	if (index < set->cmd_nb)
+	{
+		if (pipe(set->pipe[index % 2]) == -1)
+			return (printf("ERR_PIPE\n"));//free close ...
+	}
+	if (!pid)
+	{
+		ft_dup2(set, index);
+		if (is_builtin(set->cmd_set[index]->cmd))
+		{
+			do_builtins(set, index);
+			// close_crush_exit(NULL, set, 1, 0);
+			exit(0);
+		}
+		if (set->cmd_set[index]->cmd[0])
+			ft_execve(set, index);
+		// close_crush_exit(NULL, set, 1, 1);
+		exit(1);
+	}
+	if (index)
+		close_pipe(set, index);
+	return (pid);
+}
+
+// Waits for child processes to finish.
+void	ft_waitpid(t_set *set)
+{
+	int	i;
+	// int status;
+	// int	save_status;
+	// save_status = 0;
+	i = 0;
+	while (i < set->cmd_nb && set->pid[i])
+	{
+		waitpid(set->pid[i], NULL/* , &status */, 0);
+		i++;
+	}
+	// save_status = status;
+	// if (WIFSIGNALED(save_status))
+	// 	status = 128 + WTERMSIG(save_status);
+	// else if (WIFEXITED(save_status))
+	// 	status = WEXITSTATUS(save_status);
+	// else
+	// 	status = save_status;
+	// g_last_status = status;
+}
+
+void	ft_pipex(t_set *set)
+{
+	int	i;
+	pid_t last_pid;
+
+	i = 0;
+	while (i < set->cmd_nb)
+	{
+		last_pid = ft_fork(set, i);
+		set->pid[i] = last_pid;
+		i++;
+	}
+	ft_waitpid(set);
+	// close_crush_exit(NULL, set, 0, 0);
+	exit(0);
 }

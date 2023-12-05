@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_cleanup.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 10:51:44 by esilbor           #+#    #+#             */
-/*   Updated: 2023/11/30 15:58:42 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/05 14:37:12 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,6 @@ void	clean_lexer3(t_lexer **lexer)
 		if (lex->type == LESS_LESS || lex->type == LESS
 			|| lex->type == GREAT || lex->type == GREAT_GREAT)
 		{
-			if (lex->next->type == APPEND || lex->next->type == LIMITER
-				||lex->next->type == OUTPUT || lex->next->type == INPUT)
-			{
-				// ft_printf("THIS IS Z");
-				syntax_error(lex, lexer);
-				return ; //echo a>>>b|ls
-			}
 			lex = ft_remove_lex_node(lexer, lex);
 		}
 		if (lex->type == EXPAND && lex->word[0] == '\0')
@@ -51,8 +44,6 @@ void	clean_lexer3(t_lexer **lexer)
 			lex = ft_remove_lex_node(lexer, lex);
 		lex = lex->next;
 	}
-	// print_lexer(lexer, "after clean_lexer3()");
-
 }
 
 // clean and attribute nodes of type LIMITER, APPEND, INPUT or OUTPUT
@@ -60,22 +51,25 @@ void	clean_redir(t_lexer **lexer, t_lexer **lex, t_tokens type)
 {
 	t_tokens	token;
 
-	token = type - 7;
+	token = type - 7; // token = LESS || LESS_LESS
 	if (token <= 1)
 	{
 		ft_putstr_fd("invalid clean_redir type\n", 2);
 		return ;
 	}
 	if ((*lex)->type >= PIPE && (*lex)->type <= LESS_LESS)
-		*lex = ft_remove_lex_node(lexer, *lex);
-	*lex = (*lex)->next;
-	if (!(*lex)->word[0])
+	{
+		// *lex = ft_remove_lex_node(lexer, *lex);
+		*lex = (*lex)->next;
+	}
+	if (*lex && !(*lex)->word[0])
 	{
 		*lex = ft_remove_lex_node(lexer, *lex);
 		*lex = (*lex)->next;
 	}
 	if (*lex)
 		(*lex)->type = type;
+	// clear_type(lexer, LESS)
 }
 
 //Processes lexer tokens, setting limiter and append types.

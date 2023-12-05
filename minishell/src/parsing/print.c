@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 18:19:41 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/27 19:41:27 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/05 15:04:01 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,18 +39,18 @@ void	ft_print_struct_tab(t_cmd **struct_tab)
 			ft_print_tab((void **)struct_tab[i]->cmd, "cmd");
 			ft_printf("***************\n\n"RESET);
 		}
-		if (struct_tab[i]->eof[0])
-		{
-			ft_printf(BLUE"HEREDOC[%d]\n", i);
-			ft_print_tab((void **)struct_tab[i]->eof, "eof");
-			ft_printf("***************\n\n"RESET);
-		}
-		if (struct_tab[i]->input_redir[0])
-		{
-			ft_printf(CYAN"INPUT_TAB[%d]\n", i);
-			ft_print_tab((void **)struct_tab[i]->input_redir, "input");
-			ft_printf("***************\n\n"RESET);
-		}
+		// if (struct_tab[i]->eof[0])
+		// {
+		// 	ft_printf(BLUE"HEREDOC[%d]\n", i);
+		// 	ft_print_tab((void **)struct_tab[i]->eof, "eof");
+		// 	ft_printf("***************\n\n"RESET);
+		// }
+		// if (struct_tab[i]->input_redir[0])
+		// {
+		// 	ft_printf(CYAN"INPUT_TAB[%d]\n", i);
+		// 	ft_print_tab((void **)struct_tab[i]->input_redir, "input");
+		// 	ft_printf("***************\n\n"RESET);
+		// }
 		// if (struct_tab[i]->output_redir[0])
 		// {
 		// 	ft_printf(YELLOW"OUTPUT_TAB[%d]\n", i);
@@ -61,6 +61,12 @@ void	ft_print_struct_tab(t_cmd **struct_tab)
 		{
 			ft_printf(YELLOW"OUTPUT_LST[%d]\n", i);
 			print_lexer(&(struct_tab[i])->output, "out");
+			ft_printf("***************\n\n"RESET);
+		}
+		if (struct_tab[i]->input)
+		{
+			ft_printf(CYAN"INPUT_LST[%d]\n", i);
+			print_lexer(&(struct_tab[i])->output, "in");
 			ft_printf("***************\n\n"RESET);
 		}
 		i++;

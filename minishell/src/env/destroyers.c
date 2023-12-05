@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   destroyers.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 10:03:51 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/05 08:18:07 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/05 19:03:08 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,9 @@
 
 void	ft_close_and_free(t_set *set)
 {
-
 	if (set->pipe)
 	{
-		ft_close_pipes(set);
+		// ft_close_pipes(set); //????
 		free(set->pipe[0]);
 		free(set->pipe[1]);
 		free(set->pipe);
@@ -44,12 +43,14 @@ void	free_cmd_struct_tab(t_cmd **cmd_struct_tab)
 		{
 			if (cmd_struct_tab[i]->cmd)
 				ft_free_tab((void **)cmd_struct_tab[i]->cmd);
-			if (cmd_struct_tab[i]->eof)
-				ft_free_tab((void **)cmd_struct_tab[i]->eof);
-			if (cmd_struct_tab[i]->input_redir)
-				ft_free_tab((void **)cmd_struct_tab[i]->input_redir);
+			// if (cmd_struct_tab[i]->eof)
+			// 	ft_free_tab((void **)cmd_struct_tab[i]->eof);
+			// if (cmd_struct_tab[i]->input_redir)
+			// 	ft_free_tab((void **)cmd_struct_tab[i]->input_redir);
 			if (cmd_struct_tab[i]->output)
 				free_lexer_list(&(cmd_struct_tab[i])->output);
+			if (cmd_struct_tab[i]->input)
+				free_lexer_list(&(cmd_struct_tab[i])->input);
 			if (cmd_struct_tab[i]->heredoc_path)
 				free(cmd_struct_tab[i]->heredoc_path);
 			i++;
@@ -77,8 +78,11 @@ void	candy_crush(t_set *set)
 	free (set);
 }
 
-void	close_and_crush(t_set *set, int do_exit, int exit_ret)
+//close pipes, pid_tab + candy-crush + exit
+void	close_crush_exit(char *msg, t_set *set, int do_exit, int exit_ret)
 {
+	if (msg)
+		ft_putstr_fd(msg, 2);
 	ft_close_and_free(set);
 	ft_free_tab((void **)set->pid);
 	candy_crush(set);

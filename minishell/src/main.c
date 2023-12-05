@@ -3,88 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 23:02:12 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/05 08:15:23 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/05 15:19:38 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-int	shell_parser(char *input, t_lexer **lexer, t_env *envb, t_cmd ***cmd_tab)
-{
-
-		parsing(input, lexer, envb);
-		if (!(*lexer))
-			return (add_history(input), 1);
-		*cmd_tab = command_builder(lexer);
-		// ft_print_struct_tab(cmd_struct_tab);
-		free_lexer_list(lexer);
-		return (0);
-}
-
-void	ft_pipe_close(t_set *set, int index)
-{
-	close(set->pipe[(index + 1) % 2][0]);
-	close(set->pipe[(index + 1) % 2][1]);
-}
-
-
-
-pid_t	ft_fork(t_set *set, int index)
-{
-	pid_t	pid;
-
-	pid = fork();
-	if (pid == -1)
-		return (printf("ERR_PID\n"));//free close ...
-	if (index < set->cmd_nb)
-	{
-		if (pipe(set->pipe[index % 2]) == -1)
-			return (printf("ERR_PIPE\n"));//free close ...
-	}
-	if (!pid)
-	{
-		ft_dup2(set, index);
-		if (is_builtin(set->cmd_set[index]->cmd))
-		{
-			do_builtins(set, index);
-			// candy_crush et free close ...
-			exit(0);
-		}
-		if (set->cmd_set[index]->cmd[0])
-		{
-			ft_execve(set, index);
-		}
-		// candy_crush et free close ...
-		exit(1);
-	}
-	if (index)
-		ft_pipe_close(set, index);
-	return (pid);
-}
-
-void	ft_pipex(t_set *set)
-{
-	int	i;
-	pid_t last_pid;
-
-	i = 0;
-	while (i < set->cmd_nb)
-	{
-		last_pid = ft_fork(set, i);
-		// if (!last_pid)
-		// 	return;
-		set->pid[i] = last_pid;
-		i++;
-	}
-	ft_waidpid(set);
-	// if (data->pid)
-	// 	free(data->pid);
-	// candy_crush(set);
-	close_and_crush()
-}
 
 void	execution(t_set *set, t_cmd **cmd_struct_tab, t_env *envb)
 {
@@ -104,7 +30,7 @@ void	execution(t_set *set, t_cmd **cmd_struct_tab, t_env *envb)
 	// 	i++;
 	// }
 
-	
+
 	//free pid_tab
 	//free pipe_set
 	// candy_crush

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_merge.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 10:53:54 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/01 07:50:32 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/05 14:38:04 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void	ft_expander(t_lexer **lexer, t_env *envb)
 t_lexer	**clean_empty_nodes(t_lexer **lexer)
 {
 	t_lexer	*lex;
-	
+
 	lex = *lexer;
 	while (lex)
 	{
