@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   destroyers.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 10:03:51 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/04 16:43:14 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/05 08:18:07 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,13 @@ void	candy_crush(t_set *set)
 	ft_free_tab((void **)set->paths);
 	free_cmd_struct_tab(set->cmd_set);
 	free (set);
+}
+
+void	close_and_crush(t_set *set, int do_exit, int exit_ret)
+{
+	ft_close_and_free(set);
+	ft_free_tab((void **)set->pid);
+	candy_crush(set);
+	if (do_exit)
+		exit(exit_ret);
 }

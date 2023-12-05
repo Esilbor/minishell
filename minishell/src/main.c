@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 23:02:12 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/04 17:56:07 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/05 08:15:23 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,8 @@ void	ft_pipex(t_set *set)
 	ft_waidpid(set);
 	// if (data->pid)
 	// 	free(data->pid);
-	candy_crush(set);
+	// candy_crush(set);
+	close_and_crush()
 }
 
 void	execution(t_set *set, t_cmd **cmd_struct_tab, t_env *envb)
@@ -97,11 +98,13 @@ void	execution(t_set *set, t_cmd **cmd_struct_tab, t_env *envb)
 
 
 
-	while (set->cmd_set[i] && set->cmd_set[i]->cmd[0])
-	{
-		do_builtins(set, i);
-		i++;
-	}
+	// while (set->cmd_set[i] && set->cmd_set[i]->cmd[0])
+	// {
+	// 	do_builtins(set, i);
+	// 	i++;
+	// }
+
+	
 	//free pid_tab
 	//free pipe_set
 	// candy_crush
