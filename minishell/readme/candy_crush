@@ -1,0 +1,34 @@
+
+free_shell = free (paths, envp, set + cmd_struct_tab, readline input)
+cmd_struct_tab = free (cmd, eof, input_redir, output, heredoc_path, cmd_struct_tab)
+
+candy_crush = free (env_lst, envp, paths + cmd_struct_tab + set)
+            =   free_shell + env_lst
+
+close_and_crush = pipe, pid + candy_crush
+
+
+
+void	free_cmd_struct_tab(t_cmd **cmd_struct_tab);
+
+void	free_shell(t_set *set, char *input, t_cmd **cmd_struct_tab);
+
+void	ft_close_and_free(t_set *set);
+
+void	candy_crush(t_set *set);
+
+execution > free_shell
+
+pipe
+pid
+
+void	close_and_crush(t_set *set, int do_exit, int exit_ret)
+{
+	ft_close_and_free(set);
+	ft_free_tab((void **)set->pid);
+	candy_crush(set);
+	if (do_exit)
+		exit(exit_ret);
+}
+
+ft_pipex
