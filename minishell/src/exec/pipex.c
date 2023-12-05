@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:13:47 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/05 19:05:31 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/05 19:29:34 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void ft_execve(t_set *set, int index)
 	// 	// erre split
 
 	// }
+	printf("**********ft_execve*****\n");
 	if (set->paths && (!ft_strchr(set->cmd_set[index]->cmd[0], '/')))
 	{
 		cmd_path = set_path_cmd(set, set->cmd_set[index]->cmd[0]);
@@ -102,17 +103,20 @@ pid_t	ft_fork(t_set *set, int index)
 		if (pipe(set->pipe[index % 2]) == -1)
 			return (printf("ERR_PIPE\n"));//free close ...
 	}
-	if (!pid)
+	if (pid == 0)
 	{
 		ft_dup2(set, index);
-		if (is_builtin(set->cmd_set[index]->cmd))
+		if (is_builtin(set->cmd_set[index]->cmd)== 1)
 		{
 			do_builtins(set, index);
 			// close_crush_exit(NULL, set, 1, 0);
 			exit(0);
 		}
 		if (set->cmd_set[index]->cmd[0])
+		{
 			ft_execve(set, index);
+		}
+
 		// close_crush_exit(NULL, set, 1, 1);
 		exit(1);
 	}

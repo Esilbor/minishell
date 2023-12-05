@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 15:11:47 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/04 15:14:28 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/05 19:23:25 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,19 @@
 
 int	is_builtin(char **command)
 {
-	if (ft_strncmp(command[0], "exit", 5))
+	if (!ft_strncmp(command[0], "exit", 5))
 		return (1);
-	else if (ft_strncmp(command[0], "echo", 5))
+	else if (!ft_strncmp(command[0], "echo", 5))
 		return (1);
-	else if (ft_strncmp(command[0], "cd", 3))
+	else if (!ft_strncmp(command[0], "cd", 3))
 		return (1);
-	else if (ft_strncmp(command[0], "pwd", 4))
+	else if (!ft_strncmp(command[0], "pwd", 4))
 		return (1);
-	else if (ft_strncmp(command[0], "export", 7))
+	else if (!ft_strncmp(command[0], "export", 7))
 		return (1);
-	else if (ft_strncmp(command[0], "unset", 6))
+	else if (!ft_strncmp(command[0], "unset", 6))
 		return (1);
-	else if (ft_strncmp(command[0], "env", 4))
+	else if (!ft_strncmp(command[0], "env", 4))
 		return (1);
 	return (0);
 }

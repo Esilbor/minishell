@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 12:12:12 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/05 14:57:54 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/05 19:13:15 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,58 +40,58 @@ t_cmd	**fill_cmd_tab(t_lexer *lex, t_cmd **struct_tab, int cmd_nb, int tok_nb)
 }
 
 // fill the char **cmd with the WORD nodes
-t_cmd	**fill_eof_tab(t_lexer *lex, t_cmd **struct_tab, int cmd_nb, int tok_nb)
-{
-	int		i;
-	int		j;
+// t_cmd	**fill_eof_tab(t_lexer *lex, t_cmd **struct_tab, int cmd_nb, int tok_nb)
+// {
+// 	int		i;
+// 	int		j;
 
-	i = -1;
-	while (++i < cmd_nb)
-	{
-		j = 0;
-		tok_nb = token_nb(&lex, LIMITER);
-		struct_tab[i]->eof = malloc(sizeof(char *) * (tok_nb + 1));
-		if (!struct_tab[i]->eof)
-			return (ft_free_tab((void **)struct_tab), NULL);
-		while (lex && lex->type != PIPE)
-		{
-			if (lex->type == LIMITER)
-				struct_tab[i]->eof[j++] = ft_strdup(lex->word);
-			struct_tab[i]->eof[j] = NULL;
-			lex = lex->next;
-		}
-		if (lex && lex->type == PIPE)
-			lex = lex->next;
-	}
-	return (struct_tab);
-}
+// 	i = -1;
+// 	while (++i < cmd_nb)
+// 	{
+// 		j = 0;
+// 		tok_nb = token_nb(&lex, LIMITER);
+// 		struct_tab[i]->eof = malloc(sizeof(char *) * (tok_nb + 1));
+// 		if (!struct_tab[i]->eof)
+// 			return (ft_free_tab((void **)struct_tab), NULL);
+// 		while (lex && lex->type != PIPE)
+// 		{
+// 			if (lex->type == LIMITER)
+// 				struct_tab[i]->eof[j++] = ft_strdup(lex->word);
+// 			struct_tab[i]->eof[j] = NULL;
+// 			lex = lex->next;
+// 		}
+// 		if (lex && lex->type == PIPE)
+// 			lex = lex->next;
+// 	}
+// 	return (struct_tab);
+// }
 
 // Allocates and assigns input redirections for each command in struct_tab
-t_cmd	**fill_input_tab(t_lexer *lex, t_cmd **stct_tab, int cmd_nb, int tok_nb)
-{
-	int		i;
-	int		j;
+// t_cmd	**fill_input_tab(t_lexer *lex, t_cmd **stct_tab, int cmd_nb, int tok_nb)
+// {
+// 	int		i;
+// 	int		j;
 
-	i = -1;
-	while (++i < cmd_nb)
-	{
-		j = 0;
-		tok_nb = token_nb(&lex, INPUT);
-		stct_tab[i]->input_redir = malloc(sizeof(char *) * (tok_nb + 1));
-		if (!stct_tab[i]->input_redir)
-			return (ft_free_tab((void **)stct_tab), NULL);
-		while (lex && lex->type != PIPE)
-		{
-			if (lex->type == INPUT)
-				stct_tab[i]->input_redir[j++] = ft_strdup(lex->word);
-			stct_tab[i]->input_redir[j] = NULL;
-			lex = lex->next;
-		}
-		if (lex && lex->type == PIPE)
-			lex = lex->next;
-	}
-	return (stct_tab);
-}
+// 	i = -1;
+// 	while (++i < cmd_nb)
+// 	{
+// 		j = 0;
+// 		tok_nb = token_nb(&lex, INPUT);
+// 		stct_tab[i]->input_redir = malloc(sizeof(char *) * (tok_nb + 1));
+// 		if (!stct_tab[i]->input_redir)
+// 			return (ft_free_tab((void **)stct_tab), NULL);
+// 		while (lex && lex->type != PIPE)
+// 		{
+// 			if (lex->type == INPUT)
+// 				stct_tab[i]->input_redir[j++] = ft_strdup(lex->word);
+// 			stct_tab[i]->input_redir[j] = NULL;
+// 			lex = lex->next;
+// 		}
+// 		if (lex && lex->type == PIPE)
+// 			lex = lex->next;
+// 	}
+// 	return (stct_tab);
+// }
 
 t_cmd	**fill_input_lst(t_lexer *lex, t_cmd **struct_tab, int cmd_nb)
 {
