@@ -6,11 +6,24 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 10:03:51 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/05 19:03:08 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/06 13:04:31 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+// closes pipe file descriptors if exist
+void	ft_close_pipes(t_set *set)
+{
+	if (set->pipe[0][0])
+		close(set->pipe[0][0]);
+	if (set->pipe[0][1])
+		close(set->pipe[0][1]);
+	if (set->pipe[1][0])
+		close(set->pipe[1][0]);
+	if (set->pipe[1][1])
+		close(set->pipe[1][1]);
+}
 
 void	ft_close_and_free(t_set *set)
 {
@@ -61,8 +74,8 @@ void	free_cmd_struct_tab(t_cmd **cmd_struct_tab)
 
 void	free_shell(t_set *set, char *input, t_cmd **cmd_struct_tab)
 {
-	ft_free_tab((void **)set->paths);
-	ft_free_tab((void **)set->envp);
+	// ft_free_tab((void **)set->paths); //segf
+	// ft_free_tab((void **)set->envp);
 	free(set);
 	free_cmd_struct_tab(cmd_struct_tab);
 	free(input);
@@ -83,7 +96,7 @@ void	close_crush_exit(char *msg, t_set *set, int do_exit, int exit_ret)
 {
 	if (msg)
 		ft_putstr_fd(msg, 2);
-	ft_close_and_free(set);
+	ft_close_pipes(set);
 	ft_free_tab((void **)set->pid);
 	candy_crush(set);
 	if (do_exit)

@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:57:33 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/04 17:07:20 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/06 13:12:45 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,13 @@ static char	*check_cmd_null(char *cmd)
 	{
 		//write(STDERR, ERR_CMD, ft_strlen(ERR_CMD));
 		//return (NULL);
-		return (printf("ERR_CMD\n"), NULL);
+		return (ft_putstr_fd("ERR_CMD\n", 2), NULL);
 	}
 	return (cmd);
 }
 
 char *set_path_cmd(t_set *set, char *cmd)
 {
-	printf("Ici dans fonction set_path_cmd\n ");
-
 	int index;
 	char *tmp;
 	char *cmd_tmp;
@@ -49,7 +47,7 @@ char *set_path_cmd(t_set *set, char *cmd)
 	index = 0;
 	tmp = ft_strjoin("/", cmd);
 	if (!tmp)
-		return (printf("ERR_MALLOC\n"), NULL); // free!!!
+		return (ft_putstr_fd("ERR_MALLOC\n", 2), NULL); // free!!!
 
 	while (set->paths[index])
 	{
@@ -57,17 +55,14 @@ char *set_path_cmd(t_set *set, char *cmd)
 		if (!cmd_tmp)
 		{
 			free(tmp);
-			return (printf("ERR_MALLOC\n"), NULL); // free!!!
+			return (ft_putstr_fd("ERR_MALLOC\n", 2), NULL); // free!!!
 		}
 
 		if (access(cmd_tmp, X_OK | F_OK) == 0)
-		{
-			printf("cmd_tmp = %s\n", cmd_tmp);
 			return (cmd_tmp);
-		}
 		free (cmd_tmp);
 		index++;
 	}
-	printf("\ncmd_path not found\n");
+	ft_putstr_fd("\ncmd_path not found\n", 2);
 	return (NULL);
 }

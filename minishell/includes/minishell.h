@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/05 17:53:58 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/06 12:36:56 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,6 +212,7 @@ void	ft_handle_signals(void);
 
 /*	destroyers	*/
 
+void	ft_close_pipes(t_set *set);
 void	ft_quit_shell(t_env *envb, t_cmd **cmd_struct_tab);
 void	free_cmd_struct_tab(t_cmd **cmd_struct_tab);
 void	free_shell(t_set *set, char *input, t_cmd **cmd_struct_tab);

@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 12:13:29 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/05 19:01:10 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/06 12:33:14 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ int	shell_parser(char *input, t_lexer **lexer, t_env *envb, t_cmd ***cmd_tab)
 		parsing(input, lexer, envb);
 		if (!(*lexer))
 			return (add_history(input), 1);
-		print_lexer(lexer, "before command_builder");
 		*cmd_tab = command_builder(lexer);
 		// parse_input_redir(*cmd_tab); //
 		// ft_print_struct_tab(*cmd_tab);

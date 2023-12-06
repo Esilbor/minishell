@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 17:28:56 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/05 19:06:08 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/06 13:14:30 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	ft_open_stdout(t_set *set, int index)
 			}
 			if (fd_stdout < 0)
 			{
-				printf("ERR_FD\n");
+				ft_putstr_fd("ERR_FD\n", 2);
 				// close_crush_exit("ERR_DUP2\n", set, 1, 1); //
 			}
 			set->cmd_set[index]->output = set->cmd_set[index]->output->next;
