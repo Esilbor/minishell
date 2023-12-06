@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:13:47 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/06 13:16:12 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/06 20:20:35 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,10 @@ void ft_execve(t_set *set, int index)
 	{
 		if (access(set->cmd_set[index]->cmd[0], X_OK | F_OK) == 0)
 		{
-			ft_close_pipes(set);
-			exit(127); // a verifier avec update_ret
+			execve(set->cmd_set[index]->cmd[0], set->cmd_set[index]->cmd, set->envp);
 		}
-		execve(set->cmd_set[index]->cmd[0], set->cmd_set[index]->cmd, set->envp);
+		ft_close_pipes(set);
+		exit(127); // a verifier avec update_ret
 	}
 	ft_close_pipes(set);
 	exit(update_ret(&set->env_lst, 126)); // a verifier
@@ -94,14 +94,14 @@ pid_t	ft_fork(t_set *set, int index)
 {
 	pid_t	pid;
 
-	pid = fork();
-	if (pid == -1)
-		return (printf("ERR_PID\n"));//free close ...
 	if (index < set->cmd_nb)
 	{
 		if (pipe(set->pipe[index % 2]) == -1)
 			return (printf("ERR_PIPE\n"));//free close ...
 	}
+	pid = fork();
+	if (pid == -1)
+		return (printf("ERR_PID\n"));//free close ...
 	if (pid == 0)
 	{
 		ft_dup2(set, index);
