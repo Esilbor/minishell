@@ -6,22 +6,33 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/04 18:01:57 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/06 12:36:56 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# define RED "\033[31m"
-# define GREEN "\033[92m"
-# define BLUE "\033[34m"
-# define PURPLE "\033[35m"
-# define CYAN "\033[36m"
-# define WHITE "\033[37m"
-# define YELLOW "\033[33m"
-# define PINK "\033[38;2;255;105;180m"
-# define ORANGE "\033[38;2;255;105;280m"
+// # define RED "\033[31m"
+// # define GREEN "\033[92m"
+// # define BLUE "\033[34m"
+// # define PURPLE "\033[35m"
+// # define CYAN "\033[36m"
+// # define WHITE "\033[37m"
+// # define YELLOW "\033[33m"
+// # define PINK "\033[38;2;255;105;180m"
+// # define ORANGE "\033[38;2;255;105;280m"
+
+# define RED "\033[31;2m"       // Dull red
+# define GREEN "\033[32;2m"     // Dull green
+# define BLUE "\033[34;2m"      // Dull blue
+# define PURPLE "\033[35;2m"    // Dull purple
+# define CYAN "\033[36;2m"      // Dull cyan
+# define WHITE "\033[37;2m"     // Dull white
+# define YELLOW "\033[33;2m"    // Dull yellow
+# define PINK "\033[38;2;255;105;180;2m" // Dull pink
+# define ORANGE "\033[38;2;255;105;180;2m" // Dull orange
+
 # define RESET "\x1B[0m"
 # define PROMPT "\001\033[38;2;255;105;180m\002Candy_$hell> \001\033[33m\002"
 # define PROMPT1 "\001\033[38;2;255;105;280m\0021_Candy_$hell> \001\033[35m\002"
@@ -88,12 +99,15 @@ typedef struct s_cmd
 {
 	int		index;
 	char	**cmd;
-	char	**eof;
+	// char	**eof;
 	bool	append;
 	char	*heredoc_path;
-	char	**input_redir;
+	// char	**input_redir;
 	// char	**output_redir;
 	t_lexer	*output;
+	t_lexer	*input; // eof + input_redir (<< + <)
+	int		fd_input; // final input of the command
+	int		fd_output; //final output de la cmd
 
 }	t_cmd;
 
@@ -112,7 +126,9 @@ typedef struct t_set
 /***************TO ORDER*******************/
 /******************************************/
 
-void	ft_pipe_close(t_set *set, int index);
+void	ft_waitpid(t_set *set);
+void	ft_close_and_free(t_set *set);
+void	close_pipe(t_set *set, int index);
 pid_t	ft_fork(t_set *set, int index);
 void	ft_pipex(t_set *set);
 void	init_pipe_set(t_set *set);
@@ -120,6 +136,7 @@ void	init_pid_tab(t_set *set);
 void	ft_execve(t_set *set, int index);
 char	*set_path_cmd(t_set *set, char *cmd);
 void	ft_dup2(t_set *set, int index);
+void	close_crush_exit(char *msg, t_set *set, int do_exit, int exit_ret);
 
 /******************************************/
 /***************BUILT-IN*******************/
@@ -195,6 +212,7 @@ void	ft_handle_signals(void);
 
 /*	destroyers	*/
 
+void	ft_close_pipes(t_set *set);
 void	ft_quit_shell(t_env *envb, t_cmd **cmd_struct_tab);
 void	free_cmd_struct_tab(t_cmd **cmd_struct_tab);
 void	free_shell(t_set *set, char *input, t_cmd **cmd_struct_tab);
@@ -214,8 +232,9 @@ char	**env_to_tab(t_env *lst);
 /*	command_builder.c	*/
 
 t_cmd	**fill_cmd_tab(t_lexer *lex, t_cmd **str_tab, int cmd_nb, int tok_nb);
-t_cmd	**fill_eof_tab(t_lexer *lex, t_cmd **str_tab, int cmd_nb, int tok_nb);
-t_cmd	**fill_input_tab(t_lexer *lex, t_cmd **str_tab, int cmd_nb, int tok_nb);
+// t_cmd	**fill_eof_tab(t_lexer *lex, t_cmd **str_tab, int cmd_nb, int tok_nb);
+// t_cmd	**fill_input_tab(t_lexer *lex, t_cmd **str_tab, int cmd_nb, int tok_nb);
+t_cmd	**fill_input_lst(t_lexer *lex, t_cmd **struct_tab, int cmd_nb);
 t_cmd	**fill_output_lst(t_lexer *lex, t_cmd **str_tab, int cmd_nb);
 t_cmd	**command_builder(t_lexer **lexer);
 

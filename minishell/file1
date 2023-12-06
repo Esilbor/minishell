@@ -1,17 +1,12 @@
-total 120
--rw-r--r-- 1 bbresil 2022_paris     0 Nov 15 20:55 a
--rw-r--r-- 1 bbresil 2022_paris   223 Nov  2 18:11 art.txt
--rw-r--r-- 1 bbresil 2022_paris     0 Nov 15 20:55 f
--rw-r--r-- 1 bbresil 2022_paris     0 Nov 16 11:22 file1
-drwxr-xr-x 2 bbresil 2022_paris  4096 Nov  2 19:29 includes
-drwxr-xr-x 4 bbresil 2022_paris  4096 Nov 16 10:52 libft
--rw-r--r-- 1 bbresil 2022_paris  1761 Nov  2 18:11 Makefile
--rwxr-xr-x 1 bbresil 2022_paris 87472 Nov 16 11:10 minishell
-drwxr-xr-x 6 bbresil 2022_paris  4096 Nov 16 10:52 obj
-drwxr-xr-x 2 bbresil 2022_paris  4096 Nov  7 11:44 readme
--rw-r--r-- 1 bbresil 2022_paris     0 Nov 15 20:55 s
--rw-r--r-- 1 bbresil 2022_paris     0 Nov 15 20:55 sd
--rw-r--r-- 1 bbresil 2022_paris     0 Nov 15 20:55 sfsdfsdfsdfsd
-drwxr-xr-x 6 bbresil 2022_paris  4096 Nov  7 10:10 src
--rw-r--r-- 1 bbresil 2022_paris   188 Nov 10 15:09 suppressions.supp
--rw-r--r-- 1 bbresil 2022_paris     0 Nov 15 20:55 v
+MAKEFLAGS += --no-print-directory
+CFLAGS = -g2 -Wall -Wextra -Werror -pthread
+LIBFT = $(addprefix $(LIBFT_PATH), $(LIBFT_NAME))
+# Define subdirectories
+# Find all C source files in the src directory and its subdirectories
+C_FILES = $(foreach dir,$(SRC_SUBDIRS),$(wildcard $(SRC_DIR)$(dir)/*.c))
+# Pattern rule for object files needs to create subdirectories as necessary
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(INC_LIB) -L$(LIBFT_PATH) -lft -L$(LIBFT_PATH)ft_printf/ -lftprintf -lreadline
+# Cleans everything that has been created
+re : fclean all
+# These targets do not create any files
+.PHONY: re clean fclean all candy show_lay_out

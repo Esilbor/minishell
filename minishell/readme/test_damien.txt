@@ -4,7 +4,7 @@ Candy_$hell> >> hola
 
 CMD[0] = [hola__APPEND__]
 
-********index = 0 ********
+********index = 0 *******
 
 
 OUTPUT_TAB[0]
