@@ -5,13 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-<<<<<<< HEAD
-/*   Created: 2023/11/28 19:42:21 by zaquedev          #+#    #+#             */
-/*   Updated: 2023/12/02 19:43:33 by zaquedev         ###   ########.fr       */
-=======
 /*   Created: 2023/11/22 09:45:47 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/07 07:31:25 by esilbor          ###   ########.fr       */
->>>>>>> main
+/*   Updated: 2023/12/07 15:58:20 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +16,6 @@
 
 int ft_nb_cmd(char *str)
 {
-<<<<<<< HEAD
-	int i;
-	int count;
-=======
 	t_env	*p;
 	char	*path;
 
@@ -56,7 +47,6 @@ char	**env_to_tab(t_env *lst)
 	int		i;
 	int		len;
 	char	**tab;
->>>>>>> main
 
 	i = 0;
 	count = 0;

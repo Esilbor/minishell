@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/07 15:53:08 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/07 17:04:28 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ typedef struct s_cmd
 // would give access to cmd_struct_tab if needed
 // }    t_set;
 
-typedef struct s_data
+typedef struct s_set
 {
 	char			**paths; 	//tab of var PATH
 	int				cmd_nb;
@@ -176,19 +176,7 @@ char	*set_path_cmd(t_set *set, char *cmd);
 void	ft_dup2(t_set *set, int index);
 void	close_crush_exit(char *msg, t_set *set, int do_exit, int exit_ret);
 
-	int				**pipes;
-	int				*pid;
-	int				fd[2];
-
-	// char			*readline;
-	// char			*cmds_exec;
-	// pid_t			*pid;
-	// struct s_token	*token;
-	// struct s_cmd	**cmds;
-	// struct s_env	*export;
-
-}					t_data;
-
+	
 // LEXER
 
 /*do_builtins.c*/
@@ -368,6 +356,8 @@ t_lexer				*ft_lexer(char *line);
 /*to be deleted */
 
 char				*print_token(t_tokens token);
+void 	print_lexer(t_lexer **head, char *loc);
+void 	ft_print_struct_tab(t_cmd **struct_tab);
 //void 	print_lexer(t_lexer **head, char *loc);
 
 /******************************************/
@@ -378,6 +368,11 @@ void	execution(t_set *set, t_cmd **cmd_struct_tab, t_env *envb);
 int		shell_parser(char *input, t_lexer **lexer, t_env *envb, t_cmd *** cmd_tab);
 int		shell_loop(t_env *envb);
 
+
+#endif
+
+
+/*
 // CMDS
 
 //void	ft_execution(t_data *data, t_env *envp);
@@ -421,3 +416,4 @@ int					ft_stdin(t_data *data, int index);
 int					ft_stdout(t_data *data, int index);
 int					pid_alloc(t_data *data);
 #endif
+*/
