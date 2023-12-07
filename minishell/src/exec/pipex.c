@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:13:47 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/06 20:20:35 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/07 08:24:31 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ pid_t	ft_fork(t_set *set, int index)
 		if (is_builtin(set->cmd_set[index]->cmd)== 1)
 		{
 			do_builtins(set, index);
+			// free env_lst , pid_tab, pipes, cmd_struct_tab, paths, envp
 			// close_crush_exit(NULL, set, 1, 0);
 			exit(0);
 		}

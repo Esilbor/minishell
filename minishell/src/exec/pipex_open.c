@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_open.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 17:28:56 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/06 13:14:30 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/07 07:19:48 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,8 @@
 int	ft_open_stdin(t_set *set, int index)
 {
 	int	fd_stdin;
-	int i;
 
 	fd_stdin = 0;
-	i = 0;
 	if (set->cmd_set[index]->fd_input) // redirections
 		fd_stdin = set->cmd_set[index]->fd_input; // open in parsing
 	return (fd_stdin);

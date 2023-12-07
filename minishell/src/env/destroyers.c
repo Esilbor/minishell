@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   destroyers.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 10:03:51 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/06 14:17:37 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/07 08:27:13 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,13 @@ void	ft_close_and_free(t_set *set)
 	candy_crush(set);
 }
 
-void	ft_quit_shell(t_env *envb, t_cmd **cmd_struct_tab)
+void	ft_quit_shell(t_set *set, t_env *envb, t_cmd **cmd_struct_tab)
 {
 	rl_clear_history();
 	ft_printf("exit\n"RESET);
 	ft_free_env_lst(envb);
 	free_cmd_struct_tab(cmd_struct_tab);
+	free(set);
 }
 
 void	free_cmd_struct_tab(t_cmd **cmd_struct_tab)
