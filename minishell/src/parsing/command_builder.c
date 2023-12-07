@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 12:12:12 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/05 19:13:15 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/07 13:34:17 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ t_cmd	**fill_input_lst(t_lexer *lex, t_cmd **struct_tab, int cmd_nb)
 		while (lex && lex->type != PIPE)
 		{
 			if (lex->type == INPUT || lex->type == LIMITER)
-				ft_add_lex_node(&(struct_tab[i])->output, lex->word, lex->type);
+				ft_add_lex_node(&(struct_tab[i])->input, lex->word, lex->type);
 			lex = lex->next;
 		}
 		if (lex && lex->type == PIPE)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 23:02:12 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/07 09:31:57 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/07 17:27:46 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,13 @@ int	shell_loop(t_env *envb)
 		if (input && input[0])
 		{
 			shell_parser(input, &lexer, envb, &cmd_struct_tab);
-			// execution(set, cmd_struct_tab, envb);
+			execution(set, cmd_struct_tab, envb);
 			free_shell(NULL, input, NULL); //should free input? //put cmd_struct_tab to null... no need to be free here?
 		}
 		else if (input)
 			continue ;
 		else
-			return (ft_quit_shell(set, envb, cmd_struct_tab), 2); 
+			return (ft_quit_shell(set, envb, cmd_struct_tab), 2);
 	}
 	return (0);
 }
@@ -65,9 +65,10 @@ int	main(int argc, char **argv, char **envp)
 	t_env	*envb;
 
 	if (argc != 1)
-		return (ft_putstr_fd("better without added sugar\n", 2), 1);
+		return (ft_putstr_fd(PINK"better without added sugar\n"RESET, 2), 1);
 	(void)argv;
 	ft_handle_signals();
 	envb = get_env(envp);
+	// shell_loop(envb);
 	return (shell_loop(envb));
 }

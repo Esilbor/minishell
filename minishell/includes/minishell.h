@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/07 09:45:12 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/07 12:32:06 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,16 @@ void	ft_execve(t_set *set, int index);
 char	*set_path_cmd(t_set *set, char *cmd);
 void	ft_dup2(t_set *set, int index);
 void	close_crush_exit(char *msg, t_set *set, int do_exit, int exit_ret);
+
+/******************************************/
+/***************HEREDOCS*******************/
+/******************************************/
+
+void	parse_input_redir(t_cmd **cmd_tab);
+void	init_heredocs(t_cmd **cmd_tab);
+void	modify_limiter_nodes(t_lexer *lst/* , int *nb */);
+void	fill_heredoc(t_lexer *lex/*, t_cmd **cmd_tab*/);
+
 
 /******************************************/
 /***************BUILT-IN*******************/
