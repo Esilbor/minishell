@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 09:45:47 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/04 18:00:45 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/07 07:31:25 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,10 @@ t_set	*init_set(t_set **set, t_cmd **cmd_struct_tab, t_env *envb)
 	if (!(*set))
 		return (free (path), NULL);
 	ft_memset(*set, 0, sizeof(t_set));
-	(*set)->cmd_nb = ft_tab_len((char **)cmd_struct_tab);
+	if (cmd_struct_tab && cmd_struct_tab[0])
+		(*set)->cmd_nb = ft_tab_len((char **)cmd_struct_tab);
+	else
+		(*set)->cmd_nb = 0;
 	(*set)->paths = ft_split(path, ':');
 	free (path);
 	(*set)->env_lst = envb;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 23:02:12 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/05 15:19:38 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/07 07:24:01 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 
 void	execution(t_set *set, t_cmd **cmd_struct_tab, t_env *envb)
 {
-	int	i;
-
-	i = 0;
 	init_set(&set, cmd_struct_tab, envb);
 	init_pipe_set(set);
 	init_pid_tab(set);
