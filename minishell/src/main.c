@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 23:02:12 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/07 07:24:01 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/07 08:36:42 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,35 +42,32 @@ int	shell_loop(t_env *envb)
 
 	set = NULL;
 	cmd_struct_tab = NULL;
-	input = ft_prompt(envb);
-	if (input)
+	input = ft_prompt(envb); // when launching minishell inside minishell ... to check
+	while (1)
 	{
-		shell_parser(input, &lexer, envb, &cmd_struct_tab);
-		execution(set, cmd_struct_tab, envb);
-		free_shell(set, input, cmd_struct_tab); //should free input?
+		input = ft_prompt(envb);
+		if (input && input[0])
+		{
+			shell_parser(input, &lexer, envb, &cmd_struct_tab);
+			execution(set, cmd_struct_tab, envb);
+			free_shell(set, input, NULL); //should free input? //put cmd_struct_tab to null... no need to be free here?
+		}
+		else if (input)
+			continue ;
+		else
+			return (ft_quit_shell(set, envb, cmd_struct_tab), 2); 
 	}
-	else
-		return (ft_quit_shell(envb, cmd_struct_tab), 2);
 	return (0);
 }
 
 int	main(int argc, char **argv, char **envp)
 {
 	t_env	*envb;
-	int		status;
 
 	if (argc != 1)
 		return (ft_putstr_fd("better without added sugar\n", 2), 1);
 	(void)argv;
 	ft_handle_signals();
 	envb = get_env(envp);
-	while (1)
-	{
-		status = shell_loop(envb);
-		if (status == 1)
-			continue ;
-		if (status == 2)
-			break ;
-	}
-	return (0);
+	return (shell_loop(envb));
 }
