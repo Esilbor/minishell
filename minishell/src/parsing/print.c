@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 18:19:41 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/05 15:04:01 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/07 12:51:16 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	ft_print_struct_tab(t_cmd **struct_tab)
 		if (struct_tab[i]->input)
 		{
 			ft_printf(CYAN"INPUT_LST[%d]\n", i);
-			print_lexer(&(struct_tab[i])->output, "in");
+			print_lexer(&(struct_tab[i])->input, "in");
 			ft_printf("***************\n\n"RESET);
 		}
 		i++;
