@@ -5,8 +5,13 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
+<<<<<<< HEAD
 /*   Created: 2023/11/28 19:42:21 by zaquedev          #+#    #+#             */
 /*   Updated: 2023/12/02 19:43:33 by zaquedev         ###   ########.fr       */
+=======
+/*   Created: 2023/11/22 09:45:47 by esilbor           #+#    #+#             */
+/*   Updated: 2023/12/07 07:31:25 by esilbor          ###   ########.fr       */
+>>>>>>> main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +21,42 @@
 
 int ft_nb_cmd(char *str)
 {
+<<<<<<< HEAD
 	int i;
 	int count;
+=======
+	t_env	*p;
+	char	*path;
+
+	p = get_env_node(envb, "PATH");
+	if (!p || !p->var_str)
+		return (NULL);
+	path = ft_strdup(ft_strchr(p->var_str, '=') + 1);
+	if (!path)
+		return (NULL);
+	*set = malloc(sizeof(t_set));
+	if (!(*set))
+		return (free (path), NULL);
+	ft_memset(*set, 0, sizeof(t_set));
+	if (cmd_struct_tab && cmd_struct_tab[0])
+		(*set)->cmd_nb = ft_tab_len((char **)cmd_struct_tab);
+	else
+		(*set)->cmd_nb = 0;
+	(*set)->paths = ft_split(path, ':');
+	free (path);
+	(*set)->env_lst = envb;
+	(*set)->envp = env_to_tab(envb);
+	(*set)->cmd_set = cmd_struct_tab;
+	(*set)->pid = NULL;
+	return (*set);
+}
+
+char	**env_to_tab(t_env *lst)
+{
+	int		i;
+	int		len;
+	char	**tab;
+>>>>>>> main
 
 	i = 0;
 	count = 0;

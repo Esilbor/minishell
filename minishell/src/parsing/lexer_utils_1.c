@@ -6,7 +6,11 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 15:14:20 by bbresil           #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/11/28 14:53:24 by zaquedev         ###   ########.fr       */
+=======
+/*   Updated: 2023/11/30 15:08:11 by esilbor          ###   ########.fr       */
+>>>>>>> main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +157,7 @@ void	print_lexer(t_lexer **head, char *loc)
 
 	lst = *head;
 	i = 0;
-	ft_printf("\n%s\n", loc);
+	ft_printf(PINK"\n%s\n"RESET, loc);
 	ft_printf(WHITE"CMD[%d] = ", i++);
 	while (lst)
 	{

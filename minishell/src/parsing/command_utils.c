@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 12:12:12 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/21 12:28:47 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/05 15:40:21 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ t_cmd	**init_cmd_struct(t_lexer **lexer)
 		if (!cmd_struct_tab[i])
 			return (ft_free_tab((void **)cmd_struct_tab), NULL);
 		ft_memset(cmd_struct_tab[i], 0, sizeof(t_cmd));
-		cmd_struct_tab[i]->output = NULL;
+		// cmd_struct_tab[i]->output = NULL;
+		// cmd_struct_tab[i]->input = NULL;
 		i ++;
 	}
 	if (i)
