@@ -6,78 +6,76 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 17:28:56 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/07 17:06:16 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/07 19:11:07 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../../includes/minishell.h"
 
-// int  open_input(t_set *set, int index)
-// {
-// 	int fd_stdin;
-// 	int i;
-
-// 	i = 0;
-// 	fd_stdin = 0;
-// 	while (set->cmd_set[index]->input_redir[i])
-// 	{
-// 		if (fd_stdin)
-// 			close(fd_stdin);
-// 		fd_stdin = open (set->cmd_set[index]->input_redir[i], O_RDONLY);
-// 		if (fd_stdin < 0)
-// 		{
-// 			printf("ERR_FD\n");
-// 			// close pipes ...
-// 			exit(1);
-// 		}
-// 		i++;
-// 	}
-// 	return (fd_stdin);
-// }
-
 int	ft_open_stdin(t_set *set, int index)
 {
 	int	fd_stdin;
 
 	fd_stdin = 0;
-	if (set->cmd_set[index]->fd_input) // redirections
-		fd_stdin = set->cmd_set[index]->fd_input; // open in parsing
+	if (set->cmd_set[index]->input)
+		fd_stdin = open(set->cmd_set[index]->input->word, O_RDONLY);
 	return (fd_stdin);
 }
 
 
+// int	ft_open_stdout(t_set *set, int index)
+// {
+// 	int	fd_stdout;
+
+// 	fd_stdout = 1;
+// 	if (set->cmd_set[index]->output)
+// 	{
+// 		while (set->cmd_set[index]->output)
+// 		{
+// 			if(set->cmd_set[index]->output->type == APPEND)
+// 			{
+// 				fd_stdout = open(set->cmd_set[index]->output->word,
+// 					O_RDWR | O_APPEND | O_CREAT, 0644);
+// 			}
+// 			else
+// 			{
+// 				fd_stdout = open(set->cmd_set[index]->output->word,
+// 						O_RDWR | O_TRUNC | O_CREAT, 0644);
+// 			}
+// 			if (fd_stdout < 0)
+// 			{
+// 				ft_putstr_fd("ERR_FD\n", 2);
+// 				// close_crush_exit("ERR_DUP2\n", set, 1, 1); //
+// 			}
+// 			set->cmd_set[index]->output = set->cmd_set[index]->output->next;
+// 		}
+// 	}
+// 	return (fd_stdout);
+
+// }
+
 int	ft_open_stdout(t_set *set, int index)
 {
-	int	fd_stdout;
+	int		fd_stdout;
+	t_lexer	*lex;
 
 	fd_stdout = 1;
 	if (set->cmd_set[index]->output)
 	{
-		while (set->cmd_set[index]->output)
+		lex = set->cmd_set[index]->output;
+		if(lex->type == APPEND)
+			fd_stdout = open(lex->word, O_RDWR | O_APPEND | O_CREAT, 0644);
+		else
+			fd_stdout = open(lex->word, O_RDWR | O_TRUNC | O_CREAT, 0644);
+		if (fd_stdout < 0)
 		{
-			if(set->cmd_set[index]->output->type == APPEND)
-			{
-				fd_stdout = open(set->cmd_set[index]->output->word,
-					O_RDWR | O_APPEND | O_CREAT, 0644);
-			}
-			else
-			{
-				fd_stdout = open(set->cmd_set[index]->output->word,
-						O_RDWR | O_TRUNC | O_CREAT, 0644);
-			}
-			if (fd_stdout < 0)
-			{
-				ft_putstr_fd("ERR_FD\n", 2);
-				// close_crush_exit("ERR_DUP2\n", set, 1, 1); //
-			}
-			set->cmd_set[index]->output = set->cmd_set[index]->output->next;
+			ft_putstr_fd("ERR_FD\n", 2);
+			// close_crush_exit("ERR_DUP2\n", set, 1, 1); //
 		}
 	}
 	return (fd_stdout);
-
 }
-
 
 void	ft_dup2_first(t_set *set, int index, int fd_stdin, int fd_stdout)
 {
