@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 12:13:29 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/07 17:28:29 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/07 19:16:45 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,15 +126,27 @@ void	keep_last_input(t_cmd **cmd_tab)
 				lex = lex->next;
 			}
 			cmd_tab[i]->input = lex;
-			// free (lex);
+			// free (lex); // ???
 		}
 		i++;
 	}
 }
+bool outputs_are_valid(t_lexer *lex)
+{
+	int	fd;
+
+	if (lex->type == APPEND)
+		fd = open(lex->word, O_RDWR | O_APPEND | O_CREAT, 0644);
+	else
+		fd = open(lex->word, O_RDWR | O_TRUNC | O_CREAT, 0644);
+	if (fd < 0)
+		return (false);
+	return (true);
+}
 
 void	keep_last_output(t_cmd **cmd_tab)
 {
-	int	i;
+	int		i;
 	t_lexer *lex;
 
 	i = 0;
@@ -145,11 +157,13 @@ void	keep_last_output(t_cmd **cmd_tab)
 			lex = cmd_tab[i]->output;
 			while (lex && lex->next)
 			{
+				if(!outputs_are_valid(lex))
+					exit (1);
 				lex = ft_remove_lex_node(&lex, lex);
 				lex = lex->next;
 			}
 			cmd_tab[i]->output = lex;
-			// free (lex);
+			// free (lex); // ???
 		}
 		i++;
 	}
@@ -175,7 +189,7 @@ int	shell_parser(char *input, t_lexer **lexer, t_env *envb, t_cmd ***cmd_tab)
 		*cmd_tab = command_builder(lexer);
 		// init_heredocs(*cmd_tab);
 		parse_input_redir(*cmd_tab);
-		// ft_print_struct_tab(*cmd_tab);
+		ft_print_struct_tab(*cmd_tab);
 		free_lexer_list(lexer);
 		return (0);
 }

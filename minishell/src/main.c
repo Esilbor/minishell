@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 23:02:12 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/07 17:27:46 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/07 18:02:10 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void	execution(t_set *set, t_cmd **cmd_struct_tab, t_env *envb)
 {
+
+	// cd, exit, export, unset quand ils sont seuls sont execute dans le parent, lorsqu'il sont en pipe ils sont execute dans le child (source: Oceane)
 	init_set(&set, cmd_struct_tab, envb);
 	init_pipe_set(set);
 	init_pid_tab(set);
