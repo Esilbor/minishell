@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 23:02:12 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/07 08:36:42 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/07 09:31:57 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,15 +42,15 @@ int	shell_loop(t_env *envb)
 
 	set = NULL;
 	cmd_struct_tab = NULL;
-	input = ft_prompt(envb); // when launching minishell inside minishell ... to check
+	// input = ft_prompt(envb); // when launching minishell inside minishell ... to check
 	while (1)
 	{
 		input = ft_prompt(envb);
 		if (input && input[0])
 		{
 			shell_parser(input, &lexer, envb, &cmd_struct_tab);
-			execution(set, cmd_struct_tab, envb);
-			free_shell(set, input, NULL); //should free input? //put cmd_struct_tab to null... no need to be free here?
+			// execution(set, cmd_struct_tab, envb);
+			free_shell(NULL, input, NULL); //should free input? //put cmd_struct_tab to null... no need to be free here?
 		}
 		else if (input)
 			continue ;
