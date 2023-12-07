@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/07 17:04:28 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/07 17:15:35 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,40 @@
 # define PROMPT3 "\001\033[92m\002Candy_$hell?> \001\033[34m\002"
 # define MAX_LL "9223372036854775807"
 
+// # include <string.h>
+// # include <stdlib.h>
+// # include <stdbool.h>
+// # include <unistd.h>
+// # include <stdio.h>
+// # include <sys/types.h>
+// # include <sys/stat.h>
+// # include <fcntl.h>
+// # include <sys/wait.h>
+// # include <errno.h>
+// # include <pthread.h>
+// # include <sys/time.h>
+// # include <limits.h>
+// # include "../libft/libft.h"
+// # include <errno.h>
+// # include <fcntl.h>
+// # include <limits.h>
+// # include <pthread.h>
+// # include <readline/history.h>
+// # include <readline/readline.h>
+// # include <signal.h>
+// # include <stdbool.h>
+// # include <stddef.h>
+// # include <stdio.h>
+// # include <stdlib.h>
+// # include <string.h>
+// # include <sys/stat.h>
+// # include <sys/time.h>
+// # include <sys/types.h>
+// # include <sys/wait.h>
+// # include <unistd.h>
+
+
+
 # include <string.h>
 # include <stdlib.h>
 # include <stdbool.h>
@@ -54,23 +88,9 @@
 # include <sys/time.h>
 # include <limits.h>
 # include "../libft/libft.h"
-# include <errno.h>
-# include <fcntl.h>
-# include <limits.h>
-# include <pthread.h>
-# include <readline/history.h>
 # include <readline/readline.h>
+# include <readline/history.h>
 # include <signal.h>
-# include <stdbool.h>
-# include <stddef.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <string.h>
-# include <sys/stat.h>
-# include <sys/time.h>
-# include <sys/types.h>
-# include <sys/wait.h>
-# include <unistd.h>
 
 // DO NOT MODIFY ORDER OF T_TOKENS
 typedef enum e_tokens
@@ -95,34 +115,20 @@ typedef enum e_tokens
 	EMERGE,
 }					t_tokens;
 
+
 typedef struct s_lexer
 {
 	char			*word;
 	t_tokens		type;
 	struct s_lexer	*next;
 	struct s_lexer	*prev;
-}					t_lexer;
+}	t_lexer;
 
 typedef struct s_env
 {
 	char			*var_str;
-	char *env_value; // valeur
 	struct s_env	*next;
-}					t_env;
-
-// typedef struct s_cmd
-// {
-// 	int				index;
-// 	char			**cmd;
-// 	char			*eof;
-// 	char			*heredoc_path;
-// 	char			*input_redir;
-// 	char			*output_redir;
-// 	int				fd_out;
-// 	struct s_cmd	*next;
-// 	struct s_cmd	*prev;
-
-// }	t_cmd;
+}	t_env;
 
 typedef struct s_cmd
 {
@@ -138,18 +144,9 @@ typedef struct s_cmd
 	int		fd_input; // final input of the command
 	int		fd_output; //final output de la cmd
 
-}					t_cmd;
+}	t_cmd;
 
-// typedef struct t_set
-// {
-//     char            **paths;
-//     int                cmd_nb;
-//     struct s_env    *envb; // would give access to envb if needed
-//     struct s_cmd    **cmd_set;
-// would give access to cmd_struct_tab if needed
-// }    t_set;
-
-typedef struct s_set
+typedef struct t_set
 {
 	char			**paths; 	//tab of var PATH
 	int				cmd_nb;
@@ -176,8 +173,9 @@ char	*set_path_cmd(t_set *set, char *cmd);
 void	ft_dup2(t_set *set, int index);
 void	close_crush_exit(char *msg, t_set *set, int do_exit, int exit_ret);
 
-	
-// LEXER
+/******************************************/
+/***************BUILT-IN*******************/
+/******************************************/
 
 /*do_builtins.c*/
 
@@ -190,50 +188,48 @@ void	do_exit(t_set *set, int index);
 
 /*	cd_echo_pwd_builtins.c	*/
 
-int					do_cd(char **str, t_env **envb);
-void				do_echo(int cmd_nb, char **str);
-int					do_pwd(char **cmd_tab, t_env **env);
+int		do_cd(char **str, t_env **envb);
+void	do_echo(int cmd_nb, char **str);
+int		do_pwd(char **cmd_tab, t_env **env);
 
 /*	env_display.c	*/
 
-int					ft_print_rainbow(char *str);
-void				print_env(t_env **head);
-int					assign_or_append(char *env_var);
-bool				cmd_is_valid(char **cmd_tab, int i, int *ret);
+int		ft_print_rainbow(char *str);
+void	print_env(t_env **head);
+int		assign_or_append(char *env_var);
+bool	cmd_is_valid(char **cmd_tab, int i, int *ret);
 
 /*	env_management_1.c	*/
 
-void				ft_free_env_lst(t_env *env);
-t_env				*ft_last_env_node(t_env *node);
-void				ft_add_env_node(t_env **env, char *varp);
-t_env				**dup_env(t_env **env);
-void				ft_fill_env(t_env **env, char **envp);
+void	ft_free_env_lst(t_env *env);
+t_env	*ft_last_env_node(t_env *node);
+void	ft_add_env_node(t_env **env, char *varp);
+t_env	**dup_env(t_env **env);
+void	ft_fill_env(t_env **env, char **envp);
 
 /*	env_management_2.c	*/
 
-unsigned int		ft_rand(void);
-void				init_colors(char **colors);
-t_env				**sort_env(t_env **head);
-t_env				*get_env(char **envp);
+unsigned int	ft_rand(void);
+void	init_colors(char **colors);
+t_env	**sort_env(t_env **head);
+t_env	*get_env(char **envp);
 
 /*	export_handling_1.c	*/
 
-void				create_var(char **v_tab, char **cmd_tab, t_env **env,
-						int i);
-void				modify_var(t_env *node, char **v_tab, char **cmd_tab,
-						int i);
-int					update_ret(t_env **env, int ret);
-int					do_export(int cmd_nb, char **cmd_tab, t_env **env);
+void	create_var(char **v_tab, char **cmd_tab, t_env **env, int i);
+void	modify_var(t_env *node, char **v_tab, char **cmd_tab, int i);
+int		update_ret(t_env **env, int ret);
+int		do_export(int cmd_nb, char **cmd_tab, t_env **env);
 
 /*	export_handling_2.c	*/
 
-t_env				*get_env_node(t_env *lst, char *str);
-char				**ft_split_value(char *var);
+t_env	*get_env_node(t_env *lst, char *str);
+char	**ft_split_value(char *var);
 
 /*	unset_builtin.c	*/
 
-void				ft_remove_env_node(t_env **head, char *varp);
-int					do_unset(char **cmd_tab, t_env **env);
+void	ft_remove_env_node(t_env **head, char *varp);
+int		do_unset(char **cmd_tab, t_env **env);
 
 /******************************************/
 /*******************ENV********************/
@@ -279,9 +275,9 @@ t_cmd	**command_builder(t_lexer **lexer);
 
 /*	command_utils.c	*/
 
-int					count_cmd(t_lexer *lex);
-t_cmd				**init_cmd_struct(t_lexer **lexer);
-int					token_nb(t_lexer **lexer, t_tokens token);
+int		count_cmd(t_lexer *lex);
+t_cmd	**init_cmd_struct(t_lexer **lexer);
+int		token_nb(t_lexer **lexer, t_tokens token);
 
 /*	expansion_cleanup.c	*/
 
@@ -303,62 +299,60 @@ t_lexer	**clean_empty_nodes(t_lexer **lexer);
 
 /*	expansion_utils_1.c	*/
 
-t_lexer	*ft_remove_lex_node(t_lexer **lexer,
-							t_lexer *node_to_remove);
-t_lexer				*expand_node(t_lexer **lexer, t_lexer *lst, t_env *envb);
-t_lexer				*expand_node2(char *tmp, t_lexer *node, t_env *envb);
-char				*extract_var(char *str, char **ptr);
-char				*get_env_value(t_env *envb, char **str);
+t_lexer	*ft_remove_lex_node(t_lexer **lexer, t_lexer *node_to_remove);
+t_lexer	*expand_node(t_lexer **lexer, t_lexer *lst, t_env *envb);
+t_lexer	*expand_node2(char *tmp, t_lexer *node, t_env *envb);
+char	*extract_var(char *str, char **ptr);
+char	*get_env_value(t_env *envb, char **str);
 
 /*	expansion_utils_2.c	*/
 
-char				*dol_to_expand(char *str);
-t_lexer				*expand_dquote(char *tmp, t_lexer *node, t_env *envb);
-t_lexer				*clean_quotes(t_lexer *node);
+char	*dol_to_expand(char *str);
+t_lexer	*expand_dquote(char *tmp, t_lexer *node, t_env *envb);
+t_lexer	*clean_quotes(t_lexer *node);
 
 /*	expansion_handlers_1.c	*/
 
-int					handle_squotes(char *cmd_line, int *i, t_lexer **head);
-int					handle_dquotes(char *cmd_line, int *i, t_lexer **head);
-void				handle_spec_chars(char *cmd_line, int *j, t_lexer **head);
-void				handle_dollar(char *cmd_line, int *i, t_lexer **head);
-void				handle_words_spec_char(char *cmd_line, int *i,
-						t_lexer **head);
+int		handle_squotes(char *cmd_line, int *i, t_lexer **head);
+int		handle_dquotes(char *cmd_line, int *i, t_lexer **head);
+void	handle_spec_chars(char *cmd_line, int *j, t_lexer **head);
+void	handle_dollar(char *cmd_line, int *i, t_lexer **head);
+void	handle_words_spec_char(char *cmd_line, int *i, t_lexer **head);
 
 /*	expansion_handlers_2.c	*/
 
-void				handle_non_quote(char *str, int *i, int *j, char *epur_str);
-void				handle_quote(char *str, int *i, int *j, char *epur_str);
+void	handle_non_quote(char *str, int *i, int *j, char *epur_str);
+void	handle_quote(char *str, int *i, int *j, char *epur_str);
 
 /*	lexer_spec_chars.c	*/
 
-t_tokens			is_spec_char(char *c);
-t_tokens			is_spec_char2(char *c);
-t_tokens			is_spec_char3(char *c);
-t_tokens			is_spec_char4(char *c);
+t_tokens	is_spec_char(char *c);
+t_tokens	is_spec_char2(char *c);
+t_tokens	is_spec_char3(char *c);
+t_tokens	is_spec_char4(char *c);
 
 /*	lexer_utils_1.c	*/
 
-void				free_lexer_list(t_lexer **head);
-int					is_wspace(char c);
-int					is_quote(char c);
-char				*ft_epur_str(char *str);
-int					ft_fill_lexer(t_lexer **lexer_lst, char *cmd_line);
+void 	free_lexer_list(t_lexer **head);
+int 	is_wspace(char c);
+int  	is_quote(char c);
+char	*ft_epur_str(char *str);
+int		ft_fill_lexer(t_lexer **lexer_lst, char *cmd_line);
+
 
 /*	lexer_utils_2.c	*/
 
-t_lexer				*ft_last_lexer_node(t_lexer *node);
-void				ft_add_lex_node(t_lexer **lexer, char *word, t_tokens type);
-t_lexer				*syntax_error(t_lexer *lexer, t_lexer **lexer_head);
-t_lexer				*check_valid_input(t_lexer **lexer_head);
-t_lexer				*ft_lexer(char *line);
+t_lexer *ft_last_lexer_node(t_lexer *node);
+void 	ft_add_lex_node(t_lexer **lexer, char *word, t_tokens type);
+t_lexer	*syntax_error(t_lexer *lexer, t_lexer **lexer_head);
+t_lexer	*check_valid_input(t_lexer **lexer_head);
+t_lexer	*ft_lexer(char *line);
 
-/*to be deleted */
+	/*to be deleted */
 
-char				*print_token(t_tokens token);
+char	*print_token(t_tokens token);
 void 	print_lexer(t_lexer **head, char *loc);
 void 	ft_print_struct_tab(t_cmd **struct_tab);
-//void 	print_lexer(t_lexer **head, char *loc);
 
 /******************************************/
 /******************MAIN********************/
@@ -368,8 +362,32 @@ void	execution(t_set *set, t_cmd **cmd_struct_tab, t_env *envb);
 int		shell_parser(char *input, t_lexer **lexer, t_env *envb, t_cmd *** cmd_tab);
 int		shell_loop(t_env *envb);
 
-
 #endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /*

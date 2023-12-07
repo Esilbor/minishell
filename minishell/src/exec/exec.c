@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 09:45:47 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/07 15:58:20 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/07 17:12:03 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ char	**env_to_tab(t_env *lst)
 // 		//ft_free_char_tab(envp);
 // 	}
 // }
+
+/*
  void ft_exec_cmd(t_data *data, int index)
  {
 
@@ -115,3 +117,4 @@ char	**env_to_tab(t_env *lst)
 	
  }
 
+*/
