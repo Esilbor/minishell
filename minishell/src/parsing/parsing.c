@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 12:13:29 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/07 19:16:45 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/08 13:33:34 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ void	inputs_are_valid(t_cmd **cmd_tab)
 				if (fd < 0)
 					invalid_input(lst->word);
 				lst = lst->next;
+				close (fd);
 			}
 		}
 		i++;
@@ -189,7 +190,7 @@ int	shell_parser(char *input, t_lexer **lexer, t_env *envb, t_cmd ***cmd_tab)
 		*cmd_tab = command_builder(lexer);
 		// init_heredocs(*cmd_tab);
 		parse_input_redir(*cmd_tab);
-		ft_print_struct_tab(*cmd_tab);
+		// ft_print_struct_tab(*cmd_tab);
 		free_lexer_list(lexer);
 		return (0);
 }

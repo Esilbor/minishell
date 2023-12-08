@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_open.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 17:28:56 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/07 19:11:07 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/08 11:56:04 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int	ft_open_stdin(t_set *set, int index)
 	fd_stdin = 0;
 	if (set->cmd_set[index]->input)
 		fd_stdin = open(set->cmd_set[index]->input->word, O_RDONLY);
+
 	return (fd_stdin);
 }
 
@@ -98,7 +99,6 @@ void	ft_dup2_first(t_set *set, int index, int fd_stdin, int fd_stdout)
 
 	/************************************/
 	/************************************/
-
 	if (fd_stdin) // si on a un input different de l'entree standard
 	{
 		if (dup2(fd_stdin, 0) == -1)
@@ -119,7 +119,7 @@ void	ft_dup2_first(t_set *set, int index, int fd_stdin, int fd_stdout)
 
 void	ft_dup2_multpl(t_set *set, int index, int fd_stdin, int fd_stdout)
 {
-	if (fd_stdin)
+	if (fd_stdin) // si une redirection d'input
 	{
 		if (dup2(fd_stdin, 0) == -1)
 			exit(1);
@@ -167,10 +167,13 @@ void ft_dup2(t_set *set, int index)
 		ft_dup2_first(set, index, fd_stdin, fd_stdout);
 	else
 		ft_dup2_multpl(set, index, fd_stdin, fd_stdout);
-	close_pipe(set, 0);
-	close_pipe(set, 1);
-	if (fd_stdin != 0)
-		close(fd_stdin);
-	if (fd_stdout != 1)
-		close(fd_stdout);
+	if (index)
+	{
+		close_pipe(set, 0);
+		close_pipe(set, 1);
+		if (fd_stdin != 0)
+			close(fd_stdin);
+		if (fd_stdout != 1)
+			close(fd_stdout);
+	}
 }
