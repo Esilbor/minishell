@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 12:13:29 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/08 13:33:34 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/08 21:41:11 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@ void	fill_heredoc(t_lexer *lex/*, t_cmd **cmd_tab*/)
 {
 	int		fd;
 	char	*buf;
+	size_t	eof_len;
 
+	eof_len = ft_strlen(lex->word) - 1;
 	fd = open(lex->word, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	if (fd < 0)
 	{
@@ -33,7 +35,7 @@ void	fill_heredoc(t_lexer *lex/*, t_cmd **cmd_tab*/)
 		}
 		if (buf || buf[0])
 		{
-			if (!ft_strncmp(&lex->word[1], buf, ft_strlen(buf)))
+			if (eof_len == ft_strlen(buf) && !ft_strncmp(&lex->word[1], buf, ft_strlen(buf)))
 				break ;
 			ft_putstr_fd(buf, fd);
 			write(fd, "\n", 1);

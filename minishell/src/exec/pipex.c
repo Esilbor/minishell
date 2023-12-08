@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:13:47 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/07 08:24:31 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/08 21:52:02 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,14 +48,10 @@ void	init_pid_tab(t_set *set)
 
 void ft_execve(t_set *set, int index)
 {
-	// int i;
 	char *cmd_path;
-
-	// i = 0;
 	// if (!set->paths)
 	// {
 	// 	// erre split
-
 	// }
 	if (set->paths && (!ft_strchr(set->cmd_set[index]->cmd[0], '/')))
 	{
@@ -80,7 +76,6 @@ void ft_execve(t_set *set, int index)
 	ft_close_pipes(set);
 	exit(update_ret(&set->env_lst, 126)); // a verifier
 }
-
 
 void	close_pipe(t_set *set, int index)
 {
@@ -113,15 +108,18 @@ pid_t	ft_fork(t_set *set, int index)
 			exit(0);
 		}
 		if (set->cmd_set[index]->cmd[0])
-		{
 			ft_execve(set, index);
-		}
-
 		// close_crush_exit(NULL, set, 1, 1);
 		exit(1); // if execve fails
 	}
+	// if (set->cmd_set[index]->input)
+	// 	unlink(set->cmd_set[index]->input->word);
+	// if (set->cmd_set[index]->output)
+	// 	unlink(set->cmd_set[index]->output->word);
 	if (index)
+	{
 		close_pipe(set, index);
+	}
 	return (pid);
 }
 
@@ -148,19 +146,34 @@ void	ft_waitpid(t_set *set)
 	// g_last_status = status;
 }
 
+bool	is_single_builtin(t_set *set, int index)
+{
+	if (is_builtin(set->cmd_set[index]->cmd) && set->cmd_nb == 1)
+	{
+		if (!(set->cmd_set[index]->input && set->cmd_set[index]->output))
+			return (true);
+	}
+	return (false);
+}
+
 void	ft_pipex(t_set *set)
 {
 	int	i;
 	pid_t last_pid;
 
 	i = 0;
-	while (i < set->cmd_nb)
+	if (is_single_builtin(set, i))
+		do_builtins(set, i);
+	else
 	{
-		last_pid = ft_fork(set, i);
-		set->pid[i] = last_pid;
-		i++;
+		while (i < set->cmd_nb)
+		{
+			last_pid = ft_fork(set, i);
+			set->pid[i] = last_pid;
+			i++;
+		}
+		ft_waitpid(set);
 	}
-	ft_waitpid(set);
 	// close_crush_exit(NULL, set, 0, 0);
 	// exit(0);
 }

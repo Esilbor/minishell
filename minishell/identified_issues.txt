@@ -1,0 +1,34 @@
+IDENTITFIED ISSUES 
+
+- issue with multiple heredoc getting in a "waiting cat" state
+. heredocs must be deleted at the end of the program 
+- handle signals
+- return values
+- unclosed fd
+- leaks
+- norm
+
+- 2>b should redirect stderr to the file b (not done by most)
+- update SHLVL (clearly optional)
+
+
+the waiting cat state:
+
+Candy_$hell> cat <<poi <<plo
+heredoc> this is poi
+heredoc> poi
+heredoc> this is plo
+heredoc> plo
+jdfsj
+jdfsj
+ds
+ds
+poi
+poi
+plo
+plo
+Candy_$hell> cat
+plo
+plo
+fdf
+fdf

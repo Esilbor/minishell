@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/08 15:19:11 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/08 15:22:43 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,6 @@
 # define YELLOW "\033[33m"
 # define PINK "\033[38;2;255;105;180m"
 # define ORANGE "\033[38;2;255;105;280m"
-
-// # define RED "\033[31;2m"       // Dull red
-// # define GREEN "\033[32;2m"     // Dull green
-// # define BLUE "\033[34;2m"      // Dull blue
-// # define PURPLE "\033[35;2m"    // Dull purple
-// # define CYAN "\033[36;2m"      // Dull cyan
-// # define WHITE "\033[37;2m"     // Dull white
-// # define YELLOW "\033[33;2m"    // Dull yellow
-// # define PINK "\033[38;2;255;105;180;2m" // Dull pink
-// # define ORANGE "\033[38;2;255;105;180;2m" // Dull orange
 
 # define RESET "\x1B[0m"
 # define PROMPT "\001\033[38;2;255;105;180m\002Candy_$hell> \001\033[33m\002"
