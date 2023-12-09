@@ -6,13 +6,15 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 19:41:10 by zaquedev          #+#    #+#             */
-/*   Updated: 2023/12/01 21:57:23 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/09 17:37:38 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../includes/minishell.h"
 
+
+/*
 
 t_data   *init_set(t_data **data, t_cmd **cmd_struct_tab, t_env *envb)
 {
@@ -45,7 +47,7 @@ t_data   *init_set(t_data **data, t_cmd **cmd_struct_tab, t_env *envb)
      printf("(*data)->cmds_nb = %d\n", (*data)->cmds_nb);
    
 
-    //******************************************************** 
+     //  ******************************************************** 
 
     // char **paths --> data->paths  // tableau de listes de chemin : char **   
    
@@ -107,4 +109,4 @@ t_data   *init_set(t_data **data, t_cmd **cmd_struct_tab, t_env *envb)
     return (*data);
 } 
 
-
+*/

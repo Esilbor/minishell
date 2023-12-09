@@ -3,17 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-<<<<<<< HEAD
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 18:19:41 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/28 14:55:56 by zaquedev         ###   ########.fr       */
-=======
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/14 18:19:41 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/05 15:04:01 by bbresil          ###   ########.fr       */
->>>>>>> main
+/*   Updated: 2023/12/09 19:13:44 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,17 +60,13 @@ void	ft_print_struct_tab(t_cmd **struct_tab)
 		if (struct_tab[i]->output)
 		{
 			ft_printf(YELLOW"OUTPUT_LST[%d]\n", i);
-<<<<<<< HEAD
-			print_lexer(&(struct_tab[i])->output, "example");
-=======
 			print_lexer(&(struct_tab[i])->output, "out");
 			ft_printf("***************\n\n"RESET);
 		}
 		if (struct_tab[i]->input)
 		{
 			ft_printf(CYAN"INPUT_LST[%d]\n", i);
-			print_lexer(&(struct_tab[i])->output, "in");
->>>>>>> main
+			print_lexer(&(struct_tab[i])->input, "in");
 			ft_printf("***************\n\n"RESET);
 		}
 		i++;

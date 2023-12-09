@@ -5,28 +5,19 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-<<<<<<< HEAD
 /*   Created: 2023/10/25 12:06:41 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/02 16:22:36 by zaquedev         ###   ########.fr       */
-=======
-/*   Created: 2023/11/26 23:02:12 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/07 09:31:57 by esilbor          ###   ########.fr       */
->>>>>>> main
+/*   Updated: 2023/12/09 19:12:56 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-<<<<<<< HEAD
-#include "../includes/minishell.h"
 
-
-// Handle SIGINT signal and print a prompt
-void	sigint_handler(int signum)
-=======
+/*
 void	execution(t_set *set, t_cmd **cmd_struct_tab, t_env *envb)
->>>>>>> main
 {
+
+	// cd, exit, export, unset quand ils sont seuls sont execute dans le parent, lorsqu'il sont en pipe ils sont execute dans le child (source: Oceane)
 	init_set(&set, cmd_struct_tab, envb);
 	init_pipe_set(set);
 	init_pid_tab(set);
@@ -61,14 +52,14 @@ int check_first(t_data *data, int argc, char **envp)
 
 	
 }
-
+*/
+/*
 
 int	shell_loop(t_env *envb, char **envp)
 {
 	t_lexer	*lexer;
 	char	*input;
 	t_cmd	**cmd_struct_tab;
-<<<<<<< HEAD
 	
 	t_data *data;
 
@@ -77,7 +68,7 @@ int	shell_loop(t_env *envb, char **envp)
 	data = NULL;
 	cmd_struct_tab = NULL;
 	//cmd_tab_name = "tab_name";
-	input = ft_prompt(envb);
+	input = ft_prompt(envp);
 	if (input)
 	{
 		lexer = ft_lexer(input);
@@ -92,7 +83,7 @@ int	shell_loop(t_env *envb, char **envp)
 		ft_print_struct_tab(cmd_struct_tab);
 
 		
-/*************************************************************/
+//   ************************************************************
 //				EXECUTION PART HERE
 
 
@@ -118,9 +109,9 @@ printf("\n\n======================= EXECUTION PART HERE ========================
 		data->env_arr = envp;
   		ft_print_char_tab(data->env_arr);
 		
-			/*
-			valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose ./minishell
-			*/
+			
+		//	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose ./minishell
+			
 
 		printf("\n\ndata->cmds_nb = %d\n", data->cmds_nb);
 		int cpt = data->cmds_nb;
@@ -143,26 +134,26 @@ printf("\n\n======================= EXECUTION PART HERE ========================
 			i++;
 		}
 		
-		/*************************************************************/
+		// ***********************************************************  ///
 		//				TRAITEMENT DES CMD (cmd / builtin)
 		//						==> executer un builtin
 		//						==> executer une commande (FORK / WAIT / EXECVE)
 
 		
 		
-		/* 				avant --> cas d'erreurs :
+		 	// 			avant --> cas d'erreurs :
 		
-			init_data --> 0;
-				if (check_first (data->exit , argc , envp) == -1)
-					return (1); // exit
+			// init_data --> 0;
+			// 	if (check_first (data->exit , argc , envp) == -1)
+			// 		return (1); // exit
 					
-				if data->exit === -1 --> return (1)
-				if envp == -1  --> return (1)
-				if argc == -1 --> return (1)
+			// 	if data->exit === -1 --> return (1)
+			// 	if envp == -1  --> return (1)
+			// 	if argc == -1 --> return (1)
 
-			if (isatty(STDIN_FILENO) == 0)
-		 		return (0);
-		*/ 
+			// if (isatty(STDIN_FILENO) == 0)
+		 	// 	return (0);
+		 
 		
 		
 	
@@ -184,12 +175,12 @@ printf("\n\n======================= EXECUTION PART HERE ========================
 	
 		
 		
-		/*************************************************************/
+		// ************************************************************
 		//				suite du programme
 
 
 		free_shell(NULL, lexer, input, cmd_struct_tab);
-=======
+
 	t_set	*set;
 
 	set = NULL;
@@ -201,49 +192,90 @@ printf("\n\n======================= EXECUTION PART HERE ========================
 		if (input && input[0])
 		{
 			shell_parser(input, &lexer, envb, &cmd_struct_tab);
-			// execution(set, cmd_struct_tab, envb);
+			execution(set, cmd_struct_tab, envb);
 			free_shell(NULL, input, NULL); //should free input? //put cmd_struct_tab to null... no need to be free here?
 		}
 		else if (input)
 			continue ;
 		else
-			return (ft_quit_shell(set, envb, cmd_struct_tab), 2); 
->>>>>>> main
+			return (ft_quit_shell(set, envb, cmd_struct_tab), 2);
 	}
 	return (0);
 }
+*/
 
-
+/*
 
 
 //int	main(int argc, t_data *data, char **envp)
 int	main(int argc, char **argv, char **envp)
 {
 	t_env	*envb;
-<<<<<<< HEAD
-	int		status;
-	//t_data	*data;
-=======
->>>>>>> main
 
 	if (argc != 1)
-		return (ft_putstr_fd("better without added sugar\n", 2), 1);
+		return (ft_putstr_fd(PINK"better without added sugar\n"RESET, 2), 1);
 	(void)argv;
 	ft_handle_signals();
 	envb = get_env(envp);
-<<<<<<< HEAD
 
-	
+	// shell_loop(envb);
+	return (shell_loop(envb));
+
+}
+
+
+*/
+
+
+
+
+void	execution(t_set *set, t_cmd **cmd_struct_tab, t_env *envb)
+{
+	// cd, exit, export, unset (source: Oceane)
+	init_set(&set, cmd_struct_tab, envb);
+	init_pipe_set(set);
+	init_pid_tab(set);
+	ft_pipex(set);
+
+	//free pid_tab
+	//free pipe_set
+	// candy_crush
+}
+
+int	shell_loop(t_env *envb)
+{
+	t_lexer	*lexer;
+	char	*input;
+	t_cmd	**cmd_struct_tab;
+	t_set	*set;
+
+	set = NULL;
+	cmd_struct_tab = NULL;
 	while (1)
 	{
-		status = shell_loop(envb, envp);
-		if (status == 1)
+		input = ft_prompt(envb);
+		if (input && input[0])
+		{
+			shell_parser(input, &lexer, envb, &cmd_struct_tab);
+			execution(set, cmd_struct_tab, envb);
+			free_shell(NULL, input, NULL);
+		}
+		else if (input)
 			continue ;
-		if (status == 2)
-			break ;
+		else
+			return (ft_quit_shell(set, envb, cmd_struct_tab), 2);
 	}
 	return (0);
-=======
+}
+
+int	main(int argc, char **argv, char **envp)
+{
+	t_env	*envb;
+
+	if (argc != 1)
+		return (ft_putstr_fd(PINK"better without added sugar\n"RESET, 2), 1);
+	(void)argv;
+	ft_handle_signals();
+	envb = get_env(envp);
 	return (shell_loop(envb));
->>>>>>> main
 }

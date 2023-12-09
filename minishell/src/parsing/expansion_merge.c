@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 10:53:54 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/05 14:38:04 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/07 12:53:18 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,3 +147,6 @@ t_lexer	*parsing(char *input, t_lexer **lexer, t_env *envb)
 		return (add_history(input), NULL);
 	return (*lexer);
 }
+
+
+// inputs are in THE WRONG LIST!!!

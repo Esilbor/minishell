@@ -3,17 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_cleanup.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-<<<<<<< HEAD
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 10:51:44 by esilbor           #+#    #+#             */
-/*   Updated: 2023/11/28 17:50:04 by zaquedev         ###   ########.fr       */
-=======
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/21 10:51:44 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/05 14:37:12 by bbresil          ###   ########.fr       */
->>>>>>> main
+/*   Updated: 2023/12/09 17:38:51 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,17 +58,11 @@ void	clean_redir(t_lexer **lexer, t_lexer **lex, t_tokens type)
 		return ;
 	}
 	if ((*lex)->type >= PIPE && (*lex)->type <= LESS_LESS)
-<<<<<<< HEAD
-		*lex = ft_remove_lex_node(lexer, *lex);
-    *lex = (*lex)->next;
-	if (!(*lex)->word[0])
-=======
 	{
 		// *lex = ft_remove_lex_node(lexer, *lex);
 		*lex = (*lex)->next;
 	}
 	if (*lex && !(*lex)->word[0])
->>>>>>> main
 	{
 		*lex = ft_remove_lex_node(lexer, *lex);
 		*lex = (*lex)->next;

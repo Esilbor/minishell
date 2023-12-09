@@ -6,13 +6,15 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 18:32:29 by zaquedev          #+#    #+#             */
-/*   Updated: 2023/11/28 19:01:40 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/09 17:38:15 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../includes/minishell.h"
 
+
+/*
 static int	string_empty(char *str)
 {
 	int	i;
@@ -100,3 +102,4 @@ char *set_path_cmd(t_data *data, char *cmd)
 	return (NULL);
 }
 
+*/

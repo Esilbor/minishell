@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 19:40:11 by zaquedev          #+#    #+#             */
-/*   Updated: 2023/12/02 21:12:51 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/09 17:36:19 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@
 
 // *****************************************
 
+
+/*
 int	is_builtin(char **command)
 {
 	if (ft_strncmp(command[0], "exit", 5))
@@ -145,3 +147,4 @@ int	run_execution(t_data *data, t_cmd **cmd_struct_tab)
 	//free
 	return (1);
 }
+*/
