@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:13:47 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/07 15:59:21 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/09 19:52:02 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,19 +148,43 @@ void	ft_waitpid(t_set *set)
 	// g_last_status = status;
 }
 
+
+bool	is_single_builtin(t_set *set, int index)
+{
+	if (is_builtin(set->cmd_set[index]->cmd) && set->cmd_nb == 1)
+	{
+		if (!(set->cmd_set[index]->input && set->cmd_set[index]->output))
+			return (true);
+	}
+	return (false);
+}
+
 void	ft_pipex(t_set *set)
 {
 	int	i;
 	pid_t last_pid;
 
 	i = 0;
-	while (i < set->cmd_nb)
+	// while (i < set->cmd_nb)
+	// {
+	// 	last_pid = ft_fork(set, i);
+	// 	set->pid[i] = last_pid;
+	// 	i++;
+	// }
+	// ft_waitpid(set);
+
+	if (is_single_builtin(set, i))
+		do_builtins(set, i);
+	else
 	{
-		last_pid = ft_fork(set, i);
-		set->pid[i] = last_pid;
-		i++;
+		while (i < set->cmd_nb)
+		{
+			last_pid = ft_fork(set, i);
+			set->pid[i] = last_pid;
+			i++;
+		}
+		ft_waitpid(set);
 	}
-	ft_waitpid(set);
 	// close_crush_exit(NULL, set, 0, 0);
 	// exit(0);
 }
