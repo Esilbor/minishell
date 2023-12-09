@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 15:11:36 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/04 03:06:36 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/09 10:16:29 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,4 +99,6 @@ void	do_exit(t_set *set, int index)
 	}
 	candy_crush(set);
 	exit(exit_ret);
+	//check exit value
+	// less_shlvl(?)
 }

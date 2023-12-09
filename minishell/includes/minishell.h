@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/08 15:22:43 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/09 13:17:57 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ typedef struct t_set
 /***************TO ORDER*******************/
 /******************************************/
 
+void		sugar_rush(t_set *set);
 void		ft_waitpid(t_set *set);
 void		ft_close_and_free(t_set *set);
 void		close_pipe(t_set *set, int index);

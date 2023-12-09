@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 12:13:29 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/08 21:41:11 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/09 00:44:59 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,11 +188,15 @@ int	shell_parser(char *input, t_lexer **lexer, t_env *envb, t_cmd ***cmd_tab)
 
 		parsing(input, lexer, envb);
 		if (!(*lexer))
-			return (add_history(input), 1);
+			return (add_history(input), 1); //>> GO TO EXIT D
 		*cmd_tab = command_builder(lexer);
-		// init_heredocs(*cmd_tab);
 		parse_input_redir(*cmd_tab);
 		// ft_print_struct_tab(*cmd_tab);
 		free_lexer_list(lexer);
 		return (0);
 }
+
+/*
+EXIT D has no lexer or cmd_tab but should free input, envb 
+
+*/

@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:13:47 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/08 21:52:02 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/09 16:02:28 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,7 @@ void	init_pid_tab(t_set *set)
 void ft_execve(t_set *set, int index)
 {
 	char *cmd_path;
-	// if (!set->paths)
-	// {
-	// 	// erre split
-	// }
+	
 	if (set->paths && (!ft_strchr(set->cmd_set[index]->cmd[0], '/')))
 	{
 		cmd_path = set_path_cmd(set, set->cmd_set[index]->cmd[0]);
@@ -102,24 +99,15 @@ pid_t	ft_fork(t_set *set, int index)
 		ft_dup2(set, index);
 		if (is_builtin(set->cmd_set[index]->cmd)== 1)
 		{
-			do_builtins(set, index);
-			// free env_lst , pid_tab, pipes, cmd_struct_tab, paths, envp
-			// close_crush_exit(NULL, set, 1, 0);
-			exit(0);
+			do_builtins(set, index); 
+			exit(0); // >> WILL GO TO EXIT C
 		}
 		if (set->cmd_set[index]->cmd[0])
 			ft_execve(set, index);
-		// close_crush_exit(NULL, set, 1, 1);
-		exit(1); // if execve fails
+		exit(1); // if execve fails >> WILL GO TO EXIT C
 	}
-	// if (set->cmd_set[index]->input)
-	// 	unlink(set->cmd_set[index]->input->word);
-	// if (set->cmd_set[index]->output)
-	// 	unlink(set->cmd_set[index]->output->word);
 	if (index)
-	{
-		close_pipe(set, index);
-	}
+		close_pipe(set, index); // close heredocs here?
 	return (pid);
 }
 
@@ -156,6 +144,17 @@ bool	is_single_builtin(t_set *set, int index)
 	return (false);
 }
 
+void	sugar_rush(t_set *set)
+{
+	free(set->pid);
+	free(set->pipe[0]);
+	free(set->pipe[1]);
+	free(set->pipe);
+	ft_free_tab((void **) set->paths);
+	ft_free_tab((void **) set->envp);
+	free(set);
+}
+
 void	ft_pipex(t_set *set)
 {
 	int	i;
@@ -163,7 +162,7 @@ void	ft_pipex(t_set *set)
 
 	i = 0;
 	if (is_single_builtin(set, i))
-		do_builtins(set, i);
+		do_builtins(set, i); // GO TO EXIT C
 	else
 	{
 		while (i < set->cmd_nb)
@@ -174,6 +173,4 @@ void	ft_pipex(t_set *set)
 		}
 		ft_waitpid(set);
 	}
-	// close_crush_exit(NULL, set, 0, 0);
-	// exit(0);
 }

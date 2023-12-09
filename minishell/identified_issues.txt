@@ -5,11 +5,21 @@ IDENTITFIED ISSUES
 - handle signals
 - return values
 - unclosed fd
+- hide ?=0
+- protect every malloc and ft_strdup
 - leaks
 - norm
 
+would be nice to have it done:
+
 - 2>b should redirect stderr to the file b (not done by most)
-- update SHLVL (clearly optional)
+- update SHLVL (clearly optional if we want to flex)
+- a no candy mode that cancel out colour display and get the prompt minimal $> 
+- have the nested shell prompt to display SHLVL with 
+                                                    *Candy_$hell> == SHLVL=3
+                                                    **Candy_$hell> == SHLVL=4
+                                                    ***Candy_$hell> == SHLVL=5
+                                                    ****Candy_$hell> == SHLVL=6
 
 
 the waiting cat state:
@@ -19,16 +29,8 @@ heredoc> this is poi
 heredoc> poi
 heredoc> this is plo
 heredoc> plo
-jdfsj
-jdfsj
-ds
-ds
-poi
-poi
 plo
 plo
 Candy_$hell> cat
 plo
 plo
-fdf
-fdf

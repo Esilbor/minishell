@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 23:02:12 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/08 21:47:53 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/09 15:56:31 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,11 @@
 void	execution(t_set *set, t_cmd **cmd_struct_tab, t_env *envb)
 {
 	// cd, exit, export, unset (source: Oceane)
-	init_set(&set, cmd_struct_tab, envb);
+	init_set(&set, cmd_struct_tab, envb); // PROTECT ALL THESE FUNCTIONS WITH IF if they fail
 	init_pipe_set(set);
 	init_pid_tab(set);
 	ft_pipex(set);
-
-	//free pid_tab
-	//free pipe_set
-	// candy_crush
+	sugar_rush(set);
 }
 
 int	shell_loop(t_env *envb)
@@ -39,14 +36,23 @@ int	shell_loop(t_env *envb)
 		input = ft_prompt(envb);
 		if (input && input[0])
 		{
-			shell_parser(input, &lexer, envb, &cmd_struct_tab);
+			if (!shell_parser(input, &lexer, envb, &cmd_struct_tab))
+				// EXIT D
 			execution(set, cmd_struct_tab, envb);
-			free_shell(NULL, input, NULL);
+			free(input); // EXIT C
 		}
 		else if (input)
+		{
+			// sugar_rush(set);
+			// ft_quit_shell(set, envb, cmd_struct_tab);
 			continue ;
+		}
 		else
-			return (ft_quit_shell(set, envb, cmd_struct_tab), 2);
+		{
+			ft_printf("Ctrl + D pressed\n");
+			ft_quit_shell(set, envb, cmd_struct_tab);
+			return (2); // EXIT A
+		}
 	}
 	return (0);
 }
@@ -60,5 +66,6 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	ft_handle_signals();
 	envb = get_env(envp);
+	// add_shlvl(envb);
 	return (shell_loop(envb));
 }
