@@ -6,11 +6,25 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 15:11:36 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/09 10:16:29 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/10 21:18:45 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+void	candy_crush(t_set *set)
+{
+	if (set->env_lst)
+		ft_free_env_lst(set->env_lst);
+	ft_free_tab((void **)set->envp);
+	ft_free_tab((void **)set->paths);
+	free_cmd_struct_tab(set->cmd_set);
+	free (set->pipe[0]);
+	free (set->pipe[1]);
+	free (set->pipe);
+	free (set->pid);
+	free (set);
+}
 
 void	overflow_parsing(const char *str, int *i, int *sign, int *zero_nb)
 {

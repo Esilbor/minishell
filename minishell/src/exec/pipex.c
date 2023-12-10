@@ -6,11 +6,24 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:13:47 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/09 16:02:28 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/10 21:47:09 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+// closes pipe file descriptors if exist
+void	ft_close_pipes(t_set *set)
+{
+	if (set->pipe[0][0])
+		close(set->pipe[0][0]);
+	if (set->pipe[0][1])
+		close(set->pipe[0][1]);
+	if (set->pipe[1][0])
+		close(set->pipe[1][0]);
+	if (set->pipe[1][1])
+		close(set->pipe[1][1]);
+}
 
 void	init_pipe_set(t_set *set)
 {
@@ -56,7 +69,9 @@ void ft_execve(t_set *set, int index)
 		if (!cmd_path)
 		{
 			// free , close ... exit
+			ft_printf("failed set_path_cmd in ft_execve\n*--------------------------------------------------*\n");
 			ft_close_pipes(set);
+			free_after_builtin(set);
 			exit(127); // a verifier avec update_ret
 		}
 		execve(cmd_path, set->cmd_set[index]->cmd, set->envp); //mod
@@ -80,7 +95,18 @@ void	close_pipe(t_set *set, int index)
 	close(set->pipe[(index + 1) % 2][1]);
 }
 
-
+void	free_after_builtin(t_set *set)
+{
+	ft_free_env_lst(set->env_lst);
+	free(set->pipe[0]);
+	free(set->pipe[1]);
+	free(set->pipe);
+	ft_free_tab((void **)set->paths);
+	ft_free_tab((void **)set->envp);
+	free_cmds((t_cmd **)set->cmd_set);
+	free(set->pid);
+	free (set);
+}
 
 pid_t	ft_fork(t_set *set, int index)
 {
@@ -97,13 +123,19 @@ pid_t	ft_fork(t_set *set, int index)
 	if (pid == 0)
 	{
 		ft_dup2(set, index);
-		if (is_builtin(set->cmd_set[index]->cmd)== 1)
+		if (set->cmd_set[index]->cmd[0] && is_builtin(set->cmd_set[index]->cmd)== 1) // issues
 		{
 			do_builtins(set, index); 
-			exit(0); // >> WILL GO TO EXIT C
+			ft_printf("END OF DO_BUILTINS in ft_fork\n*--------------------------------------------------*\n");
+			free_after_builtin(set);
+			exit(0);
 		}
 		if (set->cmd_set[index]->cmd[0])
+		{
 			ft_execve(set, index);
+			ft_printf("failed execve in ft_fork\n*--------------------------------------------------*\n");
+			free_after_builtin(set);
+		}
 		exit(1); // if execve fails >> WILL GO TO EXIT C
 	}
 	if (index)
@@ -144,25 +176,18 @@ bool	is_single_builtin(t_set *set, int index)
 	return (false);
 }
 
-void	sugar_rush(t_set *set)
-{
-	free(set->pid);
-	free(set->pipe[0]);
-	free(set->pipe[1]);
-	free(set->pipe);
-	ft_free_tab((void **) set->paths);
-	ft_free_tab((void **) set->envp);
-	free(set);
-}
-
 void	ft_pipex(t_set *set)
 {
 	int	i;
 	pid_t last_pid;
 
 	i = 0;
-	if (is_single_builtin(set, i))
+	if (set->cmd_set[i]->cmd[0] && is_single_builtin(set, i))
+	{
 		do_builtins(set, i); // GO TO EXIT C
+		ft_printf("END OF single builtin\n*--------------------------------------------------*\n");
+
+	}
 	else
 	{
 		while (i < set->cmd_nb)
@@ -171,6 +196,9 @@ void	ft_pipex(t_set *set)
 			set->pid[i] = last_pid;
 			i++;
 		}
+		ft_printf("START OF WAITPID\n*--------------------------------------------------*\n");
 		ft_waitpid(set);
+		ft_printf("END OF WAITPID\n*--------------------------------------------------*\n");
+
 	}
 }

@@ -4,6 +4,8 @@ IDENTITFIED ISSUES
 . heredocs must be deleted at the end of the program 
 - handle signals
 - return values
+- exit abc actually exit the program when it should give back the prompt
+- what if < Makefile | grep SRC (need to parse CMD[0] ... if no cmd it renders the prompt)
 - unclosed fd
 - hide ?=0
 - protect every malloc and ft_strdup

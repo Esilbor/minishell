@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:57:33 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/06 13:12:45 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/10 20:44:07 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,12 @@ char *set_path_cmd(t_set *set, char *cmd)
 
 	cmd = check_cmd_null(cmd);
 	index = 0;
-	tmp = ft_strjoin("/", cmd);
-	if (!tmp)
-		return (ft_putstr_fd("ERR_MALLOC\n", 2), NULL); // free!!!
 
 	while (set->paths[index])
 	{
+		tmp = ft_strjoin("/", cmd);
+		if (!tmp)
+			return (ft_putstr_fd("ERR_MALLOC\n", 2), NULL); // free!!!
 		cmd_tmp = ft_strjoin(set->paths[index], tmp);
 		if (!cmd_tmp)
 		{
@@ -59,7 +59,11 @@ char *set_path_cmd(t_set *set, char *cmd)
 		}
 
 		if (access(cmd_tmp, X_OK | F_OK) == 0)
+		{
+			free(tmp);
 			return (cmd_tmp);
+		}
+		free(tmp);
 		free (cmd_tmp);
 		index++;
 	}
