@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 12:13:29 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/11 09:43:07 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/11 13:51:59 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,9 @@ void	keep_last_input(t_cmd **cmd_tab)
 				if (unlink(lex->word) != 0)
 					perror("error deleting file");
 				lex = ft_remove_lex_node(&lex, lex);
-				lex = lex->next;
+				// lex = lex->next;
 			}
 			cmd_tab[i]->input = lex;
-			// free (lex); // ???
 		}
 		i++;
 	}
@@ -121,5 +120,6 @@ int	shell_parser(char *input, t_lexer **lexer, t_env *envb, t_cmd ***cmd_tab)
 		keep_last_input(*cmd_tab);
 		keep_last_output(*cmd_tab);
 		free_lexer_list(lexer);
+		// fprintf(stderr, "$$$$$\n");
 		return (0);
 }

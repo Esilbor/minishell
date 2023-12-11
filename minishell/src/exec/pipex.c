@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:13:47 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/11 06:15:26 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/11 16:39:45 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	init_pid_tab(t_set *set)
 void ft_execve(t_set *set, int index)
 {
 	char *cmd_path;
-	
+
 	if (set->paths && (!ft_strchr(set->cmd_set[index]->cmd[0], '/')))
 	{
 		cmd_path = set_path_cmd(set, set->cmd_set[index]->cmd[0]);
@@ -120,7 +120,7 @@ pid_t	ft_fork(t_set *set, int index)
 		ft_dup2(set, index);
 		if (set->cmd_set[index]->cmd[0] && is_builtin(set->cmd_set[index]->cmd)== 1) // issues
 		{
-			do_builtins(set, index); 
+			do_builtins(set, index);
 			free_redirections((t_cmd **)set->cmd_set);
 			free_after_builtin(set);
 			exit(0);

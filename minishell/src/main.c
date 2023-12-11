@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 23:02:12 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/11 06:36:36 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/11 17:02:06 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	sugar_rush(t_set *set)
 
 void	execution(t_set *set, t_cmd **cmd_struct_tab, t_env *envb)
 {
-	init_set(&set, cmd_struct_tab, envb); // PROTECT
+	init_set(&set, cmd_struct_tab, envb);
 	init_pipe_set(set);
 	init_pid_tab(set);
 	ft_pipex(set);
@@ -119,7 +119,14 @@ int	shell_loop(t_env *envb)
 		input = ft_prompt(envb);
 		if (input && input[0])
 		{
-			/* if (! */shell_parser(input, &lexer, envb, &cmd_struct_tab)/* ) */;
+			if (shell_parser(input, &lexer, envb, &cmd_struct_tab) == 1)
+			{
+				free (input);
+				// free_lexer_list (&lexer);
+				ft_free_env_lst(envb);
+				free_cmd_struct_tab(cmd_struct_tab);
+				continue ;
+			}
 			execution(set, cmd_struct_tab, envb);
 			free(input);
 		}

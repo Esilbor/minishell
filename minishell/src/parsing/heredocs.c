@@ -1,24 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   herdocs.c                                          :+:      :+:    :+:   */
+/*   heredocs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 09:39:05 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/11 11:48:16 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/11 13:35:25 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	fill_heredoc(t_lexer *lex/*, t_cmd **cmd_tab*/)
+void	fill_heredoc(t_lexer *lex, char *limiter)
 {
 	int		fd;
 	char	*buf;
 	size_t	eof_len;
 
-	eof_len = ft_strlen(lex->word) - 1;
+	// eof_len = ft_strlen(lex->word) - 1;
+	eof_len = ft_strlen(limiter);
 	fd = open(lex->word, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	if (fd < 0)
 	{
@@ -35,10 +36,15 @@ void	fill_heredoc(t_lexer *lex/*, t_cmd **cmd_tab*/)
 		}
 		if (buf || buf[0])
 		{
-			if (eof_len == ft_strlen(buf) && !ft_strncmp(&lex->word[1], buf, ft_strlen(buf)))
+			if (eof_len == ft_strlen(buf) && !ft_strncmp(limiter, buf, ft_strlen(buf)))
+			{
 				break ;
-			ft_putstr_fd(buf, fd);
-			write(fd, "\n", 1);
+			}
+			else
+			{
+				ft_putstr_fd(buf, fd);
+				write(fd, "\n", 1);
+			}
 		}
 		free (buf);
 	}
@@ -46,29 +52,35 @@ void	fill_heredoc(t_lexer *lex/*, t_cmd **cmd_tab*/)
 }
 
 // .limiter_index_k
-char	*name_heredoc(char *eof, int index, int k)
+char	*name_heredoc(char *limiter, int index, int k)
 {
 	char	*tmp;
 	char	*tmp2;
+	char	*tmp3;
 
 	tmp = NULL;
 	tmp2 = NULL;
+	tmp3 =  ft_itoa(index);
 
-	tmp = ft_strdup(lst->word);
+	tmp = ft_strdup(limiter);
 	tmp2 = ft_strjoin(tmp, "_");
 	free (tmp);
-	tmp = ft_strjoin(tmp2, ft_itoa(index));
+	tmp = ft_strjoin(tmp2, tmp3);
 	free (tmp2);
+	free (tmp3);
 	tmp2 = ft_strjoin(tmp, "_");
 	free (tmp);
-	tmp = ft_strjoin(tmp2, ft_itoa(k));
+	tmp3 = ft_itoa(k);
+	tmp = ft_strjoin(tmp2, tmp3);
 	free (tmp2);
+	free (tmp3);
 	return (tmp);
 }
 
 void	modify_limiter_nodes(t_lexer *lst, int index)
 {
 	char	*tmp;
+	char	*limiter;
 	int		k;
 
 	k = 1;
@@ -77,17 +89,19 @@ void	modify_limiter_nodes(t_lexer *lst, int index)
 	{
 		if (lst->type == LIMITER)
 		{
+			limiter = ft_strdup(lst->word);
 			tmp = name_heredoc(lst->word, index, k);
 			free (lst->word);
 			lst->word = ft_strjoin(".", tmp);
 			free (tmp);
-			fill_heredoc(lst);
+			fill_heredoc(lst, limiter);
+			free (limiter);
 			k++;
 		}
 		lst =lst->next;
 	}
 }
-  
+
 void	init_heredocs(t_cmd **cmd_tab)
 {
 	int		i;
