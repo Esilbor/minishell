@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/11 05:36:04 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/11 10:13:03 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,10 +133,16 @@ void		close_crush_exit(char *msg, t_set *set, int do_exit, int exit_ret);
 /***************HEREDOCS*******************/
 /******************************************/
 
-void		parse_input_redir(t_cmd **cmd_tab);
-void		init_heredocs(t_cmd **cmd_tab);
-void		modify_limiter_nodes(t_lexer *lst);
 void		fill_heredoc(t_lexer *lex);
+void		modify_limiter_nodes(t_lexer *lst, int index);
+void		init_heredocs(t_cmd **cmd_tab);
+
+
+void		inputs_are_valid(t_cmd **cmd_tab);
+void		invalid_input(char *filename);
+void		keep_last_input(t_cmd **cmd_tab);
+void		keep_last_output(t_cmd **cmd_tab);
+bool		outputs_are_valid(t_lexer *lex);
 
 /******************************************/
 /***************BUILT-IN*******************/
