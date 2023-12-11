@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:13:47 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/10 21:47:09 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/11 06:15:26 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,6 @@ void	init_pid_tab(t_set *set)
 		set->pid[i] = 0;
 }
 
-
-
 void ft_execve(t_set *set, int index)
 {
 	char *cmd_path;
@@ -68,8 +66,7 @@ void ft_execve(t_set *set, int index)
 		cmd_path = set_path_cmd(set, set->cmd_set[index]->cmd[0]);
 		if (!cmd_path)
 		{
-			// free , close ... exit
-			ft_printf("failed set_path_cmd in ft_execve\n*--------------------------------------------------*\n");
+			free_redirections(set->cmd_set);
 			ft_close_pipes(set);
 			free_after_builtin(set);
 			exit(127); // a verifier avec update_ret
@@ -79,9 +76,7 @@ void ft_execve(t_set *set, int index)
 	else
 	{
 		if (access(set->cmd_set[index]->cmd[0], X_OK | F_OK) == 0)
-		{
 			execve(set->cmd_set[index]->cmd[0], set->cmd_set[index]->cmd, set->envp);
-		}
 		ft_close_pipes(set);
 		exit(127); // a verifier avec update_ret
 	}
@@ -126,14 +121,18 @@ pid_t	ft_fork(t_set *set, int index)
 		if (set->cmd_set[index]->cmd[0] && is_builtin(set->cmd_set[index]->cmd)== 1) // issues
 		{
 			do_builtins(set, index); 
-			ft_printf("END OF DO_BUILTINS in ft_fork\n*--------------------------------------------------*\n");
+			free_redirections((t_cmd **)set->cmd_set);
 			free_after_builtin(set);
 			exit(0);
 		}
 		if (set->cmd_set[index]->cmd[0])
 		{
 			ft_execve(set, index);
-			ft_printf("failed execve in ft_fork\n*--------------------------------------------------*\n");
+			free_after_builtin(set);
+		}
+		else
+		{
+			free_redirections((t_cmd **)set->cmd_set);
 			free_after_builtin(set);
 		}
 		exit(1); // if execve fails >> WILL GO TO EXIT C
@@ -170,7 +169,7 @@ bool	is_single_builtin(t_set *set, int index)
 {
 	if (is_builtin(set->cmd_set[index]->cmd) && set->cmd_nb == 1)
 	{
-		if (!(set->cmd_set[index]->input && set->cmd_set[index]->output))
+		if (!set->cmd_set[index]->input && !set->cmd_set[index]->output)
 			return (true);
 	}
 	return (false);
@@ -184,9 +183,8 @@ void	ft_pipex(t_set *set)
 	i = 0;
 	if (set->cmd_set[i]->cmd[0] && is_single_builtin(set, i))
 	{
+		// ft_printf("is single builtin\n");
 		do_builtins(set, i); // GO TO EXIT C
-		ft_printf("END OF single builtin\n*--------------------------------------------------*\n");
-
 	}
 	else
 	{
@@ -196,9 +194,7 @@ void	ft_pipex(t_set *set)
 			set->pid[i] = last_pid;
 			i++;
 		}
-		ft_printf("START OF WAITPID\n*--------------------------------------------------*\n");
 		ft_waitpid(set);
-		ft_printf("END OF WAITPID\n*--------------------------------------------------*\n");
 
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:36:38 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/25 00:21:03 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/11 06:43:58 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,8 @@ char	*extract_var(char *str, char **ptr)
 		i++;
 	*ptr = &str[i];
 	var = malloc(sizeof(char) * i + 1);
+	if (!var)
+		return (NULL);
 	ft_strlcpy(var, str, i + 1);
 	return (var);
 }

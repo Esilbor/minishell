@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 10:23:53 by esilbor           #+#    #+#             */
-/*   Updated: 2023/11/21 14:22:55 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/11 06:23:51 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	print_env(t_env **head)
 	t_env	*lst;
 
 	lst = *head;
+	lst = lst->next;
 	while (lst)
 	{
 		if (lst->var_str)

@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 23:02:12 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/10 21:38:25 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/11 06:36:36 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	free_redirections(t_cmd **tab)
 {
 	int	i;
-	
+
 	i = 0;
 	while (tab[i])
 	{
@@ -38,20 +38,15 @@ void	sugar_rush(t_set *set)
 	free_redirections(set->cmd_set);
 	free_cmds((t_cmd **)set->cmd_set);
 	free(set);
-
 }
 
 void	execution(t_set *set, t_cmd **cmd_struct_tab, t_env *envb)
 {
-	ft_printf("START OF EXECUTION\n*--------------------------------------------------*\n");
-	init_set(&set, cmd_struct_tab, envb); // PROTECT ALL THESE FUNCTIONS WITH IF if they fail
+	init_set(&set, cmd_struct_tab, envb); // PROTECT
 	init_pipe_set(set);
 	init_pid_tab(set);
-	ft_printf("START OF PIPEX\n*--------------------------------------------------*\n");
 	ft_pipex(set);
-	ft_printf("END OF PIPEX\n*--------------------------------------------------*\n");
 	sugar_rush(set);
-	ft_printf("END OF EXECUTION\n*--------------------------------------------------*\n");
 }
 
 void	free_cmds(t_cmd **cmd_tab)
@@ -125,24 +120,16 @@ int	shell_loop(t_env *envb)
 		if (input && input[0])
 		{
 			/* if (! */shell_parser(input, &lexer, envb, &cmd_struct_tab)/* ) */;
-				// EXIT D
 			execution(set, cmd_struct_tab, envb);
-			free(input); // EXIT C
-			ft_printf("END OF INPUT\n********************************************************\n");
+			free(input);
 		}
-		else if (input) // when enter is pressed without user input
-		{
+		else if (input)
 			continue ;
-		}
-		else // when user ctrl +d
+		else
 		{
-			ft_printf("Ctrl + D pressed\n");
+			ft_printf("exit\n"RESET);
 			rl_clear_history();
 			ft_free_env_lst(envb);
-			// free_after_builtin(set);
-			// free_cmds(cmd_struct_tab);
-			// free(set);
-			ft_printf("exit\n"RESET);
 			return (2);
 		}
 	}
@@ -158,9 +145,6 @@ int	main(int argc, char **argv, char **envp)
 		return (ft_putstr_fd(PINK"better without added sugar\n"RESET, 2), 1);
 	ft_handle_signals();
 	envb = get_env(envp);
-	// add_shlvl(envb);
 	shell_loop(envb);
-	ft_printf("END OF SHELL_LOOP\n********************************************************\n");
-	
 	return (0);
 }
