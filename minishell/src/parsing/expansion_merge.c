@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 10:53:54 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/08 15:15:07 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/11 21:21:01 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,6 @@ t_lexer	*parsing(char *input, t_lexer **lexer, t_env *envb)
 	if (!(*lexer))
 		return (add_history(input), NULL);
 	add_history(input);
-	// print_lexer(lexer, "before_ft_expander");
 	ft_expander(lexer, envb);
 	lexer_polish(lexer);
 	if (!(*lexer))

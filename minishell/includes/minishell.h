@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/11 12:16:14 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/11 22:26:48 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,7 @@ void		do_builtins(t_set *set, int index);
 int			is_builtin(char **command);
 
 /*exit_builtins.c*/
-void		exit_parser(t_set *set, char **cmd_tab);
+int			exit_parser(char **cmd_tab);
 void		do_exit(t_set *set, int index);
 
 /*	cd_echo_pwd_builtins.c	*/

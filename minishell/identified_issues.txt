@@ -1,33 +1,17 @@
 IDENTITFIED ISSUES
 
-- ls | segfault (une erreur de parsing doit eviter l'execution)
-- env-i segfault 
-
-
+- env-i ./minishell segfault 
+- export test="ls -l"
 
 
 - heredocs must be deleted at the end of the program
-- exit abc actually exit the program when it should display the error and give back the prompt
 - handle signals
 - return values
-- unclosed fd
 - protect every ft_strdup
+- check if no unclosed fd
 - norm
 
 
-
-the waiting cat state:
-
-Candy_$hell> cat <<poi <<plo
-heredoc> this is poi
-heredoc> poi
-heredoc> this is plo
-heredoc> plo
-plo
-plo
-Candy_$hell> cat
-plo
-plo
 
 
 

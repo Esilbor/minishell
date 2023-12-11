@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:12:40 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/08 15:16:53 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/11 21:35:35 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	ft_add_lex_node(t_lexer **lexer, char *word, t_tokens type)
 
 t_lexer	*syntax_error(t_lexer *lexer, t_lexer **lexer_head)
 {
-	ft_putstr_fd("syntax error near unexpected A token '", 2);
+	ft_putstr_fd("syntax error near unexpected token '", 2);
 	ft_putstr_fd(lexer->word, 2);
 	ft_putstr_fd("'\n", 2);
 	free_lexer_list(lexer_head);
