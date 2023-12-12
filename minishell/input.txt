@@ -1,8 +1,0 @@
-this is a test file
-it contains patterns of sorts
-Pattern 3
-Pattern 1
-pattern 2
-and some random line
-
-Even an empty one

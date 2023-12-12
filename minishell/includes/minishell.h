@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/11 22:26:48 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/12 06:23:00 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,8 +138,8 @@ void		modify_limiter_nodes(t_lexer *lst, int index);
 void		init_heredocs(t_cmd **cmd_tab);
 
 
-void		inputs_are_valid(t_cmd **cmd_tab);
-void		invalid_input(char *filename);
+int			inputs_are_valid(t_cmd **cmd_tab);
+int			invalid_input(char *filename);
 void		keep_last_input(t_cmd **cmd_tab);
 void		keep_last_output(t_cmd **cmd_tab);
 bool		outputs_are_valid(t_lexer *lex);

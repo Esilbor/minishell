@@ -3,24 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 12:13:29 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/11 13:51:59 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/12 06:25:59 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	invalid_input(char *filename)
+int	invalid_input(char *filename)
 {
 	ft_putstr_fd("Candy_$hell: ", 2);
 	ft_putstr_fd("no such file or directory: ", 2);
 	ft_putstr_fd(filename, 2);
 	ft_putstr_fd("\n", 2);
+	return (1);
 }
 
-void	inputs_are_valid(t_cmd **cmd_tab)
+int	inputs_are_valid(t_cmd **cmd_tab)
 {
 	int		i;
 	t_lexer	*lst;
@@ -37,13 +38,14 @@ void	inputs_are_valid(t_cmd **cmd_tab)
 			{
 				fd = open(lst->word, O_RDONLY);
 				if (fd < 0)
-					invalid_input(lst->word);
+					return (invalid_input(lst->word));
 				lst = lst->next;
 				close (fd);
 			}
 		}
 		i++;
 	}
+	return (0);
 }
 
 void	keep_last_input(t_cmd **cmd_tab)
@@ -116,10 +118,14 @@ int	shell_parser(char *input, t_lexer **lexer, t_env *envb, t_cmd ***cmd_tab)
 			return (add_history(input), 1);
 		*cmd_tab = command_builder(lexer);
 		init_heredocs(*cmd_tab);
-		inputs_are_valid(*cmd_tab);
+		if (inputs_are_valid(*cmd_tab) == 1)
+		{
+			free_cmd_struct_tab(*cmd_tab);
+			free_lexer_list(lexer);
+			return (add_history(input), 1);
+		}
 		keep_last_input(*cmd_tab);
 		keep_last_output(*cmd_tab);
 		free_lexer_list(lexer);
-		// fprintf(stderr, "$$$$$\n");
 		return (0);
 }

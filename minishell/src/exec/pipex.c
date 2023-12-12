@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:13:47 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/11 16:39:45 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/12 06:09:02 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,22 +66,28 @@ void ft_execve(t_set *set, int index)
 		cmd_path = set_path_cmd(set, set->cmd_set[index]->cmd[0]);
 		if (!cmd_path)
 		{
-			free_redirections(set->cmd_set);
 			ft_close_pipes(set);
+			free_redirections(set->cmd_set);
 			free_after_builtin(set);
 			exit(127); // a verifier avec update_ret
 		}
-		execve(cmd_path, set->cmd_set[index]->cmd, set->envp); //mod
+		execve(cmd_path, set->cmd_set[index]->cmd, set->envp);
 	}
 	else
 	{
 		if (access(set->cmd_set[index]->cmd[0], X_OK | F_OK) == 0)
 			execve(set->cmd_set[index]->cmd[0], set->cmd_set[index]->cmd, set->envp);
+		ft_putstr_fd("cannot execute without environment or absolute path\n", 2);
 		ft_close_pipes(set);
+		free_redirections(set->cmd_set);
+		free_after_builtin(set);
 		exit(127); // a verifier avec update_ret
 	}
 	ft_close_pipes(set);
-	exit(update_ret(&set->env_lst, 126)); // a verifier
+	free_redirections(set->cmd_set);
+	free_after_builtin(set);
+	// exit(update_ret(&set->env_lst, 126)); // a verifier
+	exit(126);
 }
 
 void	close_pipe(t_set *set, int index)
@@ -128,7 +134,7 @@ pid_t	ft_fork(t_set *set, int index)
 		if (set->cmd_set[index]->cmd[0])
 		{
 			ft_execve(set, index);
-			free_after_builtin(set);
+			// free_after_builtin(set);
 		}
 		else
 		{
