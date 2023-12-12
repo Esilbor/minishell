@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 09:45:47 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/09 17:22:29 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/12 16:07:08 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 
 
 
-t_set	*init_set(t_set **set, t_cmd **cmd_struct_tab, t_env *envb)
+char	**assign_paths(t_set **set, t_env *envb)
 {
-	t_env	*p;
 	char	*path;
+	t_env	*p;
 
 	p = get_env_node(envb, "PATH");
 	if (!p || !p->var_str)
@@ -26,26 +26,64 @@ t_set	*init_set(t_set **set, t_cmd **cmd_struct_tab, t_env *envb)
 	path = ft_strdup(ft_strchr(p->var_str, '=') + 1);
 	if (!path)
 		return (NULL);
+	(*set)->paths = ft_split(path, ':');// a proteger
+	if (!(*set)->paths)
+		return (NULL);
+	free (path);
+	return ((*set)->paths);
+}
+
+t_set	*init_set(t_set **set, t_cmd **cmd_struct_tab, t_env *envb)
+{
 	*set = malloc(sizeof(t_set));
 	if (!(*set))
-		return (free (path), NULL);
+		return (/* free (path),  */NULL);
 	ft_memset(*set, 0, sizeof(t_set));
 	if (cmd_struct_tab && cmd_struct_tab[0])
 		(*set)->cmd_nb = ft_tab_len((char **)cmd_struct_tab);
 	else
 		(*set)->cmd_nb = 0;
-	(*set)->paths = ft_split(path, ':');
-	free (path);
 	(*set)->env_lst = envb;
+	assign_paths(set, envb);
 	(*set)->envp = env_to_tab(envb);
 	(*set)->cmd_set = cmd_struct_tab;
 	(*set)->pid = NULL;
 	return (*set);
 }
 
+<<<<<<< HEAD
 
 
 
+=======
+// t_set	*init_set(t_set **set, t_cmd **cmd_struct_tab, t_env *envb)
+// {
+// 	t_env	*p;
+// 	char	*path;
+
+// 	p = get_env_node(envb, "PATH");
+// 	if (!p || !p->var_str)
+// 		return (NULL);
+// 	path = ft_strdup(ft_strchr(p->var_str, '=') + 1);
+// 	if (!path)
+// 		return (NULL);
+// 	*set = malloc(sizeof(t_set));
+// 	if (!(*set))
+// 		return (free (path), NULL);
+// 	ft_memset(*set, 0, sizeof(t_set));
+// 	if (cmd_struct_tab && cmd_struct_tab[0])
+// 		(*set)->cmd_nb = ft_tab_len((char **)cmd_struct_tab);
+// 	else
+// 		(*set)->cmd_nb = 0;
+// 	(*set)->paths = ft_split(path, ':');// a proteger
+// 	free (path);
+// 	(*set)->env_lst = envb;
+// 	(*set)->envp = env_to_tab(envb);
+// 	(*set)->cmd_set = cmd_struct_tab;
+// 	(*set)->pid = NULL;
+// 	return (*set);
+// }
+>>>>>>> main
 
 char	**env_to_tab(t_env *lst)
 {

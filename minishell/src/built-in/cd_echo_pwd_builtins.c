@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_echo_pwd_builtins.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 15:09:16 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/06 13:10:42 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/11 07:14:49 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	do_pwd(char **cmd_tab, t_env **env)
 	}
 	cwd = getcwd(buffer, sizeof(buffer));
 	if (cwd != NULL)
-		ft_printf(CYAN"%s\n", cwd);
+		ft_printf("%s\n", cwd);
 	else
 		perror("minishell: pwd");
 	return (update_ret(env, 0));

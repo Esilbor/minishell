@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:36:38 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/28 14:45:02 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/12 16:08:16 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,8 @@ char	*extract_var(char *str, char **ptr)
 		i++;
 	*ptr = &str[i];
 	var = malloc(sizeof(char) * i + 1);
+	if (!var)
+		return (NULL);
 	ft_strlcpy(var, str, i + 1);
 	return (var);
 }

@@ -3,87 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 12:13:29 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/07 19:16:45 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/12 06:25:59 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	fill_heredoc(t_lexer *lex/*, t_cmd **cmd_tab*/)
-{
-	int		fd;
-	char	*buf;
-
-	fd = open(lex->word, O_WRONLY | O_TRUNC | O_CREAT, 0644);
-	if (fd < 0)
-	{
-		ft_putstr_fd("could not open heredoc\n", 2),
-		exit (1);// free all that is needed
-	}
-	while (1)
-	{
-		buf = readline("heredoc> ");
-		if (!buf)
-		{
-			ft_printf("\n");
-			break;
-		}
-		if (buf || buf[0])
-		{
-			if (!ft_strncmp(&lex->word[1], buf, ft_strlen(buf)))
-				break ;
-			ft_putstr_fd(buf, fd);
-			write(fd, "\n", 1);
-		}
-		free (buf);
-	}
-	close(fd);
-}
-
-void	modify_limiter_nodes(t_lexer *lst)
-{
-	char	*tmp;
-
-	tmp = NULL;
-	while (lst)
-	{
-		if (lst->type == LIMITER)
-		{
-			tmp = ft_strdup(lst->word);
-			free (lst->word);
-			lst->word = ft_strjoin(".", tmp);
-			free (tmp);
-			fill_heredoc(lst);
-		}
-		lst =lst->next;
-	}
-}
-
-void	init_heredocs(t_cmd **cmd_tab)
-{
-	int		i;
-
-	i = 0;
-	while (cmd_tab[i])
-	{
-		if (cmd_tab[i]->input)
-			modify_limiter_nodes(cmd_tab[i]->input);
-		i++;
-	}
-}
-
-void	invalid_input(char *filename)
+int	invalid_input(char *filename)
 {
 	ft_putstr_fd("Candy_$hell: ", 2);
 	ft_putstr_fd("no such file or directory: ", 2);
 	ft_putstr_fd(filename, 2);
 	ft_putstr_fd("\n", 2);
+	return (1);
 }
 
-void	inputs_are_valid(t_cmd **cmd_tab)
+int	inputs_are_valid(t_cmd **cmd_tab)
 {
 	int		i;
 	t_lexer	*lst;
@@ -100,13 +38,16 @@ void	inputs_are_valid(t_cmd **cmd_tab)
 			{
 				fd = open(lst->word, O_RDONLY);
 				if (fd < 0)
-					invalid_input(lst->word);
+					return (invalid_input(lst->word));
 				lst = lst->next;
+				close (fd);
 			}
 		}
 		i++;
 	}
+	return (0);
 }
+
 void	keep_last_input(t_cmd **cmd_tab)
 {
 	int	i;
@@ -123,14 +64,14 @@ void	keep_last_input(t_cmd **cmd_tab)
 				if (unlink(lex->word) != 0)
 					perror("error deleting file");
 				lex = ft_remove_lex_node(&lex, lex);
-				lex = lex->next;
+				// lex = lex->next;
 			}
 			cmd_tab[i]->input = lex;
-			// free (lex); // ???
 		}
 		i++;
 	}
 }
+
 bool outputs_are_valid(t_lexer *lex)
 {
 	int	fd;
@@ -169,17 +110,6 @@ void	keep_last_output(t_cmd **cmd_tab)
 	}
 }
 
-void	parse_input_redir(t_cmd **cmd_tab)
-{
-	init_heredocs(cmd_tab);
-	inputs_are_valid(cmd_tab);
-	keep_last_input(cmd_tab);
-	keep_last_output(cmd_tab);
-	// delete heredoc at the end of exec
-	//keep only last input_redir per command
-}
-
-
 int	shell_parser(char *input, t_lexer **lexer, t_env *envb, t_cmd ***cmd_tab)
 {
 
@@ -187,9 +117,15 @@ int	shell_parser(char *input, t_lexer **lexer, t_env *envb, t_cmd ***cmd_tab)
 		if (!(*lexer))
 			return (add_history(input), 1);
 		*cmd_tab = command_builder(lexer);
-		// init_heredocs(*cmd_tab);
-		parse_input_redir(*cmd_tab);
-		ft_print_struct_tab(*cmd_tab);
+		init_heredocs(*cmd_tab);
+		if (inputs_are_valid(*cmd_tab) == 1)
+		{
+			free_cmd_struct_tab(*cmd_tab);
+			free_lexer_list(lexer);
+			return (add_history(input), 1);
+		}
+		keep_last_input(*cmd_tab);
+		keep_last_output(*cmd_tab);
 		free_lexer_list(lexer);
 		return (0);
 }

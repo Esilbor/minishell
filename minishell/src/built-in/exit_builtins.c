@@ -6,11 +6,25 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 15:11:36 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/04 03:06:36 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/11 22:28:10 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+void	candy_crush(t_set *set)
+{
+	if (set->env_lst)
+		ft_free_env_lst(set->env_lst);
+	ft_free_tab((void **)set->envp);
+	ft_free_tab((void **)set->paths);
+	free_cmd_struct_tab(set->cmd_set);
+	free (set->pipe[0]);
+	free (set->pipe[1]);
+	free (set->pipe);
+	free (set->pid);
+	free (set);
+}
 
 void	overflow_parsing(const char *str, int *i, int *sign, int *zero_nb)
 {
@@ -64,23 +78,23 @@ static void	exit_msg(char *arg, int msg)
 	ft_putstr_fd("too much sugar\n"RESET, 2);
 }
 
-void	exit_parser(t_set *set, char **cmd_tab)
+int	exit_parser(char **cmd_tab)
 {
+
 	if (ft_tab_len(cmd_tab) > 1 && cmd_tab[1])
 	{
 		if (!ft_str_isdigit(cmd_tab[1]) || is_ll_overflow(cmd_tab[1]))
 		{
 			exit_msg(cmd_tab[1], 1);
-			candy_crush(set);
-			exit (2);
+			return (2);
 		}
 	}
 	if (ft_tab_len(cmd_tab) > 2)
 	{
 		exit_msg(cmd_tab[1], 0);
-		candy_crush(set);
-		exit (1);
+		return (1);
 	}
+	return (0);
 }
 
 // void	do_exit(char **cmd_tab, t_env **env)
@@ -89,14 +103,22 @@ void	do_exit(t_set *set, int index)
 	int	exit_ret;
 
 	exit_ret = 0;
-	exit_parser(set, set->cmd_set[index]->cmd);
-	if (ft_tab_len(set->cmd_set[index]->cmd) > 1 && set->cmd_set[index]->cmd[1])
+	if (ft_tab_len(set->cmd_set[index]->cmd) == 1)
+	{
+		candy_crush(set);
+		exit (exit_ret);
+	}
+	if (!exit_parser(set->cmd_set[index]->cmd) 
+		&& ft_tab_len(set->cmd_set[index]->cmd) > 1
+		&& set->cmd_set[index]->cmd[1])
 	{
 		if (ft_atol(set->cmd_set[index]->cmd[1]) > 255)
 			exit_ret = ft_atol(set->cmd_set[index]->cmd[1]) % 256;
 		else
 			exit_ret = ft_atol(set->cmd_set[index]->cmd[1]);
+		candy_crush(set);
+		exit(exit_ret);
 	}
-	candy_crush(set);
-	exit(exit_ret);
+	//check exit value
+	// less_shlvl(?)
 }

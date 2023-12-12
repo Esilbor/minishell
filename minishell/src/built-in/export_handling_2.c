@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_handling_2.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 10:35:32 by esilbor           #+#    #+#             */
-/*   Updated: 2023/11/21 10:36:34 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/11 17:31:07 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ t_env	*get_env_node(t_env *lst, char *str)
 	str_len = ft_strlen(str);
 	while (lst)
 	{
+		// printf("les pbs : <%s/%s>\n", lst->var_str, str);
 		if (!ft_strncmp(lst->var_str, str, ft_strlen(str))
 			&& lst->var_str[str_len] == '=')
 			return (lst);
@@ -40,6 +41,8 @@ char	**ft_split_value(char *var)
 	if (!equal)
 	{
 		ret_tab = malloc(sizeof(char *) * 2);
+		if (!ret_tab)
+			return (NULL);
 		ret_tab[0] = ft_strdup(var);
 		ret_tab[1] = NULL;
 		return (ret_tab);

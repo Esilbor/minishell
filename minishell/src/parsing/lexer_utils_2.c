@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils_2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:12:40 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/01 08:29:28 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/12 11:15:14 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	ft_add_lex_node(t_lexer **lexer, char *word, t_tokens type)
 
 t_lexer	*syntax_error(t_lexer *lexer, t_lexer **lexer_head)
 {
-	ft_putstr_fd("syntax error near unexpected A token '", 2);
+	ft_putstr_fd("syntax error near unexpected token '", 2);
 	ft_putstr_fd(lexer->word, 2);
 	ft_putstr_fd("'\n", 2);
 	free_lexer_list(lexer_head);
@@ -60,8 +60,8 @@ t_lexer	*check_valid_input(t_lexer **lexer_head)
 		return (NULL);
 	while (x)
 	{
-		if ((x->type == PIPE && !i)|| (x->next && x->type == PIPE
-			&& x->next->type == PIPE))			
+		if ((x->type == PIPE && !i) || (x->next && x->type == PIPE
+				&& x->next->type == PIPE))
 			return (syntax_error(x, lexer_head));
 		if (x->type >= 1 && x->type <= 5 && x->next)
 		{
@@ -81,24 +81,25 @@ t_lexer	*check_valid_input(t_lexer **lexer_head)
 // Perform lexical analysis on the input line
 t_lexer	*ft_lexer(char *line)
 {
-	t_lexer	*lexer_list;
+	t_lexer	*lexer;
 	char	*epur_line;
 
-	lexer_list = NULL;
+	lexer = NULL;
 	epur_line = ft_epur_str(line);
 	if (!epur_line)
 		return (NULL);
 	// ft_printf(CYAN"epur_line = [%s]\n"RESET, epur_line);
-	if (ft_fill_lexer(&lexer_list, epur_line))
+	if (ft_fill_lexer(&lexer, epur_line))
 	{
 		free (epur_line);
-		free_lexer_list(&lexer_list);
+		free_lexer_list(&lexer);
 		return (NULL);
 	}
 	free(epur_line);
-	if (lexer_list->word[0] == '\0')
-		lexer_list = ft_remove_lex_node(&lexer_list, lexer_list);
-	clean_empty_nodes(&lexer_list);
-	// print_lexer(&lexer_list, "before valid input");
-	return (check_valid_input(&lexer_list));
+	// print_lexer(&lexer, "before_clean_empty_nodes");
+	if (lexer->word[0] == '\0')
+		lexer = ft_remove_lex_node(&lexer, lexer);
+	clean_empty_nodes(&lexer);
+	// print_lexer(&lexer, "before valid input");
+	return (check_valid_input(&lexer));
 }

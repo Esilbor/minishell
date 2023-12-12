@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 12:12:12 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/05 15:40:21 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/10 14:53:01 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,33 +27,6 @@ int	count_cmd(t_lexer *lex)
 		lex = lex->next;
 	}
 	return (i);
-}
-
-// Initialize an array of command structures from lexer
-t_cmd	**init_cmd_struct(t_lexer **lexer)
-{
-	t_cmd	**cmd_struct_tab;
-	int		cmd_nb;
-	int		i;
-
-	i = 0;
-	cmd_nb = count_cmd(*lexer);
-	cmd_struct_tab = malloc(sizeof(t_cmd *) * (cmd_nb + 1));
-	if (!cmd_struct_tab)
-		return (NULL);
-	while (i < cmd_nb)
-	{
-		cmd_struct_tab[i] = malloc(sizeof (t_cmd));
-		if (!cmd_struct_tab[i])
-			return (ft_free_tab((void **)cmd_struct_tab), NULL);
-		ft_memset(cmd_struct_tab[i], 0, sizeof(t_cmd));
-		// cmd_struct_tab[i]->output = NULL;
-		// cmd_struct_tab[i]->input = NULL;
-		i ++;
-	}
-	if (i)
-		cmd_struct_tab[i] = NULL;
-	return (cmd_struct_tab);
 }
 
 // need to send the pointer to the given lexer node

@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 10:53:54 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/07 12:53:18 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/12 11:14:01 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ void	merge_nodes(t_lexer **lexer)
 	while (lex && lex->next)
 	{
 		if (lex->type >= SMERGE && lex->type <= EMERGE
-			&& !(lex->next->type >= 9 && lex->next->type <= 12))
+			&& !((lex->next->type >= 9 && lex->next->type <= 12)
+				|| lex->next->type == PIPE))
 		{
 			merged_word = ft_strjoin(lex->word, lex->next->word);
 			free(lex->next->word);
@@ -115,8 +116,23 @@ t_lexer	**clean_empty_nodes(t_lexer **lexer)
 	return (lexer);
 }
 
+// void	split_expand(t_lexer **lexer)
+// {
+// 	t_lexer	*lex;
+
+// 	lex = *lexer;
+// 	while (lex)
+// 	{
+// 		if (lex->type == EXPAND && !ft_strchr(lex->word, ' '))
+// 		{
+
+// 		}
+// 	}
+// }
+
 void	lexer_polish(t_lexer **lexer)
 {
+	// print_lexer(lexer, "start_polish");
 	clean_squotes(lexer);
 	// print_lexer(lexer, "clean_squotes");
 	quotes_to_words(lexer);
@@ -129,6 +145,10 @@ void	lexer_polish(t_lexer **lexer)
 	// print_lexer(lexer, "clean_lexer3");
 	merge_nodes(lexer);
 	// print_lexer(lexer, "merge_nodes");
+
+	// split_expand(lexer);
+	// print_lexer(lexer, "split_expand");
+
 	clean_lexer4(lexer);
 	// print_lexer(lexer, "clean_lexer4");
 	clean_empty_nodes(lexer);
@@ -147,6 +167,3 @@ t_lexer	*parsing(char *input, t_lexer **lexer, t_env *envb)
 		return (add_history(input), NULL);
 	return (*lexer);
 }
-
-
-// inputs are in THE WRONG LIST!!!

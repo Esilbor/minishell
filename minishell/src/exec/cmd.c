@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:57:33 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/07 15:58:34 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/12 16:06:59 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,24 +45,26 @@ char *set_path_cmd(t_set *set, char *cmd)
 
 	cmd = check_cmd_null(cmd);
 	index = 0;
-	tmp = ft_strjoin("/", cmd);
-	if (!tmp)
-		return (ft_putstr_fd("ERR_MALLOC\n", 2), NULL); // free!!!
-
 	while (set->paths[index])
 	{
+		tmp = ft_strjoin("/", cmd);
+		if (!tmp)
+			return (ft_putstr_fd("ERR_MALLOC\n", 2), NULL); // free!!!
 		cmd_tmp = ft_strjoin(set->paths[index], tmp);
 		if (!cmd_tmp)
 		{
 			free(tmp);
 			return (ft_putstr_fd("ERR_MALLOC\n", 2), NULL); // free!!!
 		}
-
 		if (access(cmd_tmp, X_OK | F_OK) == 0)
+		{
+			free(tmp);
 			return (cmd_tmp);
+		}
+		free(tmp);
 		free (cmd_tmp);
 		index++;
 	}
-	ft_putstr_fd("\ncmd_path not found\n", 2);
+	ft_putstr_fd("cmd_path not found\n", 2);
 	return (NULL);
 }
