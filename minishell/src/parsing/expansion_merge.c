@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_merge.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 10:53:54 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/12 07:17:12 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/12 11:14:01 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,40 +119,40 @@ t_lexer	**clean_empty_nodes(t_lexer **lexer)
 // void	split_expand(t_lexer **lexer)
 // {
 // 	t_lexer	*lex;
-	
+
 // 	lex = *lexer;
 // 	while (lex)
 // 	{
 // 		if (lex->type == EXPAND && !ft_strchr(lex->word, ' '))
 // 		{
-			
+
 // 		}
 // 	}
 // }
 
 void	lexer_polish(t_lexer **lexer)
 {
-	print_lexer(lexer, "start_polish");
+	// print_lexer(lexer, "start_polish");
 	clean_squotes(lexer);
-	print_lexer(lexer, "clean_squotes");
+	// print_lexer(lexer, "clean_squotes");
 	quotes_to_words(lexer);
-	print_lexer(lexer, "quotes_to_words");
+	// print_lexer(lexer, "quotes_to_words");
 	clean_lexer(lexer);
-	print_lexer(lexer, "clean_lexer");
+	// print_lexer(lexer, "clean_lexer");
 	clean_lexer2(lexer);
-	print_lexer(lexer, "clean_lexer2");
+	// print_lexer(lexer, "clean_lexer2");
 	clean_lexer3(lexer);
-	print_lexer(lexer, "clean_lexer3");
+	// print_lexer(lexer, "clean_lexer3");
 	merge_nodes(lexer);
-	print_lexer(lexer, "merge_nodes");
+	// print_lexer(lexer, "merge_nodes");
 
 	// split_expand(lexer);
 	// print_lexer(lexer, "split_expand");
-	
+
 	clean_lexer4(lexer);
-	print_lexer(lexer, "clean_lexer4");
+	// print_lexer(lexer, "clean_lexer4");
 	clean_empty_nodes(lexer);
-	print_lexer(lexer, "clean_empty_nodes");
+	// print_lexer(lexer, "clean_empty_nodes");
 }
 
 t_lexer	*parsing(char *input, t_lexer **lexer, t_env *envb)

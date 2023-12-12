@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:13:47 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/12 08:41:16 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/12 12:39:17 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,10 +126,10 @@ pid_t	ft_fork(t_set *set, int index)
 		ft_dup2(set, index);
 		if (set->cmd_set[index]->cmd[0] && is_builtin(set->cmd_set[index]->cmd)== 1) // issues
 		{
-			do_builtins(set, index);
-			free_redirections((t_cmd **)set->cmd_set);
-			free_after_builtin(set);
-			exit(0);
+			do_builtins(set, index); // je ne me souviens plus pourquoi jai rajoute ca
+			// free_redirections((t_cmd **)set->cmd_set);
+			// free_after_builtin(set);
+			// exit(0);
 		}
 		if (set->cmd_set[index]->cmd[0])
 		{
@@ -141,7 +141,7 @@ pid_t	ft_fork(t_set *set, int index)
 			free_redirections((t_cmd **)set->cmd_set);
 			free_after_builtin(set);
 		}
-		exit(1); // if execve fails >> WILL GO TO EXIT C
+		exit(1);
 	}
 	if (index)
 		close_pipe(set, index); // close heredocs here?
