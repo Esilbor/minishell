@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:57:33 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/10 20:44:07 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/12 07:07:56 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ char *set_path_cmd(t_set *set, char *cmd)
 
 	cmd = check_cmd_null(cmd);
 	index = 0;
-
 	while (set->paths[index])
 	{
 		tmp = ft_strjoin("/", cmd);
@@ -57,7 +56,6 @@ char *set_path_cmd(t_set *set, char *cmd)
 			free(tmp);
 			return (ft_putstr_fd("ERR_MALLOC\n", 2), NULL); // free!!!
 		}
-
 		if (access(cmd_tmp, X_OK | F_OK) == 0)
 		{
 			free(tmp);
@@ -67,6 +65,6 @@ char *set_path_cmd(t_set *set, char *cmd)
 		free (cmd_tmp);
 		index++;
 	}
-	ft_putstr_fd("\ncmd_path not found\n", 2);
+	ft_putstr_fd("cmd_path not found\n", 2);
 	return (NULL);
 }

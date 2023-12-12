@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:12:40 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/11 21:35:35 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/12 06:43:32 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ t_lexer	*ft_lexer(char *line)
 	epur_line = ft_epur_str(line);
 	if (!epur_line)
 		return (NULL);
-	// ft_printf(CYAN"epur_line = [%s]\n"RESET, epur_line);
+	ft_printf(CYAN"epur_line = [%s]\n"RESET, epur_line);
 	if (ft_fill_lexer(&lexer, epur_line))
 	{
 		free (epur_line);
@@ -96,10 +96,10 @@ t_lexer	*ft_lexer(char *line)
 		return (NULL);
 	}
 	free(epur_line);
-	// print_lexer(&lexer, "before_clean_empty_nodes");
+	print_lexer(&lexer, "before_clean_empty_nodes");
 	if (lexer->word[0] == '\0')
 		lexer = ft_remove_lex_node(&lexer, lexer);
 	clean_empty_nodes(&lexer);
-	// print_lexer(&lexer, "before valid input");
+	print_lexer(&lexer, "before valid input");
 	return (check_valid_input(&lexer));
 }

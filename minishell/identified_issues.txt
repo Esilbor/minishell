@@ -1,10 +1,11 @@
 IDENTITFIED ISSUES
 
-- export test="ls -l"
-
-
-- heredocs must be deleted at the end of the program
 - handle signals
+- heredocs must be deleted at the end of the program
+
+- export test="ls -l"
+- export test2="ls          -l  -a" (might not be compulsory)
+
 - return values
 - protect every ft_strdup
 - check if no unclosed fd
