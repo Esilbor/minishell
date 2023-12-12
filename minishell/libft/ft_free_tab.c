@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_free_tab.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 12:01:52 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/16 23:40:17 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/10 14:56:00 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	ft_free_tab(void **tab)
 			free (tab[i]);
 			i++;
 		}
+		free(tab[i]);
 		free (tab);
 	}
 }

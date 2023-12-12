@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 15:14:20 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/30 15:08:11 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/08 15:15:47 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	*ft_epur_str(char *str)
 	epur_str = malloc(sizeof(char) * (strlen(str) + 1));
 	if (!str || !epur_str)
 		return (NULL);
-	while (str[i]/*  && str[i + 1] */)
+	while (str[i])
 	{
 		while (is_wspace(str[i]) && is_wspace(str[i + 1]))
 			i++;
@@ -71,32 +71,32 @@ char	*ft_epur_str(char *str)
 }
 
 // Fill lexer list from cmd_line string
-int	ft_fill_lexer(t_lexer **lexer_lst, char *cmd_line)
+int	ft_fill_lexer(t_lexer **lexer, char *cmd_line)
 {
 	int		i;
 	t_lexer	*head;
 
 	i = 0;
-	head = *lexer_lst;
+	head = *lexer;
 	while (cmd_line[i])
 	{
 		if (cmd_line[i] == '\"')
 		{
 			if (handle_dquotes(cmd_line, &i, &head))
-				return (*lexer_lst = head, 1);
+				return (*lexer = head, 1);
 		}
 		else if (cmd_line[i] == '\'')
 		{
 			if (handle_squotes(cmd_line, &i, &head))
-				return (*lexer_lst = head, 1);
+				return (*lexer = head, 1);
 		}
 		else
 			handle_words_spec_char(cmd_line, &i, &head);
 		while (cmd_line[i] && cmd_line[i] == ' ')
 			i++;
 	}
-	*lexer_lst = head;
-	// print_lexer(lexer_lst, "after ft_fill_lexer");
+	*lexer = head;
+	// print_lexer(lexer, "after ft_fill_lexer");
 	return (0);
 }
 

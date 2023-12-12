@@ -3,14 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:13:47 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/07 08:24:31 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/12 12:39:17 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+// closes pipe file descriptors if exist
+void	ft_close_pipes(t_set *set)
+{
+	if (set->pipe[0][0])
+		close(set->pipe[0][0]);
+	if (set->pipe[0][1])
+		close(set->pipe[0][1]);
+	if (set->pipe[1][0])
+		close(set->pipe[1][0]);
+	if (set->pipe[1][1])
+		close(set->pipe[1][1]);
+}
 
 void	init_pipe_set(t_set *set)
 {
@@ -44,43 +57,38 @@ void	init_pid_tab(t_set *set)
 		set->pid[i] = 0;
 }
 
-
-
 void ft_execve(t_set *set, int index)
 {
-	// int i;
 	char *cmd_path;
 
-	// i = 0;
-	// if (!set->paths)
-	// {
-	// 	// erre split
-
-	// }
 	if (set->paths && (!ft_strchr(set->cmd_set[index]->cmd[0], '/')))
 	{
 		cmd_path = set_path_cmd(set, set->cmd_set[index]->cmd[0]);
 		if (!cmd_path)
 		{
-			// free , close ... exit
 			ft_close_pipes(set);
+			free_redirections(set->cmd_set);
+			free_after_builtin(set);
 			exit(127); // a verifier avec update_ret
 		}
-		execve(cmd_path, set->cmd_set[index]->cmd, set->envp); //mod
+		execve(cmd_path, set->cmd_set[index]->cmd, set->envp);
 	}
 	else
 	{
 		if (access(set->cmd_set[index]->cmd[0], X_OK | F_OK) == 0)
-		{
 			execve(set->cmd_set[index]->cmd[0], set->cmd_set[index]->cmd, set->envp);
-		}
+		ft_putstr_fd("cannot execute without environment or absolute path\n", 2);
 		ft_close_pipes(set);
+		free_redirections(set->cmd_set);
+		free_after_builtin(set);
 		exit(127); // a verifier avec update_ret
 	}
 	ft_close_pipes(set);
-	exit(update_ret(&set->env_lst, 126)); // a verifier
+	free_redirections(set->cmd_set);
+	free_after_builtin(set);
+	// exit(update_ret(&set->env_lst, 126)); // a verifier
+	exit(126);
 }
-
 
 void	close_pipe(t_set *set, int index)
 {
@@ -88,7 +96,18 @@ void	close_pipe(t_set *set, int index)
 	close(set->pipe[(index + 1) % 2][1]);
 }
 
-
+void	free_after_builtin(t_set *set)
+{
+	ft_free_env_lst(set->env_lst);
+	free(set->pipe[0]);
+	free(set->pipe[1]);
+	free(set->pipe);
+	ft_free_tab((void **)set->paths);
+	ft_free_tab((void **)set->envp);
+	free_cmds((t_cmd **)set->cmd_set);
+	free(set->pid);
+	free (set);
+}
 
 pid_t	ft_fork(t_set *set, int index)
 {
@@ -105,23 +124,27 @@ pid_t	ft_fork(t_set *set, int index)
 	if (pid == 0)
 	{
 		ft_dup2(set, index);
-		if (is_builtin(set->cmd_set[index]->cmd)== 1)
+		if (set->cmd_set[index]->cmd[0] && is_builtin(set->cmd_set[index]->cmd)== 1) // issues
 		{
-			do_builtins(set, index);
-			// free env_lst , pid_tab, pipes, cmd_struct_tab, paths, envp
-			// close_crush_exit(NULL, set, 1, 0);
-			exit(0);
+			do_builtins(set, index); // je ne me souviens plus pourquoi jai rajoute ca
+			// free_redirections((t_cmd **)set->cmd_set);
+			// free_after_builtin(set);
+			// exit(0);
 		}
 		if (set->cmd_set[index]->cmd[0])
 		{
 			ft_execve(set, index);
+			// free_after_builtin(set);
 		}
-
-		// close_crush_exit(NULL, set, 1, 1);
-		exit(1); // if execve fails
+		else
+		{
+			free_redirections((t_cmd **)set->cmd_set);
+			free_after_builtin(set);
+		}
+		exit(1);
 	}
 	if (index)
-		close_pipe(set, index);
+		close_pipe(set, index); // close heredocs here?
 	return (pid);
 }
 
@@ -148,19 +171,36 @@ void	ft_waitpid(t_set *set)
 	// g_last_status = status;
 }
 
+bool	is_single_builtin(t_set *set, int index)
+{
+	if (is_builtin(set->cmd_set[index]->cmd) && set->cmd_nb == 1)
+	{
+		if (!set->cmd_set[index]->input && !set->cmd_set[index]->output)
+			return (true);
+	}
+	return (false);
+}
+
 void	ft_pipex(t_set *set)
 {
 	int	i;
 	pid_t last_pid;
 
 	i = 0;
-	while (i < set->cmd_nb)
+	if (set->cmd_set[i]->cmd[0] && is_single_builtin(set, i))
 	{
-		last_pid = ft_fork(set, i);
-		set->pid[i] = last_pid;
-		i++;
+		// ft_printf("is single builtin\n");
+		do_builtins(set, i); // GO TO EXIT C
 	}
-	ft_waitpid(set);
-	// close_crush_exit(NULL, set, 0, 0);
-	// exit(0);
+	else
+	{
+		while (i < set->cmd_nb)
+		{
+			last_pid = ft_fork(set, i);
+			set->pid[i] = last_pid;
+			i++;
+		}
+		ft_waitpid(set);
+
+	}
 }
