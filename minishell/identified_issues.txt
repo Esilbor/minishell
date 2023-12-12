@@ -18,6 +18,41 @@ IDENTITFIED ISSUES
 
 
 
+
+Candy_$hell> $RTRT
+>SEG revenir au commit precedent
+Candy_$hell> $? ne fonctionne plus non plus??
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ****************************************************
 
 would be nice to have it done:

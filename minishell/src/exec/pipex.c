@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:13:47 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/12 12:39:17 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/12 18:25:19 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,14 @@ void	init_pid_tab(t_set *set)
 		set->pid[i] = 0;
 }
 
+void	exit_err(t_set *set, int err_nb)
+{
+	ft_close_pipes(set);
+	free_redirections(set->cmd_set);
+	free_after_builtin(set);
+	exit(err_nb); // a verifier avec update_ret
+}
+
 void ft_execve(t_set *set, int index)
 {
 	char *cmd_path;
@@ -65,29 +73,17 @@ void ft_execve(t_set *set, int index)
 	{
 		cmd_path = set_path_cmd(set, set->cmd_set[index]->cmd[0]);
 		if (!cmd_path)
-		{
-			ft_close_pipes(set);
-			free_redirections(set->cmd_set);
-			free_after_builtin(set);
-			exit(127); // a verifier avec update_ret
-		}
+			exit_err(set, 127);
 		execve(cmd_path, set->cmd_set[index]->cmd, set->envp);
 	}
 	else
 	{
 		if (access(set->cmd_set[index]->cmd[0], X_OK | F_OK) == 0)
 			execve(set->cmd_set[index]->cmd[0], set->cmd_set[index]->cmd, set->envp);
-		ft_putstr_fd("cannot execute without environment or absolute path\n", 2);
-		ft_close_pipes(set);
-		free_redirections(set->cmd_set);
-		free_after_builtin(set);
-		exit(127); // a verifier avec update_ret
+		ft_putstr_fd("cannot execute without environment or path\n", 2);
+		exit_err(set, 127);
 	}
-	ft_close_pipes(set);
-	free_redirections(set->cmd_set);
-	free_after_builtin(set);
-	// exit(update_ret(&set->env_lst, 126)); // a verifier
-	exit(126);
+	exit_err(set, 126);
 }
 
 void	close_pipe(t_set *set, int index)
@@ -152,15 +148,25 @@ pid_t	ft_fork(t_set *set, int index)
 void	ft_waitpid(t_set *set)
 {
 	int	i;
-	// int status;
+	int status;
+
+
+	i = 0;
+
+	while (wait(&status) > 0)
+	{
+		if (WIFEXITED(status))
+			update_ret(&set->env_lst, WEXITSTATUS(status));
+	}
+	return ;
+
 	// int	save_status;
 	// save_status = 0;
-	i = 0;
-	while (i < set->cmd_nb && set->pid[i])
-	{
-		waitpid(set->pid[i], NULL/* , &status */, 0);
-		i++;
-	}
+	// while (i < set->cmd_nb && set->pid[i])
+	// {
+	// 	waitpid(set->pid[i], NULL, &status, 0);
+	// 	i++;
+	// }
 	// save_status = status;
 	// if (WIFSIGNALED(save_status))
 	// 	status = 128 + WTERMSIG(save_status);

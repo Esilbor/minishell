@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/12 06:23:00 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/12 17:34:17 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ typedef struct t_set
 /******************************************/
 /***************TO ORDER*******************/
 /******************************************/
-
+void		exit_err(t_set *set, int err_nb);
 void		free_redirections(t_cmd **tab);
 void		free_after_builtin(t_set *set);
 void		free_cmds(t_cmd **cmd_tab);
