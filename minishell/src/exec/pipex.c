@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:13:47 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/12 16:07:14 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/12 17:00:22 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,19 +174,11 @@ void	ft_waitpid(t_set *set)
 	// g_last_status = status;
 }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> main
 bool	is_single_builtin(t_set *set, int index)
 {
 	if (is_builtin(set->cmd_set[index]->cmd) && set->cmd_nb == 1)
 	{
-<<<<<<< HEAD
-		if (!(set->cmd_set[index]->input && set->cmd_set[index]->output))
-=======
 		if (!set->cmd_set[index]->input && !set->cmd_set[index]->output)
->>>>>>> main
 			return (true);
 	}
 	return (false);
@@ -198,20 +190,6 @@ void	ft_pipex(t_set *set)
 	pid_t last_pid;
 
 	i = 0;
-<<<<<<< HEAD
-	// while (i < set->cmd_nb)
-	// {
-	// 	last_pid = ft_fork(set, i);
-	// 	set->pid[i] = last_pid;
-	// 	i++;
-	// }
-	// ft_waitpid(set);
-
-	if (is_single_builtin(set, i))
-		do_builtins(set, i);
-	else
-	{
-=======
 	if (set->cmd_set[i]->cmd[0] && is_single_builtin(set, i))
 	{
 		// ft_printf("is single builtin\n");
@@ -219,7 +197,6 @@ void	ft_pipex(t_set *set)
 	}
 	else
 	{
->>>>>>> main
 		while (i < set->cmd_nb)
 		{
 			last_pid = ft_fork(set, i);
@@ -227,12 +204,6 @@ void	ft_pipex(t_set *set)
 			i++;
 		}
 		ft_waitpid(set);
-<<<<<<< HEAD
-	}
-	// close_crush_exit(NULL, set, 0, 0);
-	// exit(0);
-=======
 
 	}
->>>>>>> main
 }
