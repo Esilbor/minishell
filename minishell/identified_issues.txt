@@ -1,8 +1,5 @@
 IDENTITFIED ISSUES
 
-- builtin cd is wrong (done by mate2)
-        must update PWD and OLDPWD
-
 - handle signals
 
 - export test="ls -l"
@@ -16,6 +13,8 @@ $> $dsfsd (wrong return value?)
 - norm
 
 
+****************************************************
+****************************************************
 ****************************************************
 
 would be nice to have it done:

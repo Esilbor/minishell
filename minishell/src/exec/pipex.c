@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:13:47 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/13 08:15:15 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/13 11:27:02 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,12 +140,12 @@ pid_t	ft_fork(t_set *set, int index)
 		exit(1);
 	}
 	if (index)
-		close_pipe(set, index); // close heredocs here?
+		close_pipe(set, index);
 	return (pid);
 }
 
 // Waits for child processes to finish.
-void	ft_waitpid(t_set *set)
+void	ft_wait(t_set *set)
 {
 	// int	i;
 	int status;
@@ -206,7 +206,7 @@ void	ft_pipex(t_set *set)
 			set->pid[i] = last_pid;
 			i++;
 		}
-		ft_waitpid(set);
+		ft_wait(set);
 
 	}
 }

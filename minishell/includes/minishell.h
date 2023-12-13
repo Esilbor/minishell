@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/13 08:33:08 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/13 13:41:43 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ void		free_redirections(t_cmd **tab);
 void		free_after_builtin(t_set *set);
 void		free_cmds(t_cmd **cmd_tab);
 void		sugar_rush(t_set *set);
-void		ft_waitpid(t_set *set);
+void		ft_wait(t_set *set);
 void		ft_close_and_free(t_set *set);
 void		close_pipe(t_set *set, int index);
 pid_t		ft_fork(t_set *set, int index);
@@ -169,7 +169,7 @@ int			do_pwd(char **cmd_tab, t_env **env);
 /*	env_display.c	*/
 
 int			ft_print_rainbow(char *str);
-void		print_env(t_env **head);
+int			print_env(t_env **head);
 int			assign_or_append(char *env_var);
 bool		cmd_is_valid(char **cmd_tab, int i, int *ret);
 

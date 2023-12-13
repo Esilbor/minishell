@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:57:33 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/13 08:33:36 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/13 12:10:01 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,11 @@ static char	*check_cmd_null(char *cmd)
 // 	exit_err(set, 126);
 // }
 
+//return true if cmd is a directory
 bool	is_directory(char *cmd)
 {
 	struct stat	statbuf;
-	
+
 	if (stat(cmd, &statbuf))
 		return (false);
 	return (S_ISDIR(statbuf.st_mode));
@@ -72,7 +73,7 @@ void	print_cmd_not_found(char *cmd)
 	ft_putstr_fd(": ", 2);
 	if (is_directory(cmd))
 		ft_putstr_fd("is a directory\n", 2);
-	else	
+	else
 		ft_putstr_fd("cmd_path not found\n", 2);
 }
 

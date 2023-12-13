@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_utils_1.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:36:38 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/11 06:43:58 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/13 12:48:39 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ char	*extract_var(char *str, char **ptr)
 	return (var);
 }
 
-//Searches `envb` for `*str`, replaces `*str` with env value,
+//Searches `envb` for `*str`, return env value,
 //or NULL if not found.
 char	*get_env_value(t_env *envb, char **str)
 {
