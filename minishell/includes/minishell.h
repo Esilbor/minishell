@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/13 16:35:33 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/13 19:47:38 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,8 @@ typedef struct t_set
 	int				**pipe;
 }	t_set;
 
+extern int g_exit_val;
+
 /******************************************/
 /***************TO ORDER*******************/
 /******************************************/
@@ -252,7 +254,10 @@ void		sigquit_handler(int signum);
 void		ft_handle_signals(void);
 void		ign_sigquit(void);
 //void		signals_child(void);
-void		signals_ctrlc_bsl(void);
+//void		signals_ctrlc_bsl(void);
+void		sig_heredoc_handler(int signum);
+void		signals_simple(void);
+void	ign_sigint(void) ;
 
 /*	destroyers	*/
 

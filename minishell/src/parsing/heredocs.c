@@ -6,19 +6,37 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 09:39:05 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/13 16:36:37 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/13 18:43:40 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+void	sig_heredoc_handler(int signum) 
+{
+	if (signum == SIGINT)
+		close(STDIN_FILENO);
+}
+
+void signal_heredoc(void)
+{
+	struct sigaction	sa; 
+		 
+	ft_memset(&sa, 0, sizeof(sa)); 
+	sa.sa_handler = &sig_heredoc_handler;
+	sigaction(SIGINT, &sa, NULL);
+}
 
 void	fill_heredoc(t_lexer *lex, char *limiter)
 {
 	int		fd;
 	char	*buf;
 	size_t	eof_len;
+	int		dup_stdin;
 
 	// eof_len = ft_strlen(lex->word) - 1;
+	
+	
 	eof_len = ft_strlen(limiter);
 	fd = open(lex->word, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	if (fd < 0)
@@ -26,11 +44,15 @@ void	fill_heredoc(t_lexer *lex, char *limiter)
 		ft_putstr_fd("could not open heredoc\n", 2),
 		exit (1);// free all that is needed
 	}
+	
+	dup_stdin = dup(STDIN_FILENO);
+	signal_heredoc();
+
 	while (1)
 	{
-		ft_handle_signals();
+		//ft_handle_signals();
 		buf = readline("heredoc> ");
-		signals_ctrlc_bsl();
+		// signals_ctrlc_bsl();
 		if (!buf)
 		{
 			ft_printf("\n");
@@ -51,6 +73,9 @@ void	fill_heredoc(t_lexer *lex, char *limiter)
 		free (buf);
 	}
 	close(fd);
+	dup2(dup_stdin, STDIN_FILENO);
+	ft_handle_signals();
+	close(dup_stdin);
 }
 
 // .limiter_index_k

@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:13:47 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/13 16:59:26 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/13 20:28:21 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	init_pid_tab(t_set *set)
 void ft_execve(t_set *set, int index)
 {
 	char *cmd_path;
-
+	
 	if (set->paths && (!ft_strchr(set->cmd_set[index]->cmd[0], '/')))
 	{
 		cmd_path = set_path_cmd(set, set->cmd_set[index]->cmd[0]);
@@ -70,6 +70,8 @@ void ft_execve(t_set *set, int index)
 			free_redirections(set->cmd_set);
 			free_after_builtin(set);
 			exit(127); // a verifier avec update_ret
+			//exit(update_ret(&set->env_lst, 127)); // a verifier
+			//exit(g_exit_val = 127);
 		}
 		execve(cmd_path, set->cmd_set[index]->cmd, set->envp);
 	}
@@ -82,12 +84,15 @@ void ft_execve(t_set *set, int index)
 		free_redirections(set->cmd_set);
 		free_after_builtin(set);
 		exit(127); // a verifier avec update_ret
+		//exit(update_ret(&set->env_lst, 127)); // a verifier
+		//exit(g_exit_val = 127);
 	}
 	ft_close_pipes(set);
 	free_redirections(set->cmd_set);
 	free_after_builtin(set);
-	// exit(update_ret(&set->env_lst, 126)); // a verifier
+	//exit(update_ret(&set->env_lst, 126)); // a verifier
 	exit(126);
+	//exit(g_exit_val = 126);
 }
 
 void	close_pipe(t_set *set, int index)
@@ -118,13 +123,16 @@ pid_t	ft_fork(t_set *set, int index)
 		if (pipe(set->pipe[index % 2]) == -1)
 			return (printf("ERR_PIPE\n"));//free close ...
 	}
-	ft_handle_signals();
+	//ft_handle_signals();
+	//signals_ctrlc_bsl();
+	//ignore
+	ign_sigint();
 	pid = fork();
 	if (pid == -1)
 		return (printf("ERR_PID\n"));//free close ...
 	if (pid == 0)
 	{
-		signals_ctrlc_bsl();
+		//signals_ctrlc_bsl();
 		ft_dup2(set, index);
 		if (set->cmd_set[index]->cmd[0] && is_builtin(set->cmd_set[index]->cmd)== 1) // issues
 		{
@@ -135,6 +143,7 @@ pid_t	ft_fork(t_set *set, int index)
 		}
 		if (set->cmd_set[index]->cmd[0])
 		{
+			signals_simple();
 			ft_execve(set, index);
 			// free_after_builtin(set);
 		}
@@ -153,24 +162,27 @@ pid_t	ft_fork(t_set *set, int index)
 // Waits for child processes to finish.
 void	ft_waitpid(t_set *set)
 {
-	int	i;
-	// int status;
+	
+	int status;
 	// int	save_status;
-	// save_status = 0;
-	i = 0;
-	while (i < set->cmd_nb && set->pid[i])
+	//save_status = 0;
+	
+	while (wait(&status) > 0)
 	{
-		waitpid(set->pid[i], NULL/* , &status */, 0);
-		i++;
+		if (WIFEXITED(status))
+			update_ret(&set->env_lst, WEXITSTATUS(status));
+		// save_status = status;
+		else if (WIFSIGNALED(status))
+			update_ret(&set->env_lst, 128 + WTERMSIG(status));
+			// save_status = 128 + WTERMSIG(status); // WIFSIGNALED -- > child to exit
+		// else if (WIFEXITED(status))
+		// 	save_status = WEXITSTATUS(status); // WIFEXITED -- > child process ended normally
+		// g_exit_val = status;
 	}
-	// save_status = status;
-	// if (WIFSIGNALED(save_status))
-	// 	status = 128 + WTERMSIG(save_status);
-	// else if (WIFEXITED(save_status))
-	// 	status = WEXITSTATUS(save_status);
-	// else
-	// 	status = save_status;
-	// g_last_status = status;
+	//g_exit_val = status;
+	// return ;	
+	
+	ft_handle_signals();
 }
 
 bool	is_single_builtin(t_set *set, int index)

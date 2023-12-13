@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 09:59:10 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/13 16:45:59 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/13 20:18:00 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 // mode interactif ? 
 // ctrl_c ==> SIGINT
 
+int g_exit_val;
+
 void	sigint_handler(int signum) 
 {
 	//ft_printf("\001"PINK"\002""\nCandy_Shell> ""\001"YELLOW"\002");
@@ -31,30 +33,33 @@ void	sigint_handler(int signum)
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
+		g_exit_val = 130;
 	}		
 }
 
 // ctrl-/
 
-void	sigquit_handler(int signum) 
-{
-	(void)signum; 
-	rl_on_new_line();
-}
+// void	sigquit_handler(int signum) 
+// {
+// 	(void)signum; 
+// 	rl_on_new_line();
+// 	g_exit_val = 131;
+// }
+
 
 /*
 *	Fonction principale : child(pid == 0)
 *	initialisation des signaux ctrl -c // ctrl \
 */
-void signals_ctrlc_bsl(void)
-{
-	struct sigaction	sa; 
+// void signals_ctrlc_bsl(void)
+// {
+// 	struct sigaction	sa; 
 		 
-	ft_memset(&sa, 0, sizeof(sa)); 
-	sa.sa_handler = &sigquit_handler;
-	sigaction(SIGQUIT, &sa, NULL);
-	sigaction(SIGINT, &sa, NULL);
-}
+// 	ft_memset(&sa, 0, sizeof(sa)); 
+// 	sa.sa_handler = &sigquit_handler;
+// 	sigaction(SIGQUIT, &sa, NULL);
+// 	sigaction(SIGINT, &sa, NULL);
+// }
 
 /*
 *	Fonction principale : general / parent
@@ -70,6 +75,7 @@ void	ft_handle_signals(void)
 	sigaction(SIGINT, &sa, NULL);
 	
 	ign_sigquit();
+	
 }
 
 
@@ -85,7 +91,26 @@ void	ign_sigquit(void)
 	sigaction(SIGQUIT, &sa, NULL);
 }
 
+void	ign_sigint(void) 
+{
+	struct sigaction	sa;
 
+	ft_memset(&sa, 0, sizeof(sa));
+	sa.sa_handler = SIG_IGN;
+	sigaction(SIGINT, &sa, NULL);
+}
+
+// fonction par defaut:
+
+void signals_simple(void)
+{
+	struct sigaction	sa; 
+		 
+	ft_memset(&sa, 0, sizeof(sa)); 
+	sa.sa_handler = SIG_DFL;
+	sigaction(SIGQUIT, &sa, NULL);
+	sigaction(SIGINT, &sa, NULL);
+}
 
 
 
@@ -190,5 +215,3 @@ void	ign_sigquit(void)
 
 
 
-
-*/
