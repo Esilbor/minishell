@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 09:39:05 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/13 15:31:19 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/13 16:36:37 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	fill_heredoc(t_lexer *lex, char *limiter)
 	{
 		ft_handle_signals();
 		buf = readline("heredoc> ");
-		signals_ctrlcl();
+		signals_ctrlc_bsl();
 		if (!buf)
 		{
 			ft_printf("\n");

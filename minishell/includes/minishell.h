@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/13 15:40:04 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/13 16:35:33 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -252,7 +252,7 @@ void		sigquit_handler(int signum);
 void		ft_handle_signals(void);
 void		ign_sigquit(void);
 //void		signals_child(void);
-void		signals_ctrlcl(void);
+void		signals_ctrlc_bsl(void);
 
 /*	destroyers	*/
 
