@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:13:47 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/13 13:41:27 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/13 15:31:48 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,9 +124,7 @@ pid_t	ft_fork(t_set *set, int index)
 		return (printf("ERR_PID\n"));//free close ...
 	if (pid == 0)
 	{
-		//ign_sigquit();
-		//ft_handle_signals();
-		signals_child();
+		signals_ctrlcl();
 		ft_dup2(set, index);
 		if (set->cmd_set[index]->cmd[0] && is_builtin(set->cmd_set[index]->cmd)== 1) // issues
 		{

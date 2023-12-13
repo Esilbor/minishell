@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 09:59:10 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/13 13:47:45 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/13 15:36:18 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,17 +33,17 @@ void	sigint_handler(int signum)
 	}		
 }
 
-void	sigquit_handler(int signum) // ctrl- D
+void	sigquit_handler(int signum) // ctrl- c  /  newline
 {
 	(void)signum; 
 	rl_on_new_line();
 }
 
 /*
-*	Fonction principale : child
-*	initialisation des signaux
+*	Fonction principale : child(pid == 0)
+*	initialisation des signaux ctrl -c // ctrl /
 */
-void signals_child(void)
+void signals_ctrlcl(void)
 {
 	// Handling SIGQUIT
 	struct sigaction	sa; 

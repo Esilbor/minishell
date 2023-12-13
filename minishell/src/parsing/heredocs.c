@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredocs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 09:39:05 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/11 13:35:25 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/13 15:31:19 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,9 @@ void	fill_heredoc(t_lexer *lex, char *limiter)
 	}
 	while (1)
 	{
+		ft_handle_signals();
 		buf = readline("heredoc> ");
+		signals_ctrlcl();
 		if (!buf)
 		{
 			ft_printf("\n");
