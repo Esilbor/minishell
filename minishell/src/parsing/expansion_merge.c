@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_merge.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 10:53:54 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/12 18:04:07 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/13 07:16:15 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ t_lexer	**clean_empty_nodes(t_lexer **lexer)
 	t_lexer	*lex;
 
 	lex = *lexer;
-	while (lex)
+	while (lex && lex->next)
 	{
 		if (lex->type == WORD && lex->word[0] == '\0')
 			lex = ft_remove_lex_node(lexer, lex);

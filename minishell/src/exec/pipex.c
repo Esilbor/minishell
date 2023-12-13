@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:13:47 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/12 18:25:19 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/13 07:07:30 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,11 +147,11 @@ pid_t	ft_fork(t_set *set, int index)
 // Waits for child processes to finish.
 void	ft_waitpid(t_set *set)
 {
-	int	i;
+	// int	i;
 	int status;
 
 
-	i = 0;
+	// i = 0;
 
 	while (wait(&status) > 0)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils_2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:12:40 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/12 11:15:14 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/13 07:37:33 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,8 @@ t_lexer	*ft_lexer(char *line)
 	if (lexer->word[0] == '\0')
 		lexer = ft_remove_lex_node(&lexer, lexer);
 	clean_empty_nodes(&lexer);
+	if (!lexer || !lexer->word)
+		return (NULL);
 	// print_lexer(&lexer, "before valid input");
 	return (check_valid_input(&lexer));
 }

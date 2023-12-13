@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 23:02:12 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/11 21:29:56 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/13 07:53:05 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,11 @@ void	free_redirections(t_cmd **tab)
 	while (tab[i])
 	{
 		if (tab[i]->input)
+		{
+			if (tab[i]->input->type == LIMITER)
+				unlink(tab[i]->input->word);
 			free_lexer_list(&tab[i]->input);
+		}
 		if (tab[i]->output)
 			free_lexer_list(&tab[i]->output);
 		i++;

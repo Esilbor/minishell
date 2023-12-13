@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:57:33 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/12 17:52:47 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/13 07:45:22 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static char	*check_cmd_null(char *cmd)
 	{
 		//write(STDERR, ERR_CMD, ft_strlen(ERR_CMD));
 		//return (NULL);
-		return (ft_putstr_fd("ERR_CMD\n", 2), NULL);
+		return (ft_putstr_fd("CMD NULL", 2), NULL);
 	}
 	return (cmd);
 }
@@ -57,6 +57,12 @@ static char	*check_cmd_null(char *cmd)
 // 	exit_err(set, 126);
 // }
 
+void	print_cmd_not_found(char *cmd)
+{
+	ft_putstr_fd(cmd, 2);
+	ft_putstr_fd(": ", 2);
+	ft_putstr_fd("cmd_path not found\n", 2);
+}
 
 char *set_path_cmd(t_set *set, char *cmd)
 {
@@ -66,7 +72,7 @@ char *set_path_cmd(t_set *set, char *cmd)
 
 	cmd = check_cmd_null(cmd);
 	index = 0;
-	while (set->paths[index])
+	while (set->paths[index] && cmd)
 	{
 		tmp = ft_strjoin("/", cmd);
 		if (!tmp)
@@ -87,6 +93,6 @@ char *set_path_cmd(t_set *set, char *cmd)
 		index++;
 	}
 	// second_chance(set, cmd);
-	ft_putstr_fd("cmd_path not found\n", 2);
+	print_cmd_not_found(cmd);
 	return (NULL);
 }
