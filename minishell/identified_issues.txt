@@ -5,7 +5,6 @@ IDENTITFIED ISSUES
 
 - handle signals
 
-- $> / (this is a directory)
 - export test="ls -l"
 - export test2="ls          -l  -a" (might not be compulsory)
 
@@ -15,44 +14,6 @@ $> $dsfsd (wrong return value?)
 - protect every ft_strdup
 - check if no unclosed fd
 - norm
-
-
-
-
-
-
-Candy_$hell> $RTRT
->SEG revenir au commit precedent
-Candy_$hell> $? ne fonctionne plus non plus??
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 ****************************************************
@@ -67,16 +28,4 @@ would be nice to have it done:
                                                     **Candy_$hell> == SHLVL=4
                                                     ***Candy_$hell> == SHLVL=5
                                                     ****Candy_$hell> == SHLVL=6
-Candy_$hell> /bin/ls gdsdfgsd
-/bin/ls: cannot access 'gdsdfgsd': No such file or directory
-Candy_$hell> echo $?
-0
-Candy_$hell>
-
->> return value must be 2
-
-
-
-Candy_$hell> env | grep PWD ne fonctionne pas
-
-cd ne rammene pas a home
+E

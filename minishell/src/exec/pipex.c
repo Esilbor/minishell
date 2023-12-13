@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:13:47 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/13 07:07:30 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/13 08:15:15 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void ft_execve(t_set *set, int index)
 	{
 		if (access(set->cmd_set[index]->cmd[0], X_OK | F_OK) == 0)
 			execve(set->cmd_set[index]->cmd[0], set->cmd_set[index]->cmd, set->envp);
-		ft_putstr_fd("cannot execute without environment or path\n", 2);
+		print_cmd_not_found(set->cmd_set[index]->cmd[0]);
 		exit_err(set, 127);
 	}
 	exit_err(set, 126);
