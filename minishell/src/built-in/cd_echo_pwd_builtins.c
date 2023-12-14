@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_echo_pwd_builtins.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 15:09:16 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/14 10:48:20 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/14 20:00:54 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ int	do_echo(t_env **env, char **str)
 	}
 	while (i < cmd_nb)
 	{
-		ft_putstr_fd(str[i], 1);
+		ft_putstr_fd(str[i], 1); // proteger
 		if (i < cmd_nb - 1)
-			ft_printf(" ");
+			ft_printf(" "); // write et proteger les write
 		i++;
 	}
 	if (n_flag)
