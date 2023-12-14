@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_builtin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 11:28:12 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/13 13:32:41 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/14 07:12:02 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	do_cd(char **cmd_tab, t_env **envb)
 	{
 		tmp = &get_env_node(*envb, "HOME")->var_str[5];
 		if (is_directory(tmp) && !chdir(tmp))
-				update_pwd(envb);
+			update_pwd(envb);
 	}
 	else if (cmd_tab[1] && is_directory(cmd_tab[1]) && !chdir(cmd_tab[1]))
 		update_pwd(envb);

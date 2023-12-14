@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 12:13:29 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/12 06:25:59 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/14 08:04:22 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ int	inputs_are_valid(t_cmd **cmd_tab)
 
 void	keep_last_input(t_cmd **cmd_tab)
 {
-	int	i;
-	t_lexer *lex;
+	int		i;
+	t_lexer	*lex;
 
 	i = 0;
 	while (cmd_tab[i])
@@ -64,7 +64,6 @@ void	keep_last_input(t_cmd **cmd_tab)
 				if (unlink(lex->word) != 0)
 					perror("error deleting file");
 				lex = ft_remove_lex_node(&lex, lex);
-				// lex = lex->next;
 			}
 			cmd_tab[i]->input = lex;
 		}
@@ -72,7 +71,7 @@ void	keep_last_input(t_cmd **cmd_tab)
 	}
 }
 
-bool outputs_are_valid(t_lexer *lex)
+bool	outputs_are_valid(t_lexer *lex)
 {
 	int	fd;
 
@@ -88,7 +87,7 @@ bool outputs_are_valid(t_lexer *lex)
 void	keep_last_output(t_cmd **cmd_tab)
 {
 	int		i;
-	t_lexer *lex;
+	t_lexer	*lex;
 
 	i = 0;
 	while (cmd_tab[i])
@@ -98,34 +97,13 @@ void	keep_last_output(t_cmd **cmd_tab)
 			lex = cmd_tab[i]->output;
 			while (lex && lex->next)
 			{
-				if(!outputs_are_valid(lex))
+				if (!outputs_are_valid(lex))
 					exit (1);
 				lex = ft_remove_lex_node(&lex, lex);
 				lex = lex->next;
 			}
 			cmd_tab[i]->output = lex;
-			// free (lex); // ???
 		}
 		i++;
 	}
-}
-
-int	shell_parser(char *input, t_lexer **lexer, t_env *envb, t_cmd ***cmd_tab)
-{
-
-		parsing(input, lexer, envb);
-		if (!(*lexer))
-			return (add_history(input), 1);
-		*cmd_tab = command_builder(lexer);
-		init_heredocs(*cmd_tab);
-		if (inputs_are_valid(*cmd_tab) == 1)
-		{
-			free_cmd_struct_tab(*cmd_tab);
-			free_lexer_list(lexer);
-			return (add_history(input), 1);
-		}
-		keep_last_input(*cmd_tab);
-		keep_last_output(*cmd_tab);
-		free_lexer_list(lexer);
-		return (0);
 }

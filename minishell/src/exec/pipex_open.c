@@ -6,10 +6,9 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 17:28:56 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/10 19:22:00 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/14 08:07:02 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../../includes/minishell.h"
 
@@ -20,10 +19,8 @@ int	ft_open_stdin(t_set *set, int index)
 	fd_stdin = 0;
 	if (set->cmd_set[index]->input)
 		fd_stdin = open(set->cmd_set[index]->input->word, O_RDONLY);
-
 	return (fd_stdin);
 }
-
 
 // int	ft_open_stdout(t_set *set, int index)
 // {
@@ -65,7 +62,7 @@ int	ft_open_stdout(t_set *set, int index)
 	if (set->cmd_set[index]->output)
 	{
 		lex = set->cmd_set[index]->output;
-		if(lex->type == APPEND)
+		if (lex->type == APPEND)
 			fd_stdout = open(lex->word, O_RDWR | O_APPEND | O_CREAT, 0644);
 		else
 			fd_stdout = open(lex->word, O_RDWR | O_TRUNC | O_CREAT, 0644);
