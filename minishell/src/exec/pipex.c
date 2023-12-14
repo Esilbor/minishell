@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:13:47 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/13 11:27:02 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/14 13:03:59 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,11 +147,7 @@ pid_t	ft_fork(t_set *set, int index)
 // Waits for child processes to finish.
 void	ft_wait(t_set *set)
 {
-	// int	i;
 	int status;
-
-
-	// i = 0;
 
 	while (wait(&status) > 0)
 	{
@@ -159,22 +155,6 @@ void	ft_wait(t_set *set)
 			update_ret(&set->env_lst, WEXITSTATUS(status));
 	}
 	return ;
-
-	// int	save_status;
-	// save_status = 0;
-	// while (i < set->cmd_nb && set->pid[i])
-	// {
-	// 	waitpid(set->pid[i], NULL, &status, 0);
-	// 	i++;
-	// }
-	// save_status = status;
-	// if (WIFSIGNALED(save_status))
-	// 	status = 128 + WTERMSIG(save_status);
-	// else if (WIFEXITED(save_status))
-	// 	status = WEXITSTATUS(save_status);
-	// else
-	// 	status = save_status;
-	// g_last_status = status;
 }
 
 bool	is_single_builtin(t_set *set, int index)
@@ -194,10 +174,7 @@ void	ft_pipex(t_set *set)
 
 	i = 0;
 	if (set->cmd_set[i]->cmd[0] && is_single_builtin(set, i))
-	{
-		// ft_printf("is single builtin\n");
-		do_builtins(set, i); // GO TO EXIT C
-	}
+		do_builtins(set, i);
 	else
 	{
 		while (i < set->cmd_nb)
@@ -207,6 +184,5 @@ void	ft_pipex(t_set *set)
 			i++;
 		}
 		ft_wait(set);
-
 	}
 }

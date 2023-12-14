@@ -2,6 +2,8 @@ IDENTITFIED ISSUES
 
 - handle signals
 
+- review all error handling (properly cleanup if dup2 / pipe / strdup fail)
+
 - export test="ls -l"
 - export test2="ls          -l  -a" (might not be compulsory)
 
