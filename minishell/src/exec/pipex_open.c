@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 17:28:56 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/14 14:53:09 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/14 17:34:17 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,11 @@ void	ft_dup2_first(t_set *set, int index, int fd_stdin, int fd_stdout)
 			exit_err(set, 1);
 	if (fd_stdout != 1 && dup2(fd_stdout, 1) == -1)
 			exit_err(set, 1);
-	if (set->cmd_nb > 1 && fd_stdout == 1 && dup2(set->pipe[index][1], 1) == -1)
+	if (set->cmd_nb > 1 && fd_stdout == 1)
+	{
+		if (dup2(set->pipe[index][1], 1) == -1 || close(set->pipe[index][0]) == -1)
 			exit_err(set, 1);
+	}
 }
 
 void	ft_dup2_multpl(t_set *set, int index, int fd_stdin, int fd_stdout)

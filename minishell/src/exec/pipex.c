@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:13:47 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/14 13:03:59 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/14 17:20:20 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,8 @@ pid_t	ft_fork(t_set *set, int index)
 			free_redirections((t_cmd **)set->cmd_set);
 			free_after_builtin(set);
 		}
-		exit(1);
+		ft_printf("HEND************************************\n");
+			exit(1);
 	}
 	if (index)
 		close_pipe(set, index);

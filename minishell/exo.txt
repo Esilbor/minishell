@@ -1,0 +1,11 @@
+art.txt
+exo.txt
+identified_issues.txt
+includes
+libft
+Makefile
+minishell
+obj
+readme
+src
+suppressions.supp
