@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/14 08:10:39 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/14 10:46:55 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,7 @@ void		do_exit(t_set *set, int index);
 /*	cd_echo_pwd_builtins.c	*/
 
 int			do_cd(char **str, t_env **envb);
-void		do_echo(int cmd_nb, char **str);
+int			do_echo(t_env **env, char **str);
 int			do_pwd(char **cmd_tab, t_env **env);
 
 /*	env_display.c	*/

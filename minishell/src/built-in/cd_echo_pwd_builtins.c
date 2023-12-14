@@ -3,24 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   cd_echo_pwd_builtins.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 15:09:16 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/13 13:39:27 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/14 10:48:20 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	do_echo(int cmd_nb, char **str)
+int	do_echo(t_env **env, char **str)
 {
 	int	n_flag;
 	int	i;
 	int	j;
+	int cmd_nb;
 
 	n_flag = 1;
 	i = 1;
 	j = 1;
+	cmd_nb = ft_tab_len(str);
 	while (i < cmd_nb && !ft_strncmp(str[i], "-n", 2)
 		&& !ft_strccmp(&str[i][j], 'n'))
 	{
@@ -36,6 +38,7 @@ void	do_echo(int cmd_nb, char **str)
 	}
 	if (n_flag)
 		ft_printf("\n");
+	return (update_ret(env, 0));
 }
 
 int	do_pwd(char **cmd_tab, t_env **env)

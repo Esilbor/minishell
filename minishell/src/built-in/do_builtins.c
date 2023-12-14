@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 15:11:47 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/11 06:59:32 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/14 10:44:39 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	do_builtins(t_set *set, int index)
 	if (ft_strncmp(set->cmd_set[index]->cmd[0], "pwd", 4) == 0)
 		do_pwd(set->cmd_set[index]->cmd, &set->env_lst);
 	if (ft_strncmp(set->cmd_set[index]->cmd[0], "echo", 5) == 0)
-		do_echo(ft_tab_len(set->cmd_set[index]->cmd), set->cmd_set[index]->cmd);
+		do_echo(&set->env_lst, set->cmd_set[index]->cmd);
 	if (ft_strncmp(set->cmd_set[index]->cmd[0], "env", 4) == 0)
 		print_env(&set->env_lst);
 	if (ft_strncmp(set->cmd_set[index]->cmd[0], "export", 7) == 0)

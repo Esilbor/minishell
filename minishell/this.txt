@@ -1,0 +1,2 @@
+OLDPWD=/home/esilbor/CANDYSHELL/minishell
+PWD=/home/esilbor/CANDYSHELL/minishell
