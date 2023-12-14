@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 09:39:05 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/13 18:43:40 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/14 15:44:19 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void	fill_heredoc(t_lexer *lex, char *limiter)
 
 	// eof_len = ft_strlen(lex->word) - 1;
 	
-	
 	eof_len = ft_strlen(limiter);
 	fd = open(lex->word, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	if (fd < 0)
@@ -44,15 +43,11 @@ void	fill_heredoc(t_lexer *lex, char *limiter)
 		ft_putstr_fd("could not open heredoc\n", 2),
 		exit (1);// free all that is needed
 	}
-	
-	dup_stdin = dup(STDIN_FILENO);
+	dup_stdin = dup(STDIN_FILENO); // sauvegard du stdin
 	signal_heredoc();
-
 	while (1)
 	{
-		//ft_handle_signals();
 		buf = readline("heredoc> ");
-		// signals_ctrlc_bsl();
 		if (!buf)
 		{
 			ft_printf("\n");

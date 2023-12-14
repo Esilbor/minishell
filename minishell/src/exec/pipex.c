@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:13:47 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/13 20:28:21 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/14 17:27:37 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,16 +123,12 @@ pid_t	ft_fork(t_set *set, int index)
 		if (pipe(set->pipe[index % 2]) == -1)
 			return (printf("ERR_PIPE\n"));//free close ...
 	}
-	//ft_handle_signals();
-	//signals_ctrlc_bsl();
-	//ignore
 	ign_sigint();
 	pid = fork();
 	if (pid == -1)
 		return (printf("ERR_PID\n"));//free close ...
 	if (pid == 0)
 	{
-		//signals_ctrlc_bsl();
 		ft_dup2(set, index);
 		if (set->cmd_set[index]->cmd[0] && is_builtin(set->cmd_set[index]->cmd)== 1) // issues
 		{
@@ -164,26 +160,21 @@ void	ft_waitpid(t_set *set)
 {
 	
 	int status;
-	// int	save_status;
-	//save_status = 0;
-	
+		
 	while (wait(&status) > 0)
 	{
 		if (WIFEXITED(status))
-			update_ret(&set->env_lst, WEXITSTATUS(status));
-		// save_status = status;
+			update_ret(&set->env_lst, WEXITSTATUS(status)); 
 		else if (WIFSIGNALED(status))
 			update_ret(&set->env_lst, 128 + WTERMSIG(status));
-			// save_status = 128 + WTERMSIG(status); // WIFSIGNALED -- > child to exit
-		// else if (WIFEXITED(status))
-		// 	save_status = WEXITSTATUS(status); // WIFEXITED -- > child process ended normally
-		// g_exit_val = status;
-	}
-	//g_exit_val = status;
-	// return ;	
-	
+	}	
 	ft_handle_signals();
 }
+
+// Macro: int WIFEXITED (int status) --> when the child erminated with ------------> exit 
+// Macro: int WIFSIGNALED (int status) --> if the child process terminated because it received a signal that was not handled.
+// Macro: int WTERMSIG (int status) ---> it  returns the signal number of the signal that terminated the child process
+
 
 bool	is_single_builtin(t_set *set, int index)
 {
@@ -218,3 +209,21 @@ void	ft_pipex(t_set *set)
 
 	}
 }
+/*
+
+
+if (execve(cmd_path, set->cmd_set[index]->cmd, set->envp) == -1)
+	{
+		if (errno == EACCES)
+			printf("Candy_$hell?: %s: Permission denied\n", set->cmd_set[index]->cmd[0]);
+		if (errno == ENOENT)
+			printf("Candy_$hell?: %s: No such file or directory\n", set->cmd_set[index]->cmd[0]);
+		else
+			printf("Candy_$hell?: %s: command not found\n", set->cmd_set[index]->cmd[0]);
+		exit(127);
+	}
+
+
+
+
+*/
