@@ -3,36 +3,94 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 09:59:10 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/04 10:00:34 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/14 19:40:52 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-// Handle SIGINT signal and print a prompt
-void	sigint_handler(int signum)
+
+
+// Handle SIGINT signal and print a prompt  
+// on affiche le promp
+// cursur au debut de la ligne
+// remplacer la ligne actuelle par une chaine vide
+// redisplay pour mettre a jour l'affichage
+
+// mode interactif ? 
+// ctrl_c ==> SIGINT
+
+int g_exit_val;
+
+void	sigint_handler(int signum) 
 {
-	(void)signum; // Avoid compiler warning for unused variable
-	ft_printf("\001"PINK"\002""\nCandy_Shell> ""\001"YELLOW"\002");
+	if (signum == SIGINT)
+	{
+		ft_putstr_fd("\n", STDOUT_FILENO);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay(); 
+		//g_exit_val = 130;
+	}
 }
 
-void	sigquit_handler(int signum)
-{
-	(void)signum; // This handler does nothing for SIGQUIT
-}
+/*
+*	Fonction principale : general / parent / main
+*	initialisation des signaux :
+*	sigint_handler -- > (ctrl-c) 
+*	ign_sigquit --- > (ctrl-\) replaced with SIG_IGN
+*/
 
 void	ft_handle_signals(void)
 {
+	struct sigaction	sa; 
+	
+	ft_memset(&sa, 0, sizeof(sa)); 
+	sa.sa_handler = &sigint_handler; 
+	sigaction(SIGINT, &sa, NULL);	
+	ign_sigquit();
+	
+}
+
+
+
+/* 
+*	SIGQUIT signals (ctrl-\) replaced with SIG_IGN
+*/
+void	ign_sigquit(void) 
+{
 	struct sigaction	sa;
-		// Handling SIGINT
-	ft_memset(&sa, 0, sizeof(sa)); // Zero out the structure
-	sa.sa_handler = sigint_handler; // Assign handler function
-	sigaction(SIGINT, &sa, NULL); // Register handler for SIGINT
-	// Handling SIGQUIT
-	ft_memset(&sa, 0, sizeof(sa)); // Zero out the structure again
-	sa.sa_handler = sigquit_handler; // Assign handler function
-	sigaction(SIGQUIT, &sa, NULL); // Register handler for SIGQUIT
+
+	ft_memset(&sa, 0, sizeof(sa));
+	sa.sa_handler = SIG_IGN;
+	sigaction(SIGQUIT, &sa, NULL);
+	//ft_putstr_fd("Quit (core dumped)\n", STDOUT_FILENO);
+}
+
+/* 
+*	SIGINT signals (ctrl-c) replaced with SIG_IGN
+*/
+
+void	ign_sigint(void) 
+{
+	struct sigaction	sa;
+
+	ft_memset(&sa, 0, sizeof(sa));
+	sa.sa_handler = SIG_IGN;
+	sigaction(SIGINT, &sa, NULL);
+}
+
+// fonction par defaut:
+
+void signals_simple(void)
+{
+	struct sigaction	sa; 
+
+	ft_memset(&sa, 0, sizeof(sa)); 
+	sa.sa_handler = SIG_DFL; // if child_pid == 0
+	sigaction(SIGQUIT, &sa, NULL);
+	sigaction(SIGINT, &sa, NULL);
 }

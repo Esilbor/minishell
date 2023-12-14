@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:13:47 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/14 19:19:38 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/14 19:46:51 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ pid_t	ft_fork(t_set *set, int index)
 		if (pipe(set->pipe[index % 2]) == -1)
 			return (printf("ERR_PIPE\n"));//free close ...
 	}
+	ign_sigint(); // ignore sigquit (ctrl-\) + sigint (ctrl-c)
 	pid = fork();
 	if (pid == -1)
 		return (printf("ERR_PID\n"));//free close ...
@@ -134,6 +135,7 @@ pid_t	ft_fork(t_set *set, int index)
 		}
 		if (set->cmd_set[index]->cmd[0])
 		{
+			signals_simple(); // fonction par defaut
 			ft_execve(set, index);
 			// free_after_builtin(set);
 		}
@@ -158,9 +160,17 @@ void	ft_wait(t_set *set)
 	{
 		if (WIFEXITED(status))
 			update_ret(&set->env_lst, WEXITSTATUS(status));
+		else if (WIFSIGNALED(status))
+			update_ret(&set->env_lst, 128 + WTERMSIG(status));
 	}
-	return ;
+	ft_handle_signals(); // ignor sigquit (ctrl-\)
 }
+
+
+// Macro: int WIFEXITED (int status) --> when the child erminated with ------------> exit 
+// Macro: int WIFSIGNALED (int status) --> if the child process terminated because it received a signal that was not handled.
+// Macro: int WTERMSIG (int status) ---> it  returns the signal number of the signal that terminated the child process
+
 
 bool	is_single_builtin(t_set *set, int index)
 {

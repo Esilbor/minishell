@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/14 10:46:55 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/14 19:43:58 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,8 @@ typedef struct t_set
 	pid_t			*pid;
 	int				**pipe;
 }	t_set;
+
+extern int g_exit_val;
 
 /******************************************/
 /***************TO ORDER*******************/
@@ -219,6 +221,10 @@ char		*ft_prompt(t_env *envb);
 void		sigint_handler(int signum);
 void		sigquit_handler(int signum);
 void		ft_handle_signals(void);
+void		ign_sigquit(void);
+void		sig_heredoc_handler(int signum);
+void		signals_simple(void);
+void		ign_sigint(void) ;
 
 /*	destroyers	*/
 
