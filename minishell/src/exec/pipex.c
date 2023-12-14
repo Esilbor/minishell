@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:13:47 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/14 17:20:20 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/14 19:19:38 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,11 @@ pid_t	ft_fork(t_set *set, int index)
 		if (set->cmd_set[index]->cmd[0] && is_builtin(set->cmd_set[index]->cmd)== 1) // issues
 		{
 			do_builtins(set, index); // je ne me souviens plus pourquoi jai rajoute ca
+			// exit_err(set, 0);
+			// ft_close_pipes(set);
+			// free_redirections(set->cmd_set);
+			// free_after_builtin(set);
+
 			// free_redirections((t_cmd **)set->cmd_set);
 			// free_after_builtin(set);
 			// exit(0);
@@ -137,8 +142,7 @@ pid_t	ft_fork(t_set *set, int index)
 			free_redirections((t_cmd **)set->cmd_set);
 			free_after_builtin(set);
 		}
-		ft_printf("HEND************************************\n");
-			exit(1);
+		exit_err(set, 1);
 	}
 	if (index)
 		close_pipe(set, index);
