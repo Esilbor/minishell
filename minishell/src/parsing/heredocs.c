@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 09:39:05 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/14 19:51:08 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/14 21:18:22 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,11 @@
 void	sig_heredoc_handler(int signum) 
 {
 	if (signum == SIGINT)
+	{
 		close(STDIN_FILENO);
+		g_exit_val = 130;
+	}
+		
 }
 
 void signal_heredoc(void)
@@ -72,6 +76,7 @@ void	fill_heredoc(int fd, char *limiter)
 	dup2(dup_stdin, STDIN_FILENO);
 	ft_handle_signals(); // ignor sigquit (ctrl-\)
 	close(dup_stdin);
+
 }
 
 // void	create_heredoc(t_lexer *lex, char *limiter)

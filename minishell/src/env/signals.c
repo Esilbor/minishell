@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 09:59:10 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/14 19:40:52 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/14 21:14:28 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	ft_handle_signals(void)
 {
 	struct sigaction	sa; 
 	
-	ft_memset(&sa, 0, sizeof(sa)); 
+	ft_memset(&sa, 0, sizeof(sa));
 	sa.sa_handler = &sigint_handler; 
 	sigaction(SIGINT, &sa, NULL);	
 	ign_sigquit();

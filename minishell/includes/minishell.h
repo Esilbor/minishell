@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/14 19:43:58 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/14 20:39:14 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,7 @@ void		close_crush_exit(char *msg, t_set *set, int do_exit, int exit_ret);
 
 void		create_heredoc(t_lexer *lex, char *limiter);
 void		fill_heredoc(int fd, char *limiter);
+//void		fill_heredoc(int fd, char *limiter, t_set *set);
 char		*name_heredoc(char *limiter, int index, int k);
 void		modify_limiter_nodes(t_lexer *lst, int index);
 void		init_heredocs(t_cmd **cmd_tab);

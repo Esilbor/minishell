@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:13:47 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/14 19:46:51 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/14 21:04:27 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +161,7 @@ void	ft_wait(t_set *set)
 		if (WIFEXITED(status))
 			update_ret(&set->env_lst, WEXITSTATUS(status));
 		else if (WIFSIGNALED(status))
-			update_ret(&set->env_lst, 128 + WTERMSIG(status));
+			update_ret(&set->env_lst, 128 + WTERMSIG(status));			
 	}
 	ft_handle_signals(); // ignor sigquit (ctrl-\)
 }
