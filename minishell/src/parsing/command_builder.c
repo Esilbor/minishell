@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 12:12:12 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/10 18:03:42 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/14 07:36:18 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,6 @@ t_cmd	**init_cmd_struct(t_lexer **lexer)
 		cmd_tab[i] = NULL;
 	return (cmd_tab);
 }
-
 
 // Builds command structures from a lexer and fills them with redirections
 t_cmd	**command_builder(t_lexer **lexer)

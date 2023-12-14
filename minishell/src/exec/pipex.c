@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:13:47 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/12 12:39:17 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/14 19:19:38 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,14 @@ void	init_pid_tab(t_set *set)
 		set->pid[i] = 0;
 }
 
+void	exit_err(t_set *set, int err_nb)
+{
+	ft_close_pipes(set);
+	free_redirections(set->cmd_set);
+	free_after_builtin(set);
+	exit(err_nb); // a verifier avec update_ret
+}
+
 void ft_execve(t_set *set, int index)
 {
 	char *cmd_path;
@@ -65,29 +73,17 @@ void ft_execve(t_set *set, int index)
 	{
 		cmd_path = set_path_cmd(set, set->cmd_set[index]->cmd[0]);
 		if (!cmd_path)
-		{
-			ft_close_pipes(set);
-			free_redirections(set->cmd_set);
-			free_after_builtin(set);
-			exit(127); // a verifier avec update_ret
-		}
+			exit_err(set, 127);
 		execve(cmd_path, set->cmd_set[index]->cmd, set->envp);
 	}
 	else
 	{
 		if (access(set->cmd_set[index]->cmd[0], X_OK | F_OK) == 0)
 			execve(set->cmd_set[index]->cmd[0], set->cmd_set[index]->cmd, set->envp);
-		ft_putstr_fd("cannot execute without environment or absolute path\n", 2);
-		ft_close_pipes(set);
-		free_redirections(set->cmd_set);
-		free_after_builtin(set);
-		exit(127); // a verifier avec update_ret
+		print_cmd_not_found(set->cmd_set[index]->cmd[0]);
+		exit_err(set, 127);
 	}
-	ft_close_pipes(set);
-	free_redirections(set->cmd_set);
-	free_after_builtin(set);
-	// exit(update_ret(&set->env_lst, 126)); // a verifier
-	exit(126);
+	exit_err(set, 126);
 }
 
 void	close_pipe(t_set *set, int index)
@@ -127,6 +123,11 @@ pid_t	ft_fork(t_set *set, int index)
 		if (set->cmd_set[index]->cmd[0] && is_builtin(set->cmd_set[index]->cmd)== 1) // issues
 		{
 			do_builtins(set, index); // je ne me souviens plus pourquoi jai rajoute ca
+			// exit_err(set, 0);
+			// ft_close_pipes(set);
+			// free_redirections(set->cmd_set);
+			// free_after_builtin(set);
+
 			// free_redirections((t_cmd **)set->cmd_set);
 			// free_after_builtin(set);
 			// exit(0);
@@ -141,34 +142,24 @@ pid_t	ft_fork(t_set *set, int index)
 			free_redirections((t_cmd **)set->cmd_set);
 			free_after_builtin(set);
 		}
-		exit(1);
+		exit_err(set, 1);
 	}
 	if (index)
-		close_pipe(set, index); // close heredocs here?
+		close_pipe(set, index);
 	return (pid);
 }
 
 // Waits for child processes to finish.
-void	ft_waitpid(t_set *set)
+void	ft_wait(t_set *set)
 {
-	int	i;
-	// int status;
-	// int	save_status;
-	// save_status = 0;
-	i = 0;
-	while (i < set->cmd_nb && set->pid[i])
+	int status;
+
+	while (wait(&status) > 0)
 	{
-		waitpid(set->pid[i], NULL/* , &status */, 0);
-		i++;
+		if (WIFEXITED(status))
+			update_ret(&set->env_lst, WEXITSTATUS(status));
 	}
-	// save_status = status;
-	// if (WIFSIGNALED(save_status))
-	// 	status = 128 + WTERMSIG(save_status);
-	// else if (WIFEXITED(save_status))
-	// 	status = WEXITSTATUS(save_status);
-	// else
-	// 	status = save_status;
-	// g_last_status = status;
+	return ;
 }
 
 bool	is_single_builtin(t_set *set, int index)
@@ -188,10 +179,7 @@ void	ft_pipex(t_set *set)
 
 	i = 0;
 	if (set->cmd_set[i]->cmd[0] && is_single_builtin(set, i))
-	{
-		// ft_printf("is single builtin\n");
-		do_builtins(set, i); // GO TO EXIT C
-	}
+		do_builtins(set, i);
 	else
 	{
 		while (i < set->cmd_nb)
@@ -200,7 +188,6 @@ void	ft_pipex(t_set *set)
 			set->pid[i] = last_pid;
 			i++;
 		}
-		ft_waitpid(set);
-
+		ft_wait(set);
 	}
 }

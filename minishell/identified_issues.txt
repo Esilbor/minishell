@@ -1,13 +1,13 @@
 IDENTITFIED ISSUES
 
-- builtin cd is wrong (done by mate2)
-        must update PWD and OLDPWD
-
 - handle signals
-- heredocs must be deleted at the end of the program
+
+- review all error handling (properly cleanup if dup2 / pipe / strdup fail)
 
 - export test="ls -l"
 - export test2="ls          -l  -a" (might not be compulsory)
+
+$> $dsfsd (wrong return value?)
 
 - return values
 - protect every ft_strdup
@@ -15,9 +15,8 @@ IDENTITFIED ISSUES
 - norm
 
 
-
-
-
+****************************************************
+****************************************************
 ****************************************************
 
 would be nice to have it done:
@@ -30,16 +29,4 @@ would be nice to have it done:
                                                     **Candy_$hell> == SHLVL=4
                                                     ***Candy_$hell> == SHLVL=5
                                                     ****Candy_$hell> == SHLVL=6
-Candy_$hell> /bin/ls gdsdfgsd
-/bin/ls: cannot access 'gdsdfgsd': No such file or directory
-Candy_$hell> echo $?
-0
-Candy_$hell>
-
->> return value must be 2
-
-
-
-Candy_$hell> env | grep PWD ne fonctionne pas
-
-cd ne rammene pas a home
+E

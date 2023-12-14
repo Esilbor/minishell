@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/12 06:23:00 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/14 10:46:55 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,11 +113,14 @@ typedef struct t_set
 /***************TO ORDER*******************/
 /******************************************/
 
+bool		is_directory(char *cmd);
+void		print_cmd_not_found(char *cmd);
+void		exit_err(t_set *set, int err_nb);
 void		free_redirections(t_cmd **tab);
 void		free_after_builtin(t_set *set);
 void		free_cmds(t_cmd **cmd_tab);
 void		sugar_rush(t_set *set);
-void		ft_waitpid(t_set *set);
+void		ft_wait(t_set *set);
 void		ft_close_and_free(t_set *set);
 void		close_pipe(t_set *set, int index);
 pid_t		ft_fork(t_set *set, int index);
@@ -133,10 +136,11 @@ void		close_crush_exit(char *msg, t_set *set, int do_exit, int exit_ret);
 /***************HEREDOCS*******************/
 /******************************************/
 
-void		fill_heredoc(t_lexer *lex, char *limiter);
+void		create_heredoc(t_lexer *lex, char *limiter);
+void		fill_heredoc(int fd, char *limiter);
+char		*name_heredoc(char *limiter, int index, int k);
 void		modify_limiter_nodes(t_lexer *lst, int index);
 void		init_heredocs(t_cmd **cmd_tab);
-
 
 int			inputs_are_valid(t_cmd **cmd_tab);
 int			invalid_input(char *filename);
@@ -160,13 +164,13 @@ void		do_exit(t_set *set, int index);
 /*	cd_echo_pwd_builtins.c	*/
 
 int			do_cd(char **str, t_env **envb);
-void		do_echo(int cmd_nb, char **str);
+int			do_echo(t_env **env, char **str);
 int			do_pwd(char **cmd_tab, t_env **env);
 
 /*	env_display.c	*/
 
 int			ft_print_rainbow(char *str);
-void		print_env(t_env **head);
+int			print_env(t_env **head);
 int			assign_or_append(char *env_var);
 bool		cmd_is_valid(char **cmd_tab, int i, int *ret);
 
@@ -180,7 +184,7 @@ void		ft_fill_env(t_env **env, char **envp);
 
 /*	env_management_2.c	*/
 
-unsigned	ft_rand(void);
+unsigned ft_rand(void);
 void		init_colors(char **colors);
 t_env		**sort_env(t_env **head);
 t_env		*get_env(char **envp);
@@ -254,17 +258,14 @@ void		clean_lexer4(t_lexer **lexer);
 void		clean_lexer(t_lexer **lexer);
 void		clean_lexer2(t_lexer **lexer);
 void		clean_lexer3(t_lexer **lexer);
-void		clean_redir(t_lexer **lexer, t_lexer **lex, t_tokens type);
-void		clean_squotes(t_lexer **lexer);
 
 /*	expansion_merge.c	*/
 
+void		process_expander_node(t_lexer **lst, t_env *envb);
 void		merge_nodes(t_lexer **lexer);
 t_lexer		*parsing(char *input, t_lexer **lexer, t_env *envb);
-void		quotes_to_words(t_lexer **lexer);
 void		ft_expander(t_lexer **lexer, t_env *envb);
 void		lexer_polish(t_lexer **lexer);
-t_lexer		**clean_empty_nodes(t_lexer **lexer);
 
 /*	expansion_utils_1.c	*/
 
@@ -316,11 +317,19 @@ t_lexer		*syntax_error(t_lexer *lexer, t_lexer **lexer_head);
 t_lexer		*check_valid_input(t_lexer **lexer_head);
 t_lexer		*ft_lexer(char *line);
 
-	/*to be deleted */
+/*	lexer_utils_3.c	*/
+
+void		clean_squotes(t_lexer **lexer);
+void		clean_esc(t_lexer **lex, char **esc);
+t_lexer		**clean_empty_nodes(t_lexer **lexer);
+void		quotes_to_words(t_lexer **lexer);
+
+	/*to be commented out */
 
 char		*print_token(t_tokens token);
 void		print_lexer(t_lexer **head, char *loc);
 void		ft_print_struct_tab(t_cmd **struct_tab);
+void		clean_redir(t_lexer **lexer, t_lexer **lex, t_tokens type);
 
 /******************************************/
 /******************MAIN********************/

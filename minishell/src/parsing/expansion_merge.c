@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_merge.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 10:53:54 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/12 11:14:01 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/14 07:36:46 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,120 +39,54 @@ void	merge_nodes(t_lexer **lexer)
 	}
 }
 
-//finally change SQUOTES and DQUOTES into WORDS before cleaning
-void	quotes_to_words(t_lexer **lexer)
-{
-	t_lexer	*lex;
-
-	lex = *lexer;
-	while (lex)
-	{
-		if (lex->type == SQUOTE || lex->type == DQUOTE)
-			lex->type = WORD;
-		lex = lex->next;
-	}
-}
-
-// remove \ pointed by esc from lex->word
-void	clean_esc(t_lexer **lex, char **esc)
-{
-	char	*before;
-	char	*after;
-
-	before = ft_strpcpy((*lex)->word, *esc);
-	after = ft_strdup(*esc + 1);
-	free ((*lex)->word);
-	(*lex)->word = ft_strjoin(before, after);
-	*esc = ft_strchr((*lex)->word, '\\');
-	free (before);
-	free (after);
-}
-
-// replace the value of expand nodes to the matching environment value
 void	ft_expander(t_lexer **lexer, t_env *envb)
 {
 	t_lexer	*lst;
-	char	*tmp;
-	char	*esc;
 
 	lst = *lexer;
 	while (lst)
 	{
-		if (lst->type == DQUOTE || lst->type == DMERGE)
-		{
-			tmp = dol_to_expand(lst->word);
-			if (tmp)
-				lst = expand_dquote(tmp, lst, envb);
-			esc = ft_strchr(lst->word, '\\');
-			while (esc && esc[1] != '\"' && esc[1] != '?')
-				clean_esc(&lst, &esc);
-			lst = clean_quotes(lst);
-		}
-		else if (lst->type == EXPAND || lst->type == EMERGE)
-		{
-			tmp = dol_to_expand(lst->word);
-			if (tmp)
-				lst = expand_node2(tmp, lst, envb);
-			esc = ft_strchr(lst->word, '\\');
-			while (esc && esc[1])
-				clean_esc(&lst, &esc);
-		}
+		process_expander_node(&lst, envb);
 		lst = lst->next;
 	}
 }
 
-//clean the lexer of null nodes of type WORD
-t_lexer	**clean_empty_nodes(t_lexer **lexer)
+void	process_expander_node(t_lexer **lst, t_env *envb)
 {
-	t_lexer	*lex;
+	char	*tmp;
+	char	*esc;
 
-	lex = *lexer;
-	while (lex)
+	if ((*lst)->type == DQUOTE || (*lst)->type == DMERGE)
 	{
-		if (lex->type == WORD && lex->word[0] == '\0')
-			lex = ft_remove_lex_node(lexer, lex);
-		lex = lex->next;
+		tmp = dol_to_expand((*lst)->word);
+		if (tmp)
+			*lst = expand_dquote(tmp, *lst, envb);
+		esc = ft_strchr((*lst)->word, '\\');
+		while (esc && esc[1] != '\"' && esc[1] != '?')
+			clean_esc(lst, &esc);
+		*lst = clean_quotes(*lst);
 	}
-	return (lexer);
+	else if ((*lst)->type == EXPAND || (*lst)->type == EMERGE)
+	{
+		tmp = dol_to_expand((*lst)->word);
+		if (tmp)
+			*lst = expand_node2(tmp, *lst, envb);
+		esc = ft_strchr((*lst)->word, '\\');
+		while (esc && esc[1])
+			clean_esc(lst, &esc);
+	}
 }
-
-// void	split_expand(t_lexer **lexer)
-// {
-// 	t_lexer	*lex;
-
-// 	lex = *lexer;
-// 	while (lex)
-// 	{
-// 		if (lex->type == EXPAND && !ft_strchr(lex->word, ' '))
-// 		{
-
-// 		}
-// 	}
-// }
 
 void	lexer_polish(t_lexer **lexer)
 {
-	// print_lexer(lexer, "start_polish");
 	clean_squotes(lexer);
-	// print_lexer(lexer, "clean_squotes");
 	quotes_to_words(lexer);
-	// print_lexer(lexer, "quotes_to_words");
 	clean_lexer(lexer);
-	// print_lexer(lexer, "clean_lexer");
 	clean_lexer2(lexer);
-	// print_lexer(lexer, "clean_lexer2");
 	clean_lexer3(lexer);
-	// print_lexer(lexer, "clean_lexer3");
 	merge_nodes(lexer);
-	// print_lexer(lexer, "merge_nodes");
-
-	// split_expand(lexer);
-	// print_lexer(lexer, "split_expand");
-
 	clean_lexer4(lexer);
-	// print_lexer(lexer, "clean_lexer4");
 	clean_empty_nodes(lexer);
-	// print_lexer(lexer, "clean_empty_nodes");
 }
 
 t_lexer	*parsing(char *input, t_lexer **lexer, t_env *envb)
@@ -167,3 +101,36 @@ t_lexer	*parsing(char *input, t_lexer **lexer, t_env *envb)
 		return (add_history(input), NULL);
 	return (*lexer);
 }
+
+// replace the value of expand nodes to the matching environment value
+// void	ft_expander(t_lexer **lexer, t_env *envb)
+// {
+// 	t_lexer	*lst;
+// 	char	*tmp;
+// 	char	*esc;
+
+// 	lst = *lexer;
+// 	while (lst)
+// 	{
+// 		if (lst->type == DQUOTE || lst->type == DMERGE)
+// 		{
+// 			tmp = dol_to_expand(lst->word);
+// 			if (tmp)
+// 				lst = expand_dquote(tmp, lst, envb);
+// 			esc = ft_strchr(lst->word, '\\');
+// 			while (esc && esc[1] != '\"' && esc[1] != '?')
+// 				clean_esc(&lst, &esc);
+// 			lst = clean_quotes(lst);
+// 		}
+// 		else if (lst->type == EXPAND || lst->type == EMERGE)
+// 		{
+// 			tmp = dol_to_expand(lst->word);
+// 			if (tmp)
+// 				lst = expand_node2(tmp, lst, envb);
+// 			esc = ft_strchr(lst->word, '\\');
+// 			while (esc && esc[1])
+// 				clean_esc(&lst, &esc);
+// 		}
+// 		lst = lst->next;
+// 	}
+// }

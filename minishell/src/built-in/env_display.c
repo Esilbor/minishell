@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_display.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 10:23:53 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/12 06:53:09 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/13 13:42:44 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	ft_print_rainbow(char *str)
 	return (0);
 }
 
-void	print_env(t_env **head)
+int	print_env(t_env **head)
 {
 	t_env	*lst;
 
@@ -49,9 +49,13 @@ void	print_env(t_env **head)
 		if (lst->var_str)
 			ft_print_rainbow(lst->var_str);
 		else
+		{
 			ft_printf("(null)\n");
+			return (update_ret(head, 1));
+		}
 		lst = lst->next;
 	}
+	return (update_ret(head, 0));
 }
 
 // return 0 for assign, 1 for append or -1 if no equal sign
