@@ -2,6 +2,29 @@ IDENTITFIED ISSUES
 
 - handle signals
 
+Candy_$hell> cat | ls
+art.txt                includes  minishell  src
+exo.txt                libft     obj        suppressions.supp
+identified_issues.txt  Makefile  readme
+
+Candy_$hell?> echo $?
+141 
+
+>> 141 ??? 
+
+
+----
+
+Candy_$hell> env | ls
+art.txt                includes  minishell  src
+exo.txt                libft     obj        suppressions.supp
+identified_issues.txt  Makefile  readme
+Candy_$hell?> echo $?
+141 
+
+
+----
+
 - review all error handling (properly cleanup if dup2 / pipe / strdup fail)
 
 - export test="ls -l"
