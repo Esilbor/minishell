@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:13:47 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/15 07:08:39 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/15 10:43:54 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ pid_t	ft_fork(t_set *set, int index)
 
 			// free_redirections((t_cmd **)set->cmd_set);
 			// free_after_builtin(set);
-			// exit(0);
+			// exit(0); // recuperer et exit$?
 		}
 		if (set->cmd_set[index]->cmd[0])
 		{
