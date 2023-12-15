@@ -1,6 +1,31 @@
-IDENTITFIED ISSUES
+make && valgrind --suppressions=suppressions.supp --leak-check=full --track-fds=yes --show-leak-kinds=all -s ./minishell
 
+DENTITFIED ISSUES
+- ret values of heredocs
 - handle signals
+
+Candy_$hell> cat | ls
+art.txt                includes  minishell  src
+exo.txt                libft     obj        suppressions.supp
+identified_issues.txt  Makefile  readme
+
+Candy_$hell?> echo $?
+141
+
+>> 141 ???
+
+
+----
+
+Candy_$hell> env | ls
+art.txt                includes  minishell  src
+exo.txt                libft     obj        suppressions.supp
+identified_issues.txt  Makefile  readme
+Candy_$hell?> echo $?
+141
+
+
+----
 
 - review all error handling (properly cleanup if dup2 / pipe / strdup fail)
 
@@ -29,4 +54,124 @@ would be nice to have it done:
                                                     **Candy_$hell> == SHLVL=4
                                                     ***Candy_$hell> == SHLVL=5
                                                     ****Candy_$hell> == SHLVL=6
-E
+
+
+*********
+*********
+*********
+// rajouter un type SPACE
+// nodes are merged when they shouldn't
+Candy_$hell> export A="ls" B="-l" C="-a"
+
+after clean_lexer
+CMD[0] = [export__WORD__][A=__WMERGE][ls__DMERGE][B=__WMERGE][-l__DMERGE][C=__WMERGE][-a__WORD__]
+
+after clean_lexer2
+CMD[0] = [export__WORD__][A=__WMERGE][ls__DMERGE][B=__WMERGE][-l__DMERGE][C=__WMERGE][-a__WORD__]
+
+after clean_lexer3
+CMD[0] = [export__WORD__][A=__WMERGE][ls__DMERGE][B=__WMERGE][-l__DMERGE][C=__WMERGE][-a__WORD__]
+
+after merge_nodes
+CMD[0] = [export__WORD__][A=lsB=-lC=-a__WORD__]
+
+after clean_lexer4
+CMD[0] = [export__WORD__][A=lsB=-lC=-a__WORD__]
+
+after clean_empty_nodes
+CMD[0] = [export__WORD__][A=lsB=-lC=-a__WORD__]
+Candy_$hell>
+
+------
+
+Candy_$hell> echo bon='jour' bon='nuit'
+
+after clean_lexer
+CMD[0] = [echo__WORD__][bon=__WMERGE][jour__SMERGE][bon=__WMERGE][nuit__WORD__]
+
+after clean_lexer2
+CMD[0] = [echo__WORD__][bon=__WMERGE][jour__SMERGE][bon=__WMERGE][nuit__WORD__]
+
+after clean_lexer3
+CMD[0] = [echo__WORD__][bon=__WMERGE][jour__SMERGE][bon=__WMERGE][nuit__WORD__]
+
+after merge_nodes
+CMD[0] = [echo__WORD__][bon=jourbon=nuit__WORD__]
+
+after expand_cmds
+CMD[0] = [echo__WORD__][bon=jourbon=nuit__WORD__]
+
+after clean_lexer4
+CMD[0] = [echo__WORD__][bon=jourbon=nuit__WORD__]
+
+after clean_empty_nodes
+CMD[0] = [echo__WORD__][bon=jourbon=nuit__WORD__]
+
+
+------
+
+le limiter
+Candy_$hell> cat <<$LOL
+cat: EOF: No such file or directory
+1_Candy_$hell>
+
+1_Candy_$hell> cat << $LOL
+cat: EOF: No such file or directory
+1_Candy_$hell>
+
+>> Le limiter n'est pas reconnu LESS_LESS est bloque par un noeud vide
+
+Candy_$hell> cat <<$LOL
+
+after clean_lexer
+CMD[0] = [cat__WORD__][<<__LESS_LESS][__WMERGE][EOF__EXPAND]
+
+after clean_lexer2
+CMD[0] = [cat__WORD__][<<__LESS_LESS][__WMERGE][EOF__EXPAND]
+
+after clean_lexer3
+CMD[0] = [cat__WORD__][__WMERGE][EOF__EXPAND]
+
+after merge_nodes
+CMD[0] = [cat__WORD__][EOF__EXPAND]
+
+after clean_lexer4
+CMD[0] = [cat__WORD__][EOF__WORD__]
+
+after clean_empty_nodes
+CMD[0] = [cat__WORD__][EOF__WORD__]
+cat: EOF: No such file or directory
+1_Candy_$hell>
+
+
+----
+!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+Candy_$hell> <<EOF
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+Candy_$hell> <<lol | grep bon
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+
+Valeur de retour du heredoc pour les signaux
+
+de base la valeur est a ?=0
+
+
+---
+
+Candy_$hell> <a
+Candy_$hell> CTRL + D
+
+LEAKS
+
+------
+
+quand une commande sans cmd les heredoc ne sont pas effaces
+
+-----
+

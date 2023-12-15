@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:13:47 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/14 21:04:27 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/15 10:43:54 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ pid_t	ft_fork(t_set *set, int index)
 	if (pid == 0)
 	{
 		ft_dup2(set, index);
-		if (set->cmd_set[index]->cmd[0] && is_builtin(set->cmd_set[index]->cmd)== 1) // issues
+		if (set->cmd_set[index]->cmd[0] && is_builtin(set->cmd_set[index]->cmd)== 1)
 		{
 			do_builtins(set, index); // je ne me souviens plus pourquoi jai rajoute ca
 			// exit_err(set, 0);
@@ -131,7 +131,7 @@ pid_t	ft_fork(t_set *set, int index)
 
 			// free_redirections((t_cmd **)set->cmd_set);
 			// free_after_builtin(set);
-			// exit(0);
+			// exit(0); // recuperer et exit$?
 		}
 		if (set->cmd_set[index]->cmd[0])
 		{

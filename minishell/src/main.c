@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 23:02:12 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/14 13:00:23 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/15 20:00:10 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,16 +123,30 @@ int	shell_loop(t_env *envb)
 		input = ft_prompt(envb);
 		if (input && input[0] && !shell_parser(input, &lexer, envb, &cmd_tab))
 		{
-			execution(set, cmd_tab, envb);
-			free(input);
+			if (cmd_tab[0]->cmd[0])
+			{
+				execution(set, cmd_tab, envb);
+				free(input);
+			}
 		}
 		else if (input)
+		{
 			continue ;
+		}
 		else
 		{
 			ft_printf("exit\n"RESET);
 			rl_clear_history();
+			ft_free_tab((void **)set->cmd_set);
+
+			// free_redirections(set->cmd_set);
 			ft_free_env_lst(envb);
+			// ft_free_tab((void **)set->paths);
+			// ft_free_tab((void **)set->envp);
+			// free_cmds((t_cmd **)set->cmd_set);
+			// free(set->pid);
+			free (set);
+			// free_after_builtin(set); // a renomer
 			return (2);
 		}
 	}
