@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/15 07:00:18 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/15 18:34:23 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,12 +138,12 @@ void		close_crush_exit(char *msg, t_set *set, int do_exit, int exit_ret);
 /***************HEREDOCS*******************/
 /******************************************/
 
-void		create_heredoc(t_lexer *lex, char *limiter);
-void		fill_heredoc(int fd, char *limiter);
+void		create_heredoc(t_env *env, t_lexer *lex, char *limiter);
+void		fill_heredoc(t_env *env, int fd, char *limiter);
 //void		fill_heredoc(int fd, char *limiter, t_set *set);
 char		*name_heredoc(char *limiter, int index, int k);
-void		modify_limiter_nodes(t_lexer *lst, int index);
-void		init_heredocs(t_cmd **cmd_tab);
+void		modify_limiter_nodes(t_env *env, t_lexer *lst, int index);
+void		init_heredocs(t_env *env, t_cmd **cmd_tab);
 
 int			inputs_are_valid(t_cmd **cmd_tab);
 int			invalid_input(char *filename);
@@ -173,7 +173,7 @@ int			do_pwd(char **cmd_tab, t_env **env);
 /*	env_display.c	*/
 
 int			ft_print_rainbow(char *str);
-int			print_env(t_env **head);
+int			print_env(t_set *set, t_env **head);
 int			assign_or_append(char *env_var);
 bool		cmd_is_valid(char **cmd_tab, int i, int *ret);
 

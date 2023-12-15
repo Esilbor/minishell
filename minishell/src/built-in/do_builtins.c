@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   do_builtins.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 15:11:47 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/14 10:44:39 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/15 15:05:41 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+// faire des writes protegees
 
 int	is_builtin(char **command)
 {
@@ -42,14 +44,14 @@ void	do_builtins(t_set *set, int index)
 	if (ft_strncmp(set->cmd_set[index]->cmd[0], "echo", 5) == 0)
 		do_echo(&set->env_lst, set->cmd_set[index]->cmd);
 	if (ft_strncmp(set->cmd_set[index]->cmd[0], "env", 4) == 0)
-		print_env(&set->env_lst);
+		print_env(set, &set->env_lst);
 	if (ft_strncmp(set->cmd_set[index]->cmd[0], "export", 7) == 0)
 	{
 		if (set->cmd_set[index]->cmd[1])
 			do_export(ft_tab_len(set->cmd_set[index]->cmd),
 				set->cmd_set[index]->cmd, &set->env_lst);
 		else
-			print_env(sort_env(env_dup));
+			print_env(set, sort_env(env_dup));
 	}
 	ft_free_env_lst(*env_dup);
 	free(env_dup);

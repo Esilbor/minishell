@@ -3,36 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   heredocs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 09:39:05 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/14 21:18:22 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/15 19:47:16 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-
-void	sig_heredoc_handler(int signum) 
+// closes the standard input (STDIN_FILENO)
+// and sets a global variable g_exit_val to 130
+void	sig_heredoc_handler(int signum)
 {
 	if (signum == SIGINT)
 	{
 		close(STDIN_FILENO);
 		g_exit_val = 130;
 	}
-		
+
 }
 
 void signal_heredoc(void)
 {
-	struct sigaction	sa; 
-		 
-	ft_memset(&sa, 0, sizeof(sa)); 
+	struct sigaction	sa;
+
+	ft_memset(&sa, 0, sizeof(sa));
 	sa.sa_handler = &sig_heredoc_handler;
 	sigaction(SIGINT, &sa, NULL);
 }
 
-void	create_heredoc(t_lexer *lex, char *limiter)
+void	create_heredoc(t_env *env, t_lexer *lex, char *limiter)
 {
 	int		fd;
 
@@ -40,13 +41,13 @@ void	create_heredoc(t_lexer *lex, char *limiter)
 	if (fd < 0)
 	{
 		ft_putstr_fd("could not open heredoc\n", 2);
-		exit (1); // Remember to free all that is needed before exiting.
+		exit (1);
 	}
-	fill_heredoc(fd, limiter);
+	fill_heredoc(env, fd, limiter);
 	close(fd);
 }
 
-void	fill_heredoc(int fd, char *limiter)
+void	fill_heredoc(t_env *env, int fd, char *limiter) // changer env pour set pour free quand le heredoc est ferme
 {
 	char	*buf;
 	size_t	eof_len;
@@ -54,10 +55,12 @@ void	fill_heredoc(int fd, char *limiter)
 
 	eof_len = ft_strlen(limiter);
 	dup_stdin = dup(STDIN_FILENO); // sauvegard du stdin
-	signal_heredoc();
+	update_ret(&env, 0);
+	signal_heredoc(); // met la variable globale a 130
 	while (1)
 	{
 		buf = readline("heredoc> ");
+		update_ret(&env, g_exit_val);
 		if (!buf)
 		{
 			ft_printf("\n");
@@ -67,54 +70,22 @@ void	fill_heredoc(int fd, char *limiter)
 			&& !ft_strncmp(limiter, buf, eof_len))
 		{
 			free(buf);
+			// ft_free_tab((void **)set->paths);
+			// ft_free_tab((void **)set->envp);
+			// free_cmds((t_cmd **)set->cmd_set);
+			// free(set->pid);
+			// free (set);
 			break ;
 		}
 		ft_putstr_fd(buf, fd);
 		write(fd, "\n", 1);
 		free(buf);
 	}
+	g_exit_val = 0;
 	dup2(dup_stdin, STDIN_FILENO);
 	ft_handle_signals(); // ignor sigquit (ctrl-\)
 	close(dup_stdin);
-
 }
-
-// void	create_heredoc(t_lexer *lex, char *limiter)
-// {
-// 	int		fd;
-// 	char	*buf;
-// 	size_t	eof_len;
-
-// 	eof_len = ft_strlen(limiter);
-// 	fd = open(lex->word, O_WRONLY | O_TRUNC | O_CREAT, 0644);
-// 	if (fd < 0)
-// 	{
-// 		ft_putstr_fd("could not open heredoc\n", 2),
-// 		exit (1);// free all that is needed
-// 	}
-// 	while (1)
-// 	{
-// 		buf = readline("heredoc> ");
-// 		if (!buf)
-// 		{
-// 			ft_printf("\n");
-// 			break ;
-// 		}
-// 		if (buf || buf[0])
-// 		{
-// 			if (eof_len == ft_strlen(buf)
-// 				&& !ft_strncmp(limiter, buf, ft_strlen(buf)))
-// 				break ;
-// 			else
-// 			{
-// 				ft_putstr_fd(buf, fd);
-// 				write(fd, "\n", 1);
-// 			}
-// 		}
-// 		free (buf);
-// 	}
-// 	close(fd);
-// }
 
 // .limiter_index_k
 char	*name_heredoc(char *limiter, int index, int k)
@@ -141,7 +112,7 @@ char	*name_heredoc(char *limiter, int index, int k)
 	return (tmp);
 }
 
-void	modify_limiter_nodes(t_lexer *lst, int index)
+void	modify_limiter_nodes(t_env *env, t_lexer *lst, int index)
 {
 	char	*tmp;
 	char	*limiter;
@@ -158,7 +129,7 @@ void	modify_limiter_nodes(t_lexer *lst, int index)
 			free (lst->word);
 			lst->word = ft_strjoin(".", tmp);
 			free (tmp);
-			create_heredoc(lst, limiter);
+			create_heredoc(env, lst, limiter);
 			free (limiter);
 			k++;
 		}
@@ -166,7 +137,7 @@ void	modify_limiter_nodes(t_lexer *lst, int index)
 	}
 }
 
-void	init_heredocs(t_cmd **cmd_tab)
+void	init_heredocs(t_env *env, t_cmd **cmd_tab)
 {
 	int		i;
 
@@ -174,7 +145,7 @@ void	init_heredocs(t_cmd **cmd_tab)
 	while (cmd_tab[i])
 	{
 		if (cmd_tab[i]->input)
-			modify_limiter_nodes(cmd_tab[i]->input, i);
+			modify_limiter_nodes(env, cmd_tab[i]->input, i);
 		i++;
 	}
 }

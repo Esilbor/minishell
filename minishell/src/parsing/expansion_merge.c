@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_merge.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 10:53:54 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/14 07:36:46 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/15 15:47:38 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,16 +77,59 @@ void	process_expander_node(t_lexer **lst, t_env *envb)
 	}
 }
 
+t_lexer	**expand_cmds(t_lexer **lexer)
+{
+	t_lexer	*lex;
+	char	**tab;
+	int		i;
+
+	lex = *lexer;
+	i = 0;
+	while (lex)
+	{
+		if (lex->type == EXPAND && ft_strchr(lex->word, ' ')) // should include tab as wspace?
+		{
+			tab = ft_split(lex->word, ' ');
+			if (!tab)
+				return (NULL);
+			ft_remove_lex_node(lexer, lex);
+			while (tab[i])
+			{
+				ft_add_lex_node(lexer, tab[i], WORD);
+				i++;
+			}
+			ft_free_tab((void **) tab);
+			break ;
+		}
+		lex = lex->next;
+	}
+	return (lexer);
+
+}
+
+
 void	lexer_polish(t_lexer **lexer)
 {
 	clean_squotes(lexer);
 	quotes_to_words(lexer);
 	clean_lexer(lexer);
+	// print_lexer(lexer, "after clean_lexer");
 	clean_lexer2(lexer);
+	// print_lexer(lexer, "after clean_lexer2");
 	clean_lexer3(lexer);
+	// print_lexer(lexer, "after clean_lexer3");
 	merge_nodes(lexer);
+	// print_lexer(lexer, "after merge_nodes");
+
+
+	// lexer = expand_cmds(lexer);
+	// print_lexer(lexer, "after expand_cmds");
+
+
 	clean_lexer4(lexer);
+	// print_lexer(lexer, "after clean_lexer4");
 	clean_empty_nodes(lexer);
+	// print_lexer(lexer, "after clean_empty_nodes");
 }
 
 t_lexer	*parsing(char *input, t_lexer **lexer, t_env *envb)
