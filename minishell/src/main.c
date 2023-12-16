@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 23:02:12 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/13 13:28:56 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/16 14:57:52 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,11 @@ void	free_redirections(t_cmd **tab)
 	while (tab[i])
 	{
 		if (tab[i]->input)
+		{
+			if (tab[i]->input->type == LIMITER)
+				unlink(tab[i]->input->word);
 			free_lexer_list(&tab[i]->input);
+		}
 		if (tab[i]->output)
 			free_lexer_list(&tab[i]->output);
 		i++;
@@ -104,6 +108,71 @@ void	free_cmd_struct_tab(t_cmd **cmd_tab)
 		free (cmd_tab);
 	}
 }
+
+
+
+
+int	shell_loop(t_env *envb)
+{
+	t_lexer	*lexer;
+	char	*input;
+	t_cmd	**cmd_tab;
+	t_set	*set;
+
+	set = NULL;
+	cmd_tab = NULL;
+	while (1)
+	{
+		input = ft_prompt(envb);
+		if (input && input[0] && !shell_parser(input, &lexer, envb, &cmd_tab))
+		{
+			if (cmd_tab[0]->cmd[0])
+			{
+				execution(set, cmd_tab, envb);
+				free(input);
+			}
+		}
+		else if (input)
+		{
+			continue ;
+		}
+		else
+		{
+			ft_printf("exit\n"RESET);
+			rl_clear_history();
+			ft_free_tab((void **)set->cmd_set);
+
+			// free_redirections(set->cmd_set);
+			ft_free_env_lst(envb);
+			// ft_free_tab((void **)set->paths);
+			// ft_free_tab((void **)set->envp);
+			// free_cmds((t_cmd **)set->cmd_set);
+			// free(set->pid);
+			free (set);
+			// free_after_builtin(set); // a renomer
+			return (2);
+		}
+	}
+	return (0);
+}
+
+
+int	main(int argc, char **argv, char **envp)
+{
+	t_env	*envb;
+
+	(void)argv;
+	if (argc != 1)
+		return (ft_putstr_fd(PINK"better without added sugar\n"RESET, 2), 1);
+	ft_handle_signals();
+	envb = get_env(envp);
+	shell_loop(envb);
+	return (0);
+}
+
+
+
+
 /*
  // a completer avec les signals
 int check_first(t_data *data, int argc, char **envp)
@@ -217,46 +286,4 @@ int	main(int argc, char **argv, char **envp)
 // 	}
 // 	return (0);
 // }
-int	shell_loop(t_env *envb)
-{
-	t_lexer	*lexer;
-	char	*input;
-	t_cmd	**cmd_tab;
-	t_set	*set;
 
-	set = NULL;
-	cmd_tab = NULL;
-	while (1)
-	{
-		input = ft_prompt(envb);
-		if (input && input[0] && !shell_parser(input, &lexer, envb, &cmd_tab))
-		{
-			execution(set, cmd_tab, envb);
-			free(input);
-		}
-		else if (input)
-			continue ;
-		else
-		{
-			ft_printf("exit\n"RESET);
-			rl_clear_history();
-			ft_free_env_lst(envb);
-			return (2);
-		}
-	}
-	return (0);
-}
-
-
-int	main(int argc, char **argv, char **envp)
-{
-	t_env	*envb;
-
-	(void)argv;
-	if (argc != 1)
-		return (ft_putstr_fd(PINK"better without added sugar\n"RESET, 2), 1);
-	ft_handle_signals();
-	envb = get_env(envp);
-	shell_loop(envb);
-	return (0);
-}

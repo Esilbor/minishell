@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 10:51:44 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/09 17:38:51 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/16 14:56:29 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,32 +46,6 @@ void	clean_lexer3(t_lexer **lexer)
 	}
 }
 
-// clean and attribute nodes of type LIMITER, APPEND, INPUT or OUTPUT
-void	clean_redir(t_lexer **lexer, t_lexer **lex, t_tokens type)
-{
-	t_tokens	token;
-
-	token = type - 7; // token = LESS || LESS_LESS
-	if (token <= 1)
-	{
-		ft_putstr_fd("invalid clean_redir type\n", 2);
-		return ;
-	}
-	if ((*lex)->type >= PIPE && (*lex)->type <= LESS_LESS)
-	{
-		// *lex = ft_remove_lex_node(lexer, *lex);
-		*lex = (*lex)->next;
-	}
-	if (*lex && !(*lex)->word[0])
-	{
-		*lex = ft_remove_lex_node(lexer, *lex);
-		*lex = (*lex)->next;
-	}
-	if (*lex)
-		(*lex)->type = type;
-	// clear_type(lexer, LESS)
-}
-
 //Processes lexer tokens, setting limiter and append types.
 void	clean_lexer2(t_lexer **lexer)
 {
@@ -88,20 +62,6 @@ void	clean_lexer2(t_lexer **lexer)
 			clean_redir(lexer, &lex, APPEND);
 		if (lex)
 			lex = lex->next;
-	}
-	// clean_lexer3(lexer);
-}
-
-void	clean_squotes(t_lexer **lexer)
-{
-	t_lexer	*lex;
-
-	lex = *lexer;
-	while (lex)
-	{
-		if (lex->type == SQUOTE || lex->type == SMERGE)
-			lex = clean_quotes(lex);
-		lex = lex->next;
 	}
 }
 
@@ -122,5 +82,4 @@ void	clean_lexer(t_lexer **lexer)
 		if (lex)
 			lex = lex->next;
 	}
-	// clean_lexer2(lexer);
 }

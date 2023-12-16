@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:36:38 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/12 16:08:16 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/16 14:56:36 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ char	*extract_var(char *str, char **ptr)
 	return (var);
 }
 
-//Searches `envb` for `*str`, replaces `*str` with env value,
+//Searches `envb` for `*str`, return env value,
 //or NULL if not found.
 char	*get_env_value(t_env *envb, char **str)
 {

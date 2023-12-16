@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:13:47 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/14 17:27:37 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/16 15:02:48 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,14 @@ void	init_pid_tab(t_set *set)
 		set->pid[i] = 0;
 }
 
+void	exit_err(t_set *set, int err_nb)
+{
+	ft_close_pipes(set);
+	free_redirections(set->cmd_set);
+	free_after_builtin(set);
+	exit(err_nb); // a verifier avec update_ret
+}
+
 void ft_execve(t_set *set, int index)
 {
 	char *cmd_path;
@@ -65,34 +73,17 @@ void ft_execve(t_set *set, int index)
 	{
 		cmd_path = set_path_cmd(set, set->cmd_set[index]->cmd[0]);
 		if (!cmd_path)
-		{
-			ft_close_pipes(set);
-			free_redirections(set->cmd_set);
-			free_after_builtin(set);
-			exit(127); // a verifier avec update_ret
-			//exit(update_ret(&set->env_lst, 127)); // a verifier
-			//exit(g_exit_val = 127);
-		}
+			exit_err(set, 127);
 		execve(cmd_path, set->cmd_set[index]->cmd, set->envp);
 	}
 	else
 	{
 		if (access(set->cmd_set[index]->cmd[0], X_OK | F_OK) == 0)
 			execve(set->cmd_set[index]->cmd[0], set->cmd_set[index]->cmd, set->envp);
-		ft_putstr_fd("cannot execute without environment or absolute path\n", 2);
-		ft_close_pipes(set);
-		free_redirections(set->cmd_set);
-		free_after_builtin(set);
-		exit(127); // a verifier avec update_ret
-		//exit(update_ret(&set->env_lst, 127)); // a verifier
-		//exit(g_exit_val = 127);
+		print_cmd_not_found(set->cmd_set[index]->cmd[0]);
+		exit_err(set, 127);
 	}
-	ft_close_pipes(set);
-	free_redirections(set->cmd_set);
-	free_after_builtin(set);
-	//exit(update_ret(&set->env_lst, 126)); // a verifier
-	exit(126);
-	//exit(g_exit_val = 126);
+	exit_err(set, 126);
 }
 
 void	close_pipe(t_set *set, int index)
@@ -123,23 +114,28 @@ pid_t	ft_fork(t_set *set, int index)
 		if (pipe(set->pipe[index % 2]) == -1)
 			return (printf("ERR_PIPE\n"));//free close ...
 	}
-	ign_sigint();
+	ign_sigint(); // ignore sigquit (ctrl-\) + sigint (ctrl-c)
 	pid = fork();
 	if (pid == -1)
 		return (printf("ERR_PID\n"));//free close ...
 	if (pid == 0)
 	{
 		ft_dup2(set, index);
-		if (set->cmd_set[index]->cmd[0] && is_builtin(set->cmd_set[index]->cmd)== 1) // issues
+		if (set->cmd_set[index]->cmd[0] && is_builtin(set->cmd_set[index]->cmd)== 1)
 		{
 			do_builtins(set, index); // je ne me souviens plus pourquoi jai rajoute ca
+			// exit_err(set, 0);
+			// ft_close_pipes(set);
+			// free_redirections(set->cmd_set);
+			// free_after_builtin(set);
+
 			// free_redirections((t_cmd **)set->cmd_set);
 			// free_after_builtin(set);
-			// exit(0);
+			// exit(0); // recuperer et exit$?
 		}
 		if (set->cmd_set[index]->cmd[0])
 		{
-			signals_simple();
+			signals_simple(); // fonction par defaut
 			ft_execve(set, index);
 			// free_after_builtin(set);
 		}
@@ -148,28 +144,28 @@ pid_t	ft_fork(t_set *set, int index)
 			free_redirections((t_cmd **)set->cmd_set);
 			free_after_builtin(set);
 		}
-		exit(1);
+		exit_err(set, 1);
 	}
 	if (index)
-		close_pipe(set, index); // close heredocs here?
+		close_pipe(set, index);
 	return (pid);
 }
 
 // Waits for child processes to finish.
-void	ft_waitpid(t_set *set)
+void	ft_wait(t_set *set)
 {
-	
 	int status;
-		
+
 	while (wait(&status) > 0)
 	{
 		if (WIFEXITED(status))
-			update_ret(&set->env_lst, WEXITSTATUS(status)); 
+			update_ret(&set->env_lst, WEXITSTATUS(status));
 		else if (WIFSIGNALED(status))
-			update_ret(&set->env_lst, 128 + WTERMSIG(status));
-	}	
-	ft_handle_signals();
+			update_ret(&set->env_lst, 128 + WTERMSIG(status));			
+	}
+	ft_handle_signals(); // ignor sigquit (ctrl-\)
 }
+
 
 // Macro: int WIFEXITED (int status) --> when the child erminated with ------------> exit 
 // Macro: int WIFSIGNALED (int status) --> if the child process terminated because it received a signal that was not handled.
@@ -193,10 +189,7 @@ void	ft_pipex(t_set *set)
 
 	i = 0;
 	if (set->cmd_set[i]->cmd[0] && is_single_builtin(set, i))
-	{
-		// ft_printf("is single builtin\n");
-		do_builtins(set, i); // GO TO EXIT C
-	}
+		do_builtins(set, i);
 	else
 	{
 		while (i < set->cmd_nb)
@@ -205,8 +198,7 @@ void	ft_pipex(t_set *set)
 			set->pid[i] = last_pid;
 			i++;
 		}
-		ft_waitpid(set);
-
+		ft_wait(set);
 	}
 }
 /*
