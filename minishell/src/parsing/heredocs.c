@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 09:39:05 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/16 14:56:57 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/16 19:16:07 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	sig_heredoc_handler(int signum)
 	{
 		close(STDIN_FILENO);
 		g_exit_val = 130;
+		// free_cmds((t_cmd **)set->cmd_set);
 	}
 
 }
@@ -33,7 +34,8 @@ void signal_heredoc(void)
 	sigaction(SIGINT, &sa, NULL);
 }
 
-void	create_heredoc(t_env *env, t_lexer *lex, char *limiter)
+//void	create_heredoc(t_env *env, t_lexer *lex, char *limiter)
+void	create_heredoc(t_cmd ***cmd_tab, t_env *env, t_lexer *lex, char *limiter)
 {
 	int		fd;
 
@@ -43,11 +45,13 @@ void	create_heredoc(t_env *env, t_lexer *lex, char *limiter)
 		ft_putstr_fd("could not open heredoc\n", 2);
 		exit (1);
 	}
-	fill_heredoc(env, fd, limiter);
+	fill_heredoc(cmd_tab, env, fd, limiter);
 	close(fd);
 }
-
-void	fill_heredoc(t_env *env, int fd, char *limiter) // changer env pour set pour free quand le heredoc est ferme
+//void	fill_heredoc(t_env *env, int fd, char *limiter)
+//void	fill_heredoc(t_set *set, t_env *env, int fd, char *limiter)
+// changer env pour set pour free quand le heredoc est ferme
+void	fill_heredoc(t_cmd ***cmd_tab, t_env *env, int fd, char *limiter) 
 {
 	char	*buf;
 	size_t	eof_len;
@@ -72,7 +76,9 @@ void	fill_heredoc(t_env *env, int fd, char *limiter) // changer env pour set pou
 			free(buf);
 			// ft_free_tab((void **)set->paths);
 			// ft_free_tab((void **)set->envp);
-			// free_cmds((t_cmd **)set->cmd_set);
+			//free_cmds((t_cmd **)set->cmd_set);
+			free_cmd_struct_tab(*cmd_tab);
+			close(fd);
 			// free(set->pid);
 			// free (set);
 			break ;
@@ -82,6 +88,7 @@ void	fill_heredoc(t_env *env, int fd, char *limiter) // changer env pour set pou
 		free(buf);
 	}
 	g_exit_val = 0;
+	close(fd);
 	dup2(dup_stdin, STDIN_FILENO);
 	ft_handle_signals(); // ignor sigquit (ctrl-\)
 	close(dup_stdin);
@@ -112,7 +119,8 @@ char	*name_heredoc(char *limiter, int index, int k)
 	return (tmp);
 }
 
-void	modify_limiter_nodes(t_env *env, t_lexer *lst, int index)
+//void	modify_limiter_nodes(t_env *env, t_lexer *lst, int index)
+void	modify_limiter_nodes(t_cmd ***cmd_tab, t_env *env, t_lexer *lst, int index)
 {
 	char	*tmp;
 	char	*limiter;
@@ -129,14 +137,14 @@ void	modify_limiter_nodes(t_env *env, t_lexer *lst, int index)
 			free (lst->word);
 			lst->word = ft_strjoin(".", tmp);
 			free (tmp);
-			create_heredoc(env, lst, limiter);
+			create_heredoc(cmd_tab, env, lst, limiter);
 			free (limiter);
 			k++;
 		}
 		lst = lst->next;
 	}
 }
-
+//void	init_heredocs(t_env *env, t_cmd **cmd_tab)
 void	init_heredocs(t_env *env, t_cmd **cmd_tab)
 {
 	int		i;
@@ -145,7 +153,7 @@ void	init_heredocs(t_env *env, t_cmd **cmd_tab)
 	while (cmd_tab[i])
 	{
 		if (cmd_tab[i]->input)
-			modify_limiter_nodes(env, cmd_tab[i]->input, i);
+			modify_limiter_nodes(&cmd_tab, env, cmd_tab[i]->input, i);
 		i++;
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlen3.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:34:43 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/03 15:55:32 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/16 17:20:05 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,3 +21,15 @@ ssize_t	ft_strlen3(const char *s)
 		i++;
 	return (i);
 }
+
+
+
+// size_t	ft_strlen3(const char *s)
+// {
+// 	size_t	i;
+
+// 	i = 0;
+// 	while (s && s[i])
+// 		i++;
+// 	return (i);
+// }

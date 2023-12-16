@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 23:02:12 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/16 14:57:52 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/16 21:16:49 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ void	free_cmds(t_cmd **cmd_tab)
 		i++;
 	}
 	free (cmd_tab);
+	cmd_tab = NULL;
 }
 
 void	free_cmd_struct_tab(t_cmd **cmd_tab)
@@ -130,7 +131,7 @@ int	shell_loop(t_env *envb)
 			{
 				execution(set, cmd_tab, envb);
 				free(input);
-			}
+			}	
 		}
 		else if (input)
 		{
@@ -141,15 +142,24 @@ int	shell_loop(t_env *envb)
 			ft_printf("exit\n"RESET);
 			rl_clear_history();
 			ft_free_tab((void **)set->cmd_set);
-
+			
+			//free_cmd_struct_tab(cmd_tab);
 			// free_redirections(set->cmd_set);
 			ft_free_env_lst(envb);
+			
 			// ft_free_tab((void **)set->paths);
 			// ft_free_tab((void **)set->envp);
 			// free_cmds((t_cmd **)set->cmd_set);
 			// free(set->pid);
 			free (set);
 			// free_after_builtin(set); // a renomer
+			if (set->pipe)
+			{
+				ft_close_pipes(set);
+				free(set->pipe[0]);
+				free(set->pipe[1]);
+				free(set->pipe);
+			}
 			return (2);
 		}
 	}

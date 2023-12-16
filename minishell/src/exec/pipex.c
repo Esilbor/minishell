@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:13:47 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/16 15:02:48 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/16 19:31:17 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,24 +125,29 @@ pid_t	ft_fork(t_set *set, int index)
 		{
 			do_builtins(set, index); // je ne me souviens plus pourquoi jai rajoute ca
 			// exit_err(set, 0);
-			// ft_close_pipes(set);
+			
 			// free_redirections(set->cmd_set);
 			// free_after_builtin(set);
 
 			// free_redirections((t_cmd **)set->cmd_set);
 			// free_after_builtin(set);
 			// exit(0); // recuperer et exit$?
+			//ft_close_pipes(set);
+			//close_pipe(set, index);
 		}
 		if (set->cmd_set[index]->cmd[0])
 		{
 			signals_simple(); // fonction par defaut
 			ft_execve(set, index);
 			// free_after_builtin(set);
+			//ft_close_pipes(set);
+			// close_pipe(set, index);
 		}
 		else
 		{
 			free_redirections((t_cmd **)set->cmd_set);
 			free_after_builtin(set);
+			//close (set->cmd_set[index]->fd_input);
 		}
 		exit_err(set, 1);
 	}
@@ -189,7 +194,10 @@ void	ft_pipex(t_set *set)
 
 	i = 0;
 	if (set->cmd_set[i]->cmd[0] && is_single_builtin(set, i))
+	{
 		do_builtins(set, i);
+		//close_pipe(set, i);
+	}
 	else
 	{
 		while (i < set->cmd_nb)

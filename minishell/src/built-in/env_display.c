@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_display.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 10:23:53 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/15 10:58:34 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/16 17:21:28 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ int	ft_print_rainbow(char *str)
 	unsigned int	color_index;
 	int				num_colors;
 	char			*colors[8];
+	ssize_t			res_write;
+	ssize_t			res_ft_strlen3;
 
 	init_colors(colors);
 	num_colors = sizeof(colors) / sizeof(colors[0]);
@@ -27,10 +29,13 @@ int	ft_print_rainbow(char *str)
 	i = -1;
 	while (str[++i])
 	{
-		if (write(1, colors[color_index], ft_strlen(colors[color_index]))
-			!= ft_strlen3(colors[color_index]))
+		res_write = write(1, colors[color_index], ft_strlen(colors[color_index]));
+		res_ft_strlen3 = ft_strlen3(colors[color_index]);
+		//if (write(1, colors[color_index], ft_strlen(colors[color_index]))
+		//	!= ft_strlen3(colors[color_index]))
+		if (res_write != res_ft_strlen3)
 			return (ft_putstr_fd(strerror(errno), 2), -1);
-		if (write(1, &str[i], 1) != 1)
+		if (write(1, &str[i], 1) != (ssize_t)1)
 			return (ft_putstr_fd(strerror(errno), 2), -1);
 	}
 	write(1, "\033[0m", 4);

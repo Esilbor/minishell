@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/15 21:40:14 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/16 18:32:59 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,13 +173,16 @@ void		close_crush_exit(char *msg, t_set *set, int do_exit, int exit_ret);
 /***************HEREDOCS*******************/
 /******************************************/
 
-void		create_heredoc(t_env *env, t_lexer *lex, char *limiter);
-void		fill_heredoc(t_env *env, int fd, char *limiter);
+//void		create_heredoc(t_env *env, t_lexer *lex, char *limiter);
+void		create_heredoc(t_cmd ***cmd_tab, t_env *env, t_lexer *lex, char *limiter);
+//void		fill_heredoc(t_env *env, int fd, char *limiter);
+void		fill_heredoc(t_cmd ***cmd_tab ,t_env *env, int fd, char *limiter);
 //void		fill_heredoc(int fd, char *limiter, t_set *set);
 char		*name_heredoc(char *limiter, int index, int k);
-void		modify_limiter_nodes(t_env *env, t_lexer *lst, int index);
+//void		modify_limiter_nodes(t_env *env, t_lexer *lst, int index);
+void		modify_limiter_nodes(t_cmd ***cmd_tab, t_env *env, t_lexer *lst, int index);
 void		init_heredocs(t_env *env, t_cmd **cmd_tab);
-
+//void		init_heredocs(t_set *set, t_env *env, t_cmd **cmd_tab);
 int			inputs_are_valid(t_cmd **cmd_tab);
 int			invalid_input(char *filename);
 void		keep_last_input(t_cmd **cmd_tab);

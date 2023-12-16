@@ -173,5 +173,34 @@ LEAKS
 
 quand une commande sans cmd les heredoc ne sont pas effaces
 
------
 
+
+
+
+
+16 decembre:
+
+*******************************
+commande echo :
+
+Candy_$hell>  echo qwe\n
+qwe\n
+
+bash : minishell$  echo qwe\n
+qwen
+
+********************************
+Candy_$hell> echo yes\n
+yes\n
+Candy_$hell> echo "yes\n"
+yesn
+Candy_$hell> 
+
+dans bash :
+
+minishell$ echo yes\n
+yesn
+minishell$ echo "yes\n"
+yes\n
+
+*********************************
