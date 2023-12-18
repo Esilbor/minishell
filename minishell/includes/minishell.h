@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/15 18:34:23 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/18 19:29:23 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -328,7 +328,7 @@ t_lexer		*ft_lexer(char *line);
 
 void		clean_squotes(t_lexer **lexer);
 void		clean_esc(t_lexer **lex, char **esc);
-t_lexer		**clean_empty_nodes(t_lexer **lexer);
+t_lexer		**clean_empty_nodes(t_lexer **lexer, t_tokens type);
 void		quotes_to_words(t_lexer **lexer);
 
 	/*to be commented out */

@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 07:17:32 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/14 07:28:27 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/18 19:35:12 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,15 +62,15 @@ void	clean_esc(t_lexer **lex, char **esc)
 	free (after);
 }
 
-//clean the lexer of null nodes of type WORD
-t_lexer	**clean_empty_nodes(t_lexer **lexer)
+//clean the lexer of null nodes of specified type
+t_lexer	**clean_empty_nodes(t_lexer **lexer, t_tokens type)
 {
 	t_lexer	*lex;
 
 	lex = *lexer;
 	while (lex && lex->next)
 	{
-		if (lex->type == WORD && lex->word[0] == '\0')
+		if (lex->type == type && lex->word[0] == '\0')
 			lex = ft_remove_lex_node(lexer, lex);
 		lex = lex->next;
 	}

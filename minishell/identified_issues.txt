@@ -32,7 +32,6 @@ Candy_$hell?> echo $?
 - export test="ls -l"
 - export test2="ls          -l  -a" (might not be compulsory)
 
-$> $dsfsd (wrong return value?)
 
 - return values
 - protect every ft_strdup

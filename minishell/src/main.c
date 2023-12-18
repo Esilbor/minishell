@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 23:02:12 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/18 09:02:35 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/18 19:38:00 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ int	shell_loop(t_env *envb)
 		input = ft_prompt(envb);
 		if (input && input[0] && !shell_parser(input, &lexer, envb, &cmd_tab))
 		{
-			if (cmd_tab[0]->cmd[0])
+			if (cmd_tab[0]->cmd[0][0])
 			{
 				execution(set, cmd_tab, envb);
 				free(input);

@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 10:53:54 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/18 09:13:01 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/18 19:31:15 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,23 +113,23 @@ void	lexer_polish(t_lexer **lexer)
 	clean_squotes(lexer);
 	quotes_to_words(lexer);
 	clean_lexer(lexer);
-	// print_lexer(lexer, "after clean_lexer");
+	print_lexer(lexer, "after clean_lexer");
 	clean_lexer2(lexer);
-	// print_lexer(lexer, "after clean_lexer2");
+	print_lexer(lexer, "after clean_lexer2");
 	clean_lexer3(lexer);
-	// print_lexer(lexer, "after clean_lexer3");
+	print_lexer(lexer, "after clean_lexer3");
 	merge_nodes(lexer);
-	// print_lexer(lexer, "after merge_nodes");
+	print_lexer(lexer, "after merge_nodes");
 
 
 	lexer = expand_cmds(lexer);
-	// print_lexer(lexer, "after expand_cmds");
+	print_lexer(lexer, "after expand_cmds");
 
 
 	clean_lexer4(lexer);
-	// print_lexer(lexer, "after clean_lexer4");
-	clean_empty_nodes(lexer);
-	// print_lexer(lexer, "after clean_empty_nodes");
+	print_lexer(lexer, "after clean_lexer4");
+	clean_empty_nodes(lexer, WORD);
+	print_lexer(lexer, "after clean_empty_nodes");
 }
 
 t_lexer	*parsing(char *input, t_lexer **lexer, t_env *envb)
@@ -138,7 +138,10 @@ t_lexer	*parsing(char *input, t_lexer **lexer, t_env *envb)
 	if (!(*lexer))
 		return (add_history(input), NULL);
 	add_history(input);
+	print_lexer(lexer, "after ft_lexer");
 	ft_expander(lexer, envb);
+	clean_empty_nodes(lexer, EXPAND);
+	print_lexer(lexer, "after ft_expander");
 	lexer_polish(lexer);
 	if (!(*lexer))
 		return (add_history(input), NULL);
