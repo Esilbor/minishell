@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_merge.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 10:53:54 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/15 15:47:38 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/18 09:13:01 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ void	lexer_polish(t_lexer **lexer)
 	// print_lexer(lexer, "after merge_nodes");
 
 
-	// lexer = expand_cmds(lexer);
+	lexer = expand_cmds(lexer);
 	// print_lexer(lexer, "after expand_cmds");
 
 

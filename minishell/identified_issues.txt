@@ -142,36 +142,3 @@ after clean_empty_nodes
 CMD[0] = [cat__WORD__][EOF__WORD__]
 cat: EOF: No such file or directory
 1_Candy_$hell>
-
-
-----
-!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-Candy_$hell> <<EOF
-
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-Candy_$hell> <<lol | grep bon
-
-!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-
-
-Valeur de retour du heredoc pour les signaux
-
-de base la valeur est a ?=0
-
-
----
-
-Candy_$hell> <a
-Candy_$hell> CTRL + D
-
-LEAKS
-
-------
-
-quand une commande sans cmd les heredoc ne sont pas effaces
-
------
-
