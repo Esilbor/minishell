@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 23:02:12 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/16 21:16:49 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/19 17:58:13 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,13 +153,13 @@ int	shell_loop(t_env *envb)
 			// free(set->pid);
 			free (set);
 			// free_after_builtin(set); // a renomer
-			if (set->pipe)
-			{
-				ft_close_pipes(set);
-				free(set->pipe[0]);
-				free(set->pipe[1]);
-				free(set->pipe);
-			}
+			// if (set->pipe)
+			// {
+			// 	ft_close_pipes(set);
+			// 	free(set->pipe[0]);
+			// 	free(set->pipe[1]);
+			// 	free(set->pipe);
+			// }
 			return (2);
 		}
 	}

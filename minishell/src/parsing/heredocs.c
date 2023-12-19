@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 09:39:05 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/16 19:16:07 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/19 15:57:06 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,11 @@ void	create_heredoc(t_cmd ***cmd_tab, t_env *env, t_lexer *lex, char *limiter)
 // changer env pour set pour free quand le heredoc est ferme
 void	fill_heredoc(t_cmd ***cmd_tab, t_env *env, int fd, char *limiter) 
 {
+	(void)cmd_tab;
 	char	*buf;
 	size_t	eof_len;
 	int		dup_stdin;
-
+	
 	eof_len = ft_strlen(limiter);
 	dup_stdin = dup(STDIN_FILENO); // sauvegard du stdin
 	update_ret(&env, 0);
@@ -77,7 +78,7 @@ void	fill_heredoc(t_cmd ***cmd_tab, t_env *env, int fd, char *limiter)
 			// ft_free_tab((void **)set->paths);
 			// ft_free_tab((void **)set->envp);
 			//free_cmds((t_cmd **)set->cmd_set);
-			free_cmd_struct_tab(*cmd_tab);
+			//free_cmd_struct_tab(*cmd_tab);
 			close(fd);
 			// free(set->pid);
 			// free (set);

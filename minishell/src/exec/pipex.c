@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:13:47 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/16 19:31:17 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/19 20:20:21 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,20 @@ void	free_after_builtin(t_set *set)
 	free(set->pid);
 	free (set);
 }
+void	ft_error(char *message, t_set *set)
+{
+	write(2, message, ft_strlen(message));
+	// if (set->pipe)
+	// {
+	// 	//close_pipe(set, index);
+	// 	free(set->pipe[0]);
+	// 	free(set->pipe[1]);
+	// 	free(set->pipe);
+	// }
+	// free(set->pid);
+	free_after_builtin(set);
+	exit(1); // EXIT_FAILURE
+}
 
 pid_t	ft_fork(t_set *set, int index)
 {
@@ -112,23 +126,37 @@ pid_t	ft_fork(t_set *set, int index)
 	if (index < set->cmd_nb)
 	{
 		if (pipe(set->pipe[index % 2]) == -1)
-			return (printf("ERR_PIPE\n"));//free close ...
+		{
+			
+			//return (printf("ERR_PIPE\n"));//free close ...
+			ft_error(ERR_PIPE, set);
+		
+		}
+			
 	}
 	ign_sigint(); // ignore sigquit (ctrl-\) + sigint (ctrl-c)
 	pid = fork();
 	if (pid == -1)
-		return (printf("ERR_PID\n"));//free close ...
+	{
+		// close_pipe(set, index);
+		// free(set->pid);
+		// return (printf("ERR_PID\n"));//free close ...
+		ft_error(ERR_FORK, set);
+	}	
 	if (pid == 0)
 	{
 		ft_dup2(set, index);
-		if (set->cmd_set[index]->cmd[0] && is_builtin(set->cmd_set[index]->cmd)== 1)
+		if (set->cmd_set[index]->cmd[0] && is_builtin(set->cmd_set[index]->cmd) == 1)
 		{
 			do_builtins(set, index); // je ne me souviens plus pourquoi jai rajoute ca
-			// exit_err(set, 0);
+			//exit_err(set, 0);
+			free_after_builtin(set);
+			close_pipe(set, index);
+			exit(0);
 			
 			// free_redirections(set->cmd_set);
 			// free_after_builtin(set);
-
+		
 			// free_redirections((t_cmd **)set->cmd_set);
 			// free_after_builtin(set);
 			// exit(0); // recuperer et exit$?
@@ -150,6 +178,7 @@ pid_t	ft_fork(t_set *set, int index)
 			//close (set->cmd_set[index]->fd_input);
 		}
 		exit_err(set, 1);
+		//ft_error(ERR_, set);
 	}
 	if (index)
 		close_pipe(set, index);
@@ -168,7 +197,9 @@ void	ft_wait(t_set *set)
 		else if (WIFSIGNALED(status))
 			update_ret(&set->env_lst, 128 + WTERMSIG(status));			
 	}
+	//free_redirections((t_cmd **)set->cmd_set);
 	ft_handle_signals(); // ignor sigquit (ctrl-\)
+	
 }
 
 
@@ -196,7 +227,7 @@ void	ft_pipex(t_set *set)
 	if (set->cmd_set[i]->cmd[0] && is_single_builtin(set, i))
 	{
 		do_builtins(set, i);
-		//close_pipe(set, i);
+		//
 	}
 	else
 	{
@@ -207,6 +238,9 @@ void	ft_pipex(t_set *set)
 			i++;
 		}
 		ft_wait(set);
+		close_pipe(set, i); // +++ 19 decembre
+		//free_after_builtin(set);
+		//free(set->pid);  // --------- > voir sugar_rush(t_set *set)
 	}
 }
 /*

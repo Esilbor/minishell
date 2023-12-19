@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 09:59:10 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/15 21:40:52 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/19 15:52:36 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,4 +92,5 @@ void signals_simple(void)
 	sa.sa_handler = SIG_DFL; // if child_pid == 0
 	sigaction(SIGQUIT, &sa, NULL);
 	sigaction(SIGINT, &sa, NULL);
+
 }

@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/16 18:32:59 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/19 20:14:19 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,11 @@
 # define PROMPT2 "\001\033[35m\0022_Candy_$hell> \001\033[34m\002"
 # define PROMPT3 "\001\033[92m\002Candy_$hell?> \001\033[34m\002"
 # define MAX_LL "9223372036854775807"
+
+# define ERR_PIPE "Error on initializing pipe.\n"
+# define ERR_FORK "Error on forking.\n"
+
+
 
 // # include <string.h>
 // # include <stdlib.h>
