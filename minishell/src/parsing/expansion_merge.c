@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 10:53:54 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/18 19:31:15 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/20 08:41:41 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	merge_nodes(t_lexer **lexer)
 	while (lex && lex->next)
 	{
 		if (lex->type >= SMERGE && lex->type <= EMERGE
-			&& !((lex->next->type >= 9 && lex->next->type <= 12)
+			&& !((lex->next->type >= INPUT && lex->next->type <= LIMITER)
 				|| lex->next->type == PIPE))
 		{
 			merged_word = ft_strjoin(lex->word, lex->next->word);

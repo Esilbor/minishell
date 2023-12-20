@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:02:57 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/08 15:12:28 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/20 11:45:06 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,19 @@ int	handle_dquotes(char *cmd_line, int *i, t_lexer **head)
 	}
 	tmp = ft_strndup(&cmd_line[*i], j - *i + 1);
 	if (cmd_line[j + 1] && cmd_line[j + 1] != ' ')
+	{
+		// ft_printf("cmd_line = [%c]\n", cmd_line[j]);	
 		ft_add_lex_node(head, tmp, DMERGE);
+	}
 	else
 		ft_add_lex_node(head, tmp, DQUOTE);
+	if (cmd_line[j + 1] && cmd_line[j + 1] == ' ')
+	{
+		j++;
+		handle_space(cmd_line, &j,head);
+		// ft_printf("I DID THIS\n");	
+		j--;
+	}
 	free(tmp);
 	*i = j + 1;
 	return (0);
@@ -111,27 +121,30 @@ void	handle_dollar(char *cmd_line, int *i, t_lexer **head)
 }
 
 // Process words with special chars in cmd_line
-void	handle_words_spec_char(char *cmd_line, int *i, t_lexer **head)
+void	
+handle_words_spec_char(char *epur_line, int *i, t_lexer **head)
 {
 	int		j;
 	char	*tmp;
 
 	j = *i;
-	while (cmd_line[j] && !is_spec_char(&cmd_line[j]) && cmd_line[j] != ' ')
+	while (epur_line[j] && !is_spec_char(&epur_line[j]) && epur_line[j] != ' ')
 		j++;
-	if (cmd_line[j] && cmd_line[j] != ' ' && !is_spec_char4(&cmd_line[j]))
+	if (epur_line[j] && epur_line[j] != ' ' && !is_spec_char4(&epur_line[j]))
 	{
-		tmp = ft_strndup(&cmd_line[*i], j - *i);
+		tmp = ft_strndup(&epur_line[*i], j - *i);
 		ft_add_lex_node(head, tmp, WMERGE);
 		free(tmp);
 	}
-	else if (!cmd_line[j] || cmd_line[j] == ' ' || is_spec_char3(&cmd_line[j]))
+	else if (!epur_line[j] || epur_line[j] == ' ' || is_spec_char3(&epur_line[j])) // might cause empty nodes when 
 	{
-		tmp = ft_strndup(&cmd_line[*i], j - *i);
+		tmp = ft_strndup(&epur_line[*i], j - *i);
 		ft_add_lex_node(head, tmp, WORD);
 		free(tmp);
+		if (epur_line[j] == ' ')
+			handle_space(epur_line, &j, head);
 	}
-	if (is_spec_char3(&cmd_line[j]))
-		handle_spec_chars(cmd_line, &j, head);
+	if (is_spec_char3(&epur_line[j]))
+		handle_spec_chars(epur_line, &j, head);
 	*i = j;
 }

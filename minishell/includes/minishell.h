@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/18 19:29:23 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/20 11:41:34 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,23 +52,24 @@
 typedef enum e_tokens
 {
 	WORD,
-	PIPE,
-	LESS,
-	GREAT,
-	GREAT_GREAT,
-	LESS_LESS,
+	PIPE, //
+	LESS, //
+	GREAT, //
+	GREAT_GREAT, //
+	LESS_LESS, //
 	DOLLAR,
 	DQUOTE,
 	SQUOTE,
-	INPUT,
-	OUTPUT,
-	APPEND,
-	LIMITER,
+	INPUT, //
+	OUTPUT, //
+	APPEND, //
+	LIMITER, //
 	EXPAND,
-	SMERGE,
-	DMERGE,
-	WMERGE,
-	EMERGE,
+	SMERGE, //
+	DMERGE, //
+	WMERGE,//
+	EMERGE, // can add after
+	ISSPACE,
 }	t_tokens;
 
 typedef struct s_lexer
@@ -115,6 +116,7 @@ extern int g_exit_val;
 /***************TO ORDER*******************/
 /******************************************/
 
+void		handle_space(char *epur_line, int *i, t_lexer **head);
 bool		is_directory(char *cmd);
 void		print_cmd_not_found(char *cmd);
 void		exit_err(t_set *set, int err_nb);

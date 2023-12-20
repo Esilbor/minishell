@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 10:51:44 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/14 07:19:12 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/20 09:51:53 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	clean_lexer4(t_lexer **lexer)
 	lex = *lexer;
 	while (lex)
 	{
-		if (lex->type >= 13)
+		if (lex->type >= EXPAND && lex->type <= EMERGE)
 			lex->type = WORD;
 		lex = lex->next;
 	}
