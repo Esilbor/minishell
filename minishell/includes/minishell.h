@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/20 11:41:34 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/21 15:57:31 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,10 @@
 # define RESET "\x1B[0m"
 # define PROMPT "\001\033[38;2;255;105;180m\002Candy_$hell> \001\033[33m\002"
 # define PROMPT1 "\001\033[38;2;255;105;280m\0021_Candy_$hell> \001\033[35m\002"
-# define PROMPT2 "\001\033[35m\0022_Candy_$hell> \001\033[34m\002"
-# define PROMPT3 "\001\033[92m\002Candy_$hell?> \001\033[34m\002"
+# define PROMPT2 "\001\033[35m\0022_Candy_$hell> \001\033[92m\002"
+# define PROMPT3 "\001\033[92m\002?_Candy_$hell> \001\033[92m\002"
+# define PROMPT126 "\001\033[92m\002126_Candy_$hell> \001\033[92m\002"
+# define PROMPT127 "\001\033[92m\002127_Candy_$hell> \001\033[92m\002"
 # define MAX_LL "9223372036854775807"
 
 # include <string.h>
@@ -156,6 +158,8 @@ bool		outputs_are_valid(t_lexer *lex);
 /******************************************/
 /***************BUILT-IN*******************/
 /******************************************/
+
+int 		do_env(t_set *set, t_env *env, int index);
 
 /*do_builtins.c*/
 
@@ -322,9 +326,9 @@ int			ft_fill_lexer(t_lexer **lexer_lst, char *cmd_line);
 
 t_lexer		*ft_last_lexer_node(t_lexer *node);
 void		ft_add_lex_node(t_lexer **lexer, char *word, t_tokens type);
-t_lexer		*syntax_error(t_lexer *lexer, t_lexer **lexer_head);
-t_lexer		*check_valid_input(t_lexer **lexer_head);
-t_lexer		*ft_lexer(char *line);
+t_lexer		*syntax_error(t_lexer *lexer, t_lexer **lexer_head, t_env *env);
+t_lexer		*check_valid_input(t_lexer **lexer_head, t_env *env);
+t_lexer		*ft_lexer(char *line, t_env *env);
 
 /*	lexer_utils_3.c	*/
 

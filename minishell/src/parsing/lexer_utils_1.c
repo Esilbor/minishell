@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 15:14:20 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/20 11:41:40 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/21 19:01:30 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,15 +49,15 @@ char	*ft_epur_str(char *str)
 
 	i = 0;
 	j = 0;
+	if (!str)
+		return (NULL);
 	epur_str = malloc(sizeof(char) * (strlen(str) + 1));
-	if (!str || !epur_str)
+	if (!epur_str)
 		return (NULL);
 	while (str[i])
 	{
 		while (is_wspace(str[i]) && is_wspace(str[i + 1]))
 			i++;
-		// if (is_wspace(str[i]))
-		// 	i++;
 		if (is_quote(str[i]))
 			handle_quote(str, &i, &j, epur_str);
 		else
@@ -102,8 +102,7 @@ int	ft_fill_lexer(t_lexer **lexer, char *epur_line)
 		}
 		else
 			handle_words_spec_char(epur_line, &i, &head);
-		while (epur_line[i] && epur_line[i] == ' ') //
-			// handle_space(epur_line, &i, &head);
+		while (epur_line[i] && epur_line[i] == ' ')
 			i++;
 	}
 	*lexer = head;

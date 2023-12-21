@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 10:53:54 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/20 08:41:41 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/21 18:36:12 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,13 +134,14 @@ void	lexer_polish(t_lexer **lexer)
 
 t_lexer	*parsing(char *input, t_lexer **lexer, t_env *envb)
 {
-	*lexer = ft_lexer(input);
+	*lexer = ft_lexer(input, envb);
 	if (!(*lexer))
 		return (add_history(input), NULL);
 	add_history(input);
 	print_lexer(lexer, "after ft_lexer");
 	ft_expander(lexer, envb);
 	clean_empty_nodes(lexer, EXPAND);
+	clean_empty_nodes(lexer, WMERGE);
 	print_lexer(lexer, "after ft_expander");
 	lexer_polish(lexer);
 	if (!(*lexer))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   do_builtins.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 15:11:47 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/15 15:05:41 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/21 15:58:43 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	do_builtins(t_set *set, int index)
 	if (ft_strncmp(set->cmd_set[index]->cmd[0], "echo", 5) == 0)
 		do_echo(&set->env_lst, set->cmd_set[index]->cmd);
 	if (ft_strncmp(set->cmd_set[index]->cmd[0], "env", 4) == 0)
-		print_env(set, &set->env_lst);
+		do_env(set, set->env_lst, index);
 	if (ft_strncmp(set->cmd_set[index]->cmd[0], "export", 7) == 0)
 	{
 		if (set->cmd_set[index]->cmd[1])

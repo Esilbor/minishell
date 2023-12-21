@@ -1,6 +1,46 @@
 make && valgrind --suppressions=suppressions.supp --leak-check=full --track-fds=yes --show-leak-kinds=all -s ./minishell
 
-DENTITFIED ISSUES
+IDENTITFIED ISSUES
+-------------------------------------------------------------
+PARSING PART
+
+(CAN BE ANY WORD but HOME shows it does not trigger the env variable)
+
+$> echo $9HOME
+$> echo $"HOME"
+$> echo $''HOME
+$> echo $""HOME
+$> echo $"HO""ME"
+$> echo $'HO''ME'
+$> echo $'HOME'
+
+HOME
+$> 
+---
+('' or "" is considered as SPACE in parsing)
+$> echo "" $HOME
+$> echo '' $HOME
+
+ /home/esilbor
+$>
+---
+(An invalid expand )
+$> echo $hola*
+
+$> 
+---
+
+
+$> echo $""
+
+$> 
+---
+
+
+-------------------------------------------------------------
+EXEC PART
+
+echo $? | echo $? | echo $?
 - ret values of heredocs
 - handle signals
 
@@ -14,6 +54,7 @@ Candy_$hell?> echo $?
 
 >> 141 ???
 
+same for cat | ld
 
 ----
 
@@ -25,18 +66,16 @@ Candy_$hell?> echo $?
 141
 
 
-----
+-------------------------------------------------------------
 
 - review all error handling (properly cleanup if dup2 / pipe / strdup fail)
-
-- export test="ls -l"
-- export test2="ls          -l  -a" (might not be compulsory)
-
-
+- export return value is not updating ?=
 - return values
 - protect every ft_strdup
-- check if no unclosed fd
+- check for unclosed fd
 - norm
+
+
 
 
 ****************************************************
@@ -56,88 +95,3 @@ would be nice to have it done:
 
 
 *********
-*********
-*********
-// rajouter un type SPACE
-// nodes are merged when they shouldn't
-Candy_$hell> export A="ls" B="-l" C="-a"
-
-after clean_lexer
-CMD[0] = [export__WORD__][A=__WMERGE][ls__DMERGE][B=__WMERGE][-l__DMERGE][C=__WMERGE][-a__WORD__]
-
-after clean_lexer2
-CMD[0] = [export__WORD__][A=__WMERGE][ls__DMERGE][B=__WMERGE][-l__DMERGE][C=__WMERGE][-a__WORD__]
-
-after clean_lexer3
-CMD[0] = [export__WORD__][A=__WMERGE][ls__DMERGE][B=__WMERGE][-l__DMERGE][C=__WMERGE][-a__WORD__]
-
-after merge_nodes
-CMD[0] = [export__WORD__][A=lsB=-lC=-a__WORD__]
-
-after clean_lexer4
-CMD[0] = [export__WORD__][A=lsB=-lC=-a__WORD__]
-
-after clean_empty_nodes
-CMD[0] = [export__WORD__][A=lsB=-lC=-a__WORD__]
-Candy_$hell>
-
-------
-
-Candy_$hell> echo bon='jour' bon='nuit'
-
-after clean_lexer
-CMD[0] = [echo__WORD__][bon=__WMERGE][jour__SMERGE][bon=__WMERGE][nuit__WORD__]
-
-after clean_lexer2
-CMD[0] = [echo__WORD__][bon=__WMERGE][jour__SMERGE][bon=__WMERGE][nuit__WORD__]
-
-after clean_lexer3
-CMD[0] = [echo__WORD__][bon=__WMERGE][jour__SMERGE][bon=__WMERGE][nuit__WORD__]
-
-after merge_nodes
-CMD[0] = [echo__WORD__][bon=jourbon=nuit__WORD__]
-
-after expand_cmds
-CMD[0] = [echo__WORD__][bon=jourbon=nuit__WORD__]
-
-after clean_lexer4
-CMD[0] = [echo__WORD__][bon=jourbon=nuit__WORD__]
-
-after clean_empty_nodes
-CMD[0] = [echo__WORD__][bon=jourbon=nuit__WORD__]
-
-
-------
-
-le limiter
-Candy_$hell> cat <<$LOL
-cat: EOF: No such file or directory
-1_Candy_$hell>
-
-1_Candy_$hell> cat << $LOL
-cat: EOF: No such file or directory
-1_Candy_$hell>
-
->> Le limiter n'est pas reconnu LESS_LESS est bloque par un noeud vide
-
-Candy_$hell> cat <<$LOL
-
-after clean_lexer
-CMD[0] = [cat__WORD__][<<__LESS_LESS][__WMERGE][EOF__EXPAND]
-
-after clean_lexer2
-CMD[0] = [cat__WORD__][<<__LESS_LESS][__WMERGE][EOF__EXPAND]
-
-after clean_lexer3
-CMD[0] = [cat__WORD__][__WMERGE][EOF__EXPAND]
-
-after merge_nodes
-CMD[0] = [cat__WORD__][EOF__EXPAND]
-
-after clean_lexer4
-CMD[0] = [cat__WORD__][EOF__WORD__]
-
-after clean_empty_nodes
-CMD[0] = [cat__WORD__][EOF__WORD__]
-cat: EOF: No such file or directory
-1_Candy_$hell>

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 09:28:55 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/07 10:44:09 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/21 14:49:30 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,10 @@ char	*ft_prompt(t_env *envb)
 		input = readline(PROMPT1);
 	else if (!ft_strncmp(ret_node->var_str, "?=2", 4))
 		input = readline(PROMPT2);
+	else if (!ft_strncmp(ret_node->var_str, "?=126", 6))
+		input = readline(PROMPT126);
+	else if (!ft_strncmp(ret_node->var_str, "?=127", 6))
+		input = readline(PROMPT127);
 	else
 		input = readline(PROMPT3);
 	return (input);

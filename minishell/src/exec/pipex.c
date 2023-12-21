@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:13:47 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/15 10:43:54 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/20 20:57:59 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ void ft_execve(t_set *set, int index)
 		print_cmd_not_found(set->cmd_set[index]->cmd[0]);
 		exit_err(set, 127);
 	}
+	free (cmd_path);
 	exit_err(set, 126);
 }
 
