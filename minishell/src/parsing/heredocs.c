@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 09:39:05 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/20 15:11:45 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/21 20:58:37 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void	sig_heredoc_handler(int signum)
 	{
 		close(STDIN_FILENO);
 		g_exit_val = 130;
-		// free_cmds((t_cmd **)set->cmd_set);
 	}
 
 }
@@ -48,9 +47,14 @@ void	create_heredoc(t_cmd ***cmd_tab, t_env *env, t_lexer *lex, char *limiter)
 	fill_heredoc(cmd_tab, env, fd, limiter);
 	close(fd);
 }
+
+
 //void	fill_heredoc(t_env *env, int fd, char *limiter)
 //void	fill_heredoc(t_set *set, t_env *env, int fd, char *limiter)
 // changer env pour set pour free quand le heredoc est ferme
+// dup_stdin = dup(STDIN_FILENO); // sauvegard du stdin
+// signal_heredoc(); // met la variable globale a 130
+// ft_handle_signals(); // ignor sigquit (ctrl-\)
 void	fill_heredoc(t_cmd ***cmd_tab, t_env *env, int fd, char *limiter) 
 {
 	(void)cmd_tab;
@@ -75,13 +79,7 @@ void	fill_heredoc(t_cmd ***cmd_tab, t_env *env, int fd, char *limiter)
 			&& !ft_strncmp(limiter, buf, eof_len))
 		{
 			free(buf);
-			// ft_free_tab((void **)set->paths);
-			// ft_free_tab((void **)set->envp);
-			//free_cmds((t_cmd **)set->cmd_set);
-			//free_cmd_struct_tab(*cmd_tab);
 			close(fd);
-			// free(set->pid);
-			// free (set);
 			break ;
 		}
 		ft_putstr_fd(buf, fd);
@@ -91,9 +89,10 @@ void	fill_heredoc(t_cmd ***cmd_tab, t_env *env, int fd, char *limiter)
 	g_exit_val = 0;
 	close(fd);
 	dup2(dup_stdin, STDIN_FILENO);
-	ft_handle_signals(); // ignor sigquit (ctrl-\)
+	ft_handle_signals();
 	close(dup_stdin);
 }
+
 
 // .limiter_index_k
 char	*name_heredoc(char *limiter, int index, int k)

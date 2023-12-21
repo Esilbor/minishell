@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 17:28:56 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/20 20:54:02 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/21 17:30:49 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,40 @@ void	ft_dup2_first(t_set *set, int index, int fd_stdin, int fd_stdout)
 		}
 	}
 }
+
+
+
+// void	ft_dup2_first(t_set *set, int index, int fd_stdin, int fd_stdout)
+// {
+// 	if (fd_stdin && dup2(fd_stdin, 0) == -1)
+// 			exit_err(set, 1);     //exit_err(set, g_exit_val); //
+// 	if (fd_stdout != 1 && dup2(fd_stdout, 1) == -1)
+// 	{
+// 			exit_err(set, 1);
+// 	}
+// 	else 
+// 	{		
+// 		if ((index + 1) == set->cmd_nb)
+// 		{
+// 			if (dup2(fd_stdout, 1) == -1)
+// 				exit_err(set, 1);
+// 		}
+// 		else
+// 		{
+// 			if (dup2(set->pipe[index % 2][1], 1) == -1)
+// 			{
+// 				if (close(set->pipe[index][0]) == -1)
+// 					exit_err(set, 1);
+// 			}			
+// 		}
+// 	}
+// }
+
+
+
+
+
+
 
 
 void	ft_dup2_multpl(t_set *set, int index, int fd_stdin, int fd_stdout)

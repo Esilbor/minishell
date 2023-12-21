@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:13:47 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/20 20:54:35 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/21 21:01:21 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,32 +129,15 @@ pid_t	ft_fork(t_set *set, int index)
 	{
 		if (pipe(set->pipe[index % 2]) == -1)
 		{
-			
-			//return (printf("ERR_PIPE\n"));//free close ...
-			//free(set->pid);
-			
-			//close (set->cmd_set[index]->fd_input);
-			// free(set->pipe[0]);
-			// free(set->pipe[1]);
-			// free(set->pipe);
-			// ;
-			// free(set->pid);
-			// ft_free_tab((void **)set->paths);
-			// ft_free_tab((void **)set->envp);
-
-
 			ft_close_pipes(set);
 			close (set->cmd_set[index]->fd_input);
 			close (set->cmd_set[index]->fd_output);
-			
-	
+		
 			free_cmd_struct_tab(set->cmd_set); // ? 
 			
 			candy_crush(set);
 			ft_error(ERR_PIPE, set);
-		
 		}
-			
 	}
 	ign_sigint(); // ignore sigquit (ctrl-\) + sigint (ctrl-c)
 	pid = fork();
@@ -163,13 +146,12 @@ pid_t	ft_fork(t_set *set, int index)
 		//close_pipe(set, index);
 		// free(set->pid);
 		// return (printf("ERR_PID\n"));//free close ...
-
-		ft_close_pipes(set);
-		close (set->cmd_set[index]->fd_input);
-		close (set->cmd_set[index]->fd_output);
-
-		free_cmd_struct_tab(set->cmd_set); // ? 
 		
+		ft_close_pipes(set);
+		// close (set->cmd_set[index]->fd_input);
+		// close (set->cmd_set[index]->fd_output);
+
+		// free_cmd_struct_tab(set->cmd_set); // ? 	
 		candy_crush(set);
 		
 		ft_error(ERR_FORK, set);
@@ -180,40 +162,26 @@ pid_t	ft_fork(t_set *set, int index)
 		if (set->cmd_set[index]->cmd[0] && is_builtin(set->cmd_set[index]->cmd) == 1)
 		{
 			do_builtins(set, index); // je ne me souviens plus pourquoi jai rajoute ca
-			//exit_err(set, 0);
-			ft_close_pipes(set);
-
+		
 		}
 		if (set->cmd_set[index]->cmd[0])
 		{
 			signals_simple(); // fonction par defaut
-			ft_execve(set, index);
-			// free_after_builtin(set);
-			//ft_close_pipes(set);
-					
+			ft_execve(set, index);		
 		}
 		else
 		{
 			free_redirections((t_cmd **)set->cmd_set);
 			free_after_builtin(set);
-			//sugar_rush(set); // 20 decembre
-			//close (set->cmd_set[index]->fd_input);
 			ft_close_pipes(set);
-			close (set->cmd_set[index]->fd_input);
-			close (set->cmd_set[index]->fd_output);
-			
 			candy_crush(set);	
-			
 		}
-		
 		exit_err(set, 1);
 		//ft_error(ERR_, set);
 	}
 	if (index)
 	{
 		close_pipe(set, index);
-		//ft_close_pipes(set);
-		
 	}
 	return (pid);
 }
@@ -235,12 +203,9 @@ void	ft_wait(t_set *set)
 	
 }
 
-
 // Macro: int WIFEXITED (int status) --> when the child erminated with ------------> exit 
 // Macro: int WIFSIGNALED (int status) --> if the child process terminated because it received a signal that was not handled.
 // Macro: int WTERMSIG (int status) ---> it  returns the signal number of the signal that terminated the child process
-
-
 bool	is_single_builtin(t_set *set, int index)
 {
 	if (is_builtin(set->cmd_set[index]->cmd) && set->cmd_nb == 1)
@@ -260,7 +225,6 @@ void	ft_pipex(t_set *set)
 	if (set->cmd_set[i]->cmd[0] && is_single_builtin(set, i))
 	{
 		do_builtins(set, i);
-		//
 	}
 	else
 	{
@@ -271,26 +235,8 @@ void	ft_pipex(t_set *set)
 			i++;
 		}
 		ft_wait(set);
-		close_pipe(set, i); // +++ 19 decembre
+		close_pipe(set, i); // +++ 19 decembre ---> a garder sinon open file descriptor ouverts si cmd not found
 		//free_after_builtin(set);
 		//free(set->pid);  // --------- > voir sugar_rush(t_set *set)
 	}
 }
-/*
-
-
-if (execve(cmd_path, set->cmd_set[index]->cmd, set->envp) == -1)
-	{
-		if (errno == EACCES)
-			printf("Candy_$hell?: %s: Permission denied\n", set->cmd_set[index]->cmd[0]);
-		if (errno == ENOENT)
-			printf("Candy_$hell?: %s: No such file or directory\n", set->cmd_set[index]->cmd[0]);
-		else
-			printf("Candy_$hell?: %s: command not found\n", set->cmd_set[index]->cmd[0]);
-		exit(127);
-	}
-
-
-
-
-*/

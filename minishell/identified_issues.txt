@@ -24,6 +24,18 @@ identified_issues.txt  Makefile  readme
 Candy_$hell?> echo $?
 141
 
+reponse ; ------------
+
+Candy_$hell> cat | ls
+art.txt  git_pull_clone.txt  identified_issues.txt  includes  libft  Makefile  minishell  obj  readme  src  suppressions.supp
+
+Candy_$hell?> echo $?
+141
+Candy_$hell> 
+
+Quand ls se termine, il ferme son pipe
+Pendant ce temps cat attend la stdin
+Et du coup quand cat veut ecrire dans le pipe et que le pipe est deja ferme Donc on a sigpipe = 141 // probleme de pipe
 
 ----
 

@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:57:33 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/16 15:02:00 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/21 17:06:03 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ static char	*check_cmd_null(char *cmd)
 {
 	if (!cmd || string_empty(cmd))
 	{
-		//write(STDERR, ERR_CMD, ft_strlen(ERR_CMD));
-		//return (NULL);
 		return (ft_putstr_fd("CMD NULL", 2), NULL);
 	}
 	return (cmd);
