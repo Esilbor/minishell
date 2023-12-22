@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:36:38 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/25 00:22:12 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/22 15:30:50 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,5 +70,9 @@ t_lexer	*clean_quotes(t_lexer *node)
 	new_str = ft_strndup(&node->word[1], ft_strlen2(node->word) - 2);
 	free (node->word);
 	node->word = new_str;
+	if (!new_str[0])
+	{
+		node->type = ISSPACE;
+	}
 	return (node);
 }

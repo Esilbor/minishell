@@ -1,0 +1,84 @@
+echo "$"""
+echo '$'''
+echo $"HOME"
+echo $''HOME
+echo $""HOME
+echo "$HO"ME
+echo '$HO'ME
+echo "$HO""ME"
+echo '$HO''ME'
+echo "'$HO''ME'"
+echo ""$HOME
+echo ''$HOME
+echo $"HO""ME"
+echo $'HO''ME'
+echo $'HOME'
+echo "$"HOME
+echo $=HOME
+echo $"HOLA"
+echo $'HOLA'
+echo $DONTEXIST Hola
+echo "hola"
+echo 'hola'
+echo ''hola''
+echo ''h'o'la''
+echo "''h'o'la''"
+echo "'"h'o'la"'"
+echo "'hola'"
+echo '"hola"'
+echo '''ho"''''l"a'''
+echo hola""""""""""""
+echo hola"''''''''''"
+echo hola''''''''''''
+echo hola'""""""""""'
+echo "hola     " | cat -e
+echo ""hola
+echo ""hola
+echo hola""bonjour
+"e"'c'ho 'b'"o"nj"o"'u'r
+echo "$DONTEXIST"Makefile
+echo "$DONTEXIST""Makefile"
+echo '' $HOME
+echo "" $HOME
+echo "" hola
+echo '' hola
+echo ""             hola
+echo "$DONTEXIST" "Makefile"
+echo ho''la
+echo ho""la
+echo ho"''la"
+echo ho'""la'
+echo ho'""$la'
+echo ho"" la
+echo ho'' la
+echo ho "" la
+echo ho '' la
+echo ""ho la
+echo ''ho la
+echo "" ho la
+echo '' ho la
+echo $""
+echo"'hola'"
+e"cho hola"
+e'cho hola'
+echo ""
+echo ''
+echo $9HOME
+echo $"HOME"
+echo $''HOME
+echo $""HOME
+echo $"HO""ME"
+echo $'HO''ME'
+echo $'HOME'
+echo  "" la ""
+echo  la ""
+echo  la ''
+echo  "" la ''
+echo  la ''bom
+echo  la ""bom
+echo  la ""bom''
+echo  la ""bom ''
+echo  "" la''
+echo  "" la""
+echo  "" la " "
+echo  "" la ' '

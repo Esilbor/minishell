@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 10:53:54 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/21 18:36:12 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/22 22:49:47 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ void	merge_nodes(t_lexer **lexer)
 	lex = *lexer;
 	while (lex && lex->next)
 	{
-		if (lex->type >= SMERGE && lex->type <= EMERGE
-			&& !((lex->next->type >= INPUT && lex->next->type <= LIMITER)
+		if (((lex->type >= SMERGE && lex->type <= EMERGE) || lex->type == ISSPACE)
+			&& ((!(lex->next->type >= INPUT && lex->next->type <= LIMITER) && lex->next->type <= ISSPACE)
 				|| lex->next->type == PIPE))
 		{
 			merged_word = ft_strjoin(lex->word, lex->next->word);
@@ -87,9 +87,9 @@ t_lexer	**expand_cmds(t_lexer **lexer)
 	i = 0;
 	while (lex)
 	{
-		if (lex->type == EXPAND && ft_strchr(lex->word, ' ')) // should include tab as wspace?
+		if (lex->type == EXPAND && lex->word[1] && ft_strchr(&lex->word[1], ' ')) // should include tab as wspace? crac
 		{
-			tab = ft_split(lex->word, ' ');
+			tab = ft_split(&lex->word[1], ' ');
 			if (!tab)
 				return (NULL);
 			ft_remove_lex_node(lexer, lex);
@@ -107,29 +107,80 @@ t_lexer	**expand_cmds(t_lexer **lexer)
 
 }
 
+void	remove_space_nodes(t_lexer **lexer)
+{
+	t_lexer	*lex;
+
+	lex = *lexer;
+	while (lex)
+	{
+		if (lex->type == ISSPACE && lex->word[0])
+		{
+			lex->type = WORD;
+		}
+		if (lex->type == ISSPACE || lex->type == QSPACE)
+			lex = ft_remove_lex_node(lexer, lex);
+		lex = lex->next;
+	}
+}
+
+void	clean_space_nodes(t_lexer **lexer)
+{
+	t_lexer	*lex;
+	char	*tmp;
+	char	*tmp2;
+
+	lex = *lexer;
+	while (lex)
+	{
+		if (lex->type == QSPACE && lex->next && lex->next->type == ISSPACE
+			&& lex->next->next && lex->next->next->type == QSPACE
+			&& lex->next->next->next && (lex->next->next->next->type == WORD
+			|| (lex->next->next->next->type >= EXPAND
+			&& lex->next->next->next->type <= EMERGE)))
+		{
+			tmp = lex->next->next->next->word;
+			tmp2 = ft_strjoin(" ", tmp);
+			free(lex->next->next->next->word);
+			lex->next->next->next->word = tmp2;
+			lex = lex->next;
+		}
+		lex = lex->next;
+	}
+}
 
 void	lexer_polish(t_lexer **lexer)
 {
 	clean_squotes(lexer);
 	quotes_to_words(lexer);
 	clean_lexer(lexer);
-	print_lexer(lexer, "after clean_lexer");
+	// print_lexer(lexer, "after clean_lexer");
+	
+	clean_space_nodes(lexer);
+	// print_lexer(lexer, "after clean_space_nodes");
+	
 	clean_lexer2(lexer);
-	print_lexer(lexer, "after clean_lexer2");
+	// print_lexer(lexer, "after clean_lexer2");
 	clean_lexer3(lexer);
-	print_lexer(lexer, "after clean_lexer3");
+	// print_lexer(lexer, "after clean_lexer3");
+	
 	merge_nodes(lexer);
-	print_lexer(lexer, "after merge_nodes");
+	// print_lexer(lexer, "after merge_nodes");
+
+	remove_space_nodes(lexer);
+	// print_lexer(lexer, "after remove_space_nodes");
 
 
 	lexer = expand_cmds(lexer);
-	print_lexer(lexer, "after expand_cmds");
+	// print_lexer(lexer, "after expand_cmds");
 
 
 	clean_lexer4(lexer);
-	print_lexer(lexer, "after clean_lexer4");
+	// print_lexer(lexer, "after clean_lexer4");
 	clean_empty_nodes(lexer, WORD);
-	print_lexer(lexer, "after clean_empty_nodes");
+	// print_lexer(lexer, "after clean_empty_nodes");
+
+	
 }
 
 t_lexer	*parsing(char *input, t_lexer **lexer, t_env *envb)
@@ -138,46 +189,14 @@ t_lexer	*parsing(char *input, t_lexer **lexer, t_env *envb)
 	if (!(*lexer))
 		return (add_history(input), NULL);
 	add_history(input);
-	print_lexer(lexer, "after ft_lexer");
+	// print_lexer(lexer, "after ft_lexer");
 	ft_expander(lexer, envb);
+	// print_lexer(lexer, "after ft_expander");
 	clean_empty_nodes(lexer, EXPAND);
 	clean_empty_nodes(lexer, WMERGE);
-	print_lexer(lexer, "after ft_expander");
+	// print_lexer(lexer, "after clean_empty EXPAND WMERGE");
 	lexer_polish(lexer);
 	if (!(*lexer))
 		return (add_history(input), NULL);
 	return (*lexer);
 }
-
-// replace the value of expand nodes to the matching environment value
-// void	ft_expander(t_lexer **lexer, t_env *envb)
-// {
-// 	t_lexer	*lst;
-// 	char	*tmp;
-// 	char	*esc;
-
-// 	lst = *lexer;
-// 	while (lst)
-// 	{
-// 		if (lst->type == DQUOTE || lst->type == DMERGE)
-// 		{
-// 			tmp = dol_to_expand(lst->word);
-// 			if (tmp)
-// 				lst = expand_dquote(tmp, lst, envb);
-// 			esc = ft_strchr(lst->word, '\\');
-// 			while (esc && esc[1] != '\"' && esc[1] != '?')
-// 				clean_esc(&lst, &esc);
-// 			lst = clean_quotes(lst);
-// 		}
-// 		else if (lst->type == EXPAND || lst->type == EMERGE)
-// 		{
-// 			tmp = dol_to_expand(lst->word);
-// 			if (tmp)
-// 				lst = expand_node2(tmp, lst, envb);
-// 			esc = ft_strchr(lst->word, '\\');
-// 			while (esc && esc[1])
-// 				clean_esc(&lst, &esc);
-// 		}
-// 		lst = lst->next;
-// 	}
-// }

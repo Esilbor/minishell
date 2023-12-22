@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 18:19:41 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/20 08:57:15 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/22 15:36:50 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ char	*print_token(t_tokens token)
 		return ("EMERGE");
 	else if (token == ISSPACE)
 		return ("SPACE");
+	else if (token == QSPACE)
+		return ("QSPACE");
 	return ("ERROR");
 }
 

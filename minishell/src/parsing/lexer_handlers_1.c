@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:02:57 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/21 22:07:23 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/22 18:04:24 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,13 @@ int	handle_squotes(char *cmd_line, int *i, t_lexer **head)
 	}
 	tmp = ft_strndup(&cmd_line[*i], j - *i + 1);
 	if (cmd_line[j + 1] && cmd_line[j + 1] != ' '
-		&& !is_spec_char3(&cmd_line[j + 1]))
+		&& !is_spec_char4(&cmd_line[j + 1]))
 		ft_add_lex_node(head, tmp, SMERGE);
 	else
+	{
 		ft_add_lex_node(head, tmp, SQUOTE);
+		ft_add_lex_node(head, "", QSPACE);
+	}
 	free(tmp);
 	*i = j + 1;
 	return (0);
@@ -59,7 +62,10 @@ int	handle_dquotes(char *cmd_line, int *i, t_lexer **head)
 		ft_add_lex_node(head, tmp, DMERGE);
 	}
 	else
+	{
 		ft_add_lex_node(head, tmp, DQUOTE);
+		ft_add_lex_node(head, "", QSPACE);
+	}
 	// if (cmd_line[j + 1] && cmd_line[j + 1] == ' ')
 	// {
 	// 	j++;
@@ -147,6 +153,10 @@ handle_words_spec_char(char *epur_line, int *i, t_lexer **head)
 		tmp = ft_strndup(&epur_line[*i], j - *i);
 		ft_add_lex_node(head, tmp, WORD);
 		free(tmp);
+		if (epur_line[j] == ' ' && (epur_line[j + 1] == '\'' || epur_line[j + 1] == '\"'))
+		{
+			ft_add_lex_node(head, "", QSPACE);
+		}
 		// if (epur_line[j] == ' ')
 		// 	handle_space(epur_line, &j, head);
 	}

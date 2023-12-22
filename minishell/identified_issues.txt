@@ -4,37 +4,12 @@ IDENTITFIED ISSUES
 -------------------------------------------------------------
 PARSING PART
 
-(CAN BE ANY WORD but HOME shows it does not trigger the env variable)
-
 $> echo $9HOME
-$> echo $"HOME"
-$> echo $''HOME
-$> echo $""HOME
-$> echo $"HO""ME"
-$> echo $'HO''ME'
-$> echo $'HOME'
-
 HOME
 $> 
----
-('' or "" is considered as SPACE in parsing)
-$> echo "" $HOME
-$> echo '' $HOME
 
- /home/esilbor
-$>
----
-(An invalid expand )
-$> echo $hola*
+echo $=HOME
 
-$> 
----
-
-
-$> echo $""
-
-$> 
----
 
 
 -------------------------------------------------------------
