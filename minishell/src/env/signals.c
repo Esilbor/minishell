@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 09:59:10 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/19 15:52:36 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/22 16:27:39 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@
 // cursur au debut de la ligne
 // remplacer la ligne actuelle par une chaine vide
 // redisplay pour mettre a jour l'affichage
-
-// mode interactif ? 
 // ctrl_c ==> SIGINT
 
 int g_exit_val;
@@ -32,7 +30,6 @@ void	sigint_handler(int signum)
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay(); 
-		//g_exit_val = 130;
 	}
 }
 
@@ -51,10 +48,7 @@ void	ft_handle_signals(void)
 	sa.sa_handler = &sigint_handler; 
 	sigaction(SIGINT, &sa, NULL);	
 	ign_sigquit();
-	
 }
-
-
 
 /* 
 *	SIGQUIT signals (ctrl-\) replaced with SIG_IGN
@@ -66,7 +60,6 @@ void	ign_sigquit(void)
 	ft_memset(&sa, 0, sizeof(sa));
 	sa.sa_handler = SIG_IGN;
 	sigaction(SIGQUIT, &sa, NULL);
-	//ft_putstr_fd("Quit (core dumped)\n", STDOUT_FILENO);
 }
 
 /* 
@@ -83,13 +76,12 @@ void	ign_sigint(void)
 }
 
 // fonction par defaut:
-
 void signals_simple(void)
 {
 	struct sigaction	sa; 
 
 	ft_memset(&sa, 0, sizeof(sa)); 
-	sa.sa_handler = SIG_DFL; // if child_pid == 0
+	sa.sa_handler = SIG_DFL;
 	sigaction(SIGQUIT, &sa, NULL);
 	sigaction(SIGINT, &sa, NULL);
 

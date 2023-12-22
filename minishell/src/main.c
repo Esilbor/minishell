@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 23:02:12 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/20 20:55:06 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/22 19:12:54 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,11 +81,10 @@ void	free_cmd_struct_tab(t_cmd **cmd_tab)
 	int	i;
 	int	j;
 
-	i = 0;
-	j = 0;
+	i = -1;
 	if (cmd_tab)
 	{
-		while (cmd_tab[i])
+		while (cmd_tab[++i])
 		{
 			if (cmd_tab[i]->output)
 				free_lexer_list(&(cmd_tab[i])->output);
@@ -97,30 +96,22 @@ void	free_cmd_struct_tab(t_cmd **cmd_tab)
 			{
 				j = 0;
 				while (cmd_tab[i]->cmd[j])
-				{
-					free(cmd_tab[i]->cmd[j]);
-					j++;
-				}
+					free(cmd_tab[i]->cmd[j++]);
 				free (cmd_tab[i]->cmd);
 			}
 			free (cmd_tab[i]);
-			i++;
 		}
 		free (cmd_tab);
 	}
 }
 
 
-
-int	shell_loop(t_env *envb)
+//int	shell_loop(t_env *envb)
+int	shell_loop(t_set *set, t_cmd **cmd_tab, t_env *envb)
 {
 	t_lexer	*lexer;
 	char	*input;
-	t_cmd	**cmd_tab;
-	t_set	*set;
-
-	set = NULL;
-	cmd_tab = NULL;
+	
 	while (1)
 	{
 		input = ft_prompt(envb);
@@ -130,35 +121,15 @@ int	shell_loop(t_env *envb)
 			{
 				execution(set, cmd_tab, envb);
 				free(input);
-			}	
+			}
+			else
+				free_cmd_struct_tab(cmd_tab);
 		}
 		else if (input)
-		{
 			continue ;
-		}
 		else
-		{
-			ft_printf("exit\n"RESET);
-			rl_clear_history();
-			//ft_free_tab((void **)set->cmd_set);
-			
-			//free_cmd_struct_tab(cmd_tab);
-			// free_redirections(set->cmd_set);
-			ft_free_env_lst(envb);
-			// ft_free_env_lst
-			
-			//ft_free_tab((void **)set->paths);
-			// ft_free_tab((void **)set->envp);
-			// free_cmds((t_cmd **)set->cmd_set);
-			// free(set->pid);
-			free (set);
-			// free_after_builtin(set); // a renomer
-			//free(input);
-			
-			return (2);
-		}
+			return (ft_printf("exit\n"RESET), rl_clear_history(),ft_free_env_lst(envb),free(set), 2);
 	}
-	//sugar_rush(set);
 	return (0);
 }
 
@@ -166,134 +137,16 @@ int	shell_loop(t_env *envb)
 int	main(int argc, char **argv, char **envp)
 {
 	t_env	*envb;
-
-	(void)argv;
-	if (argc != 1)
-		return (ft_putstr_fd(PINK"better without added sugar\n"RESET, 2), 1);
-	ft_handle_signals();
-	envb = get_env(envp);
-	shell_loop(envb);
-	
-
-	// if (envb)
-	// 	ft_free_env_lst(envb);
-	return (0);
-}
-
-
-
-
-/*
- // a completer avec les signals
-int check_first(t_data *data, int argc, char **envp)
-{
-	if (argc <= 0)
-		return (printf("ERR_NOARG"),-1);
-	//init_data --> 0;
-	if (envp == NULL )
-		return (printf("ERR_NOARG"),-1);
-	if (data->exit == -1)
-		return (printf("ERR_NOARG"),-1);
-	//if ft_handle_signals();
-	return (0);
-
-	
-}
-*/
-/*
-
-int	shell_loop(t_env *envb, char **envp)
-{
-	t_lexer	*lexer;
-	char	*input;
-	t_cmd	**cmd_tab;
 	t_set	*set;
-
+	t_cmd	**cmd_tab;
+	
 	set = NULL;
 	cmd_tab = NULL;
-	while (1)
-	{
-		input = ft_prompt(envb);
-		if (input && input[0] && !shell_parser(input, &lexer, envb, &cmd_tab))
-		{
-			execution(set, cmd_tab, envb);
-			free(input);
-		}
-		else if (input)
-			continue ;
-		else
-		{
-			ft_printf("exit\n"RESET);
-			rl_clear_history();
-			ft_free_env_lst(envb);
-			return (2);
-		}
-	}
-	return (0);
-}
-*/
-
-/*
-
-
-//int	main(int argc, t_data *data, char **envp)
-int	main(int argc, char **argv, char **envp)
-{
-	t_env	*envb;
-
+	(void)argv;
 	if (argc != 1)
 		return (ft_putstr_fd(PINK"better without added sugar\n"RESET, 2), 1);
-	(void)argv;
 	ft_handle_signals();
 	envb = get_env(envp);
-
-	// shell_loop(envb);
-	return (shell_loop(envb));
-
+	shell_loop(set,cmd_tab,envb); //shell_loop(envb);
+	return (0);
 }
-
-
-*/
-
-
-
-
-// void	execution(t_set *set, t_cmd **cmd_struct_tab, t_env *envb)
-// {
-// 	// cd, exit, export, unset (source: Oceane)
-// 	init_set(&set, cmd_struct_tab, envb);
-// 	init_pipe_set(set);
-// 	init_pid_tab(set);
-// 	ft_pipex(set);
-
-// 	//free pid_tab
-// 	//free pipe_set
-// 	// candy_crush
-// }
-
-// int	shell_loop(t_env *envb)
-// {
-// 	t_lexer	*lexer;
-// 	char	*input;
-// 	t_cmd	**cmd_struct_tab;
-// 	t_set	*set;
-
-// 	set = NULL;
-// 	cmd_struct_tab = NULL;
-// 	while (1)
-// 	{
-// 		input = ft_prompt(envb);
-// 		if (input && input[0])
-// 		{
-// 			shell_parser(input, &lexer, envb, &cmd_struct_tab);
-// 			execution(set, cmd_struct_tab, envb);
-// 			free_shell(NULL, input, NULL);
-// 		}
-// 		else if (input)
-// 			continue ;
-// 		else
-// 			return (ft_quit_shell(set, envb, cmd_struct_tab), 2);
-// 	}
-// 	return (0);
-// }
-

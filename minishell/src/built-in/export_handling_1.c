@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_handling_1.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 20:27:54 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/21 10:37:30 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/22 18:04:18 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	modify_var(t_env *node, char **v_tab, char **cmd_tab, int i)
 		free(tmp);
 	}
 }
-
+// ret est le code retour qu'on assigne a la variable d'environnement $?
 int	update_ret(t_env **env, int ret)
 {
 	t_env	*node;

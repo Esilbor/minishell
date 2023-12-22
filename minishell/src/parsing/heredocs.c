@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 09:39:05 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/21 20:58:37 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/22 19:42:15 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	sig_heredoc_handler(int signum)
 		close(STDIN_FILENO);
 		g_exit_val = 130;
 	}
-
 }
 
 void signal_heredoc(void)
@@ -33,39 +32,27 @@ void signal_heredoc(void)
 	sigaction(SIGINT, &sa, NULL);
 }
 
-//void	create_heredoc(t_env *env, t_lexer *lex, char *limiter)
-void	create_heredoc(t_cmd ***cmd_tab, t_env *env, t_lexer *lex, char *limiter)
+void closes_heredoc(int fd, int dup_stdin)
 {
-	int		fd;
-
-	fd = open(lex->word, O_WRONLY | O_TRUNC | O_CREAT, 0644);
-	if (fd < 0)
-	{
-		ft_putstr_fd("could not open heredoc\n", 2);
-		exit (1);
-	}
-	fill_heredoc(cmd_tab, env, fd, limiter);
-	close(fd);
+	close (fd);
+	close (dup_stdin);
+	g_exit_val = 0;
+	
 }
-
-
 //void	fill_heredoc(t_env *env, int fd, char *limiter)
 //void	fill_heredoc(t_set *set, t_env *env, int fd, char *limiter)
 // changer env pour set pour free quand le heredoc est ferme
 // dup_stdin = dup(STDIN_FILENO); // sauvegard du stdin
 // signal_heredoc(); // met la variable globale a 130
 // ft_handle_signals(); // ignor sigquit (ctrl-\)
-void	fill_heredoc(t_cmd ***cmd_tab, t_env *env, int fd, char *limiter) 
+//void	fill_heredoc(t_cmd ***cmd_tab, t_env *env, int fd, char *limiter) 
+void	fill_heredoc(char	*buf, t_env *env, int fd, char *limiter) 
 {
-	(void)cmd_tab;
-	char	*buf;
-	size_t	eof_len;
 	int		dup_stdin;
 	
-	eof_len = ft_strlen(limiter);
-	dup_stdin = dup(STDIN_FILENO); // sauvegard du stdin
+	dup_stdin = dup(STDIN_FILENO);
 	update_ret(&env, 0);
-	signal_heredoc(); // met la variable globale a 130
+	signal_heredoc();
 	while (1)
 	{
 		buf = readline("heredoc> ");
@@ -75,22 +62,35 @@ void	fill_heredoc(t_cmd ***cmd_tab, t_env *env, int fd, char *limiter)
 			ft_printf("\n");
 			break ;
 		}
-		if (buf[0] && (eof_len == ft_strlen(buf))
-			&& !ft_strncmp(limiter, buf, eof_len))
-		{
-			free(buf);
-			close(fd);
+		if (buf[0] && (ft_strlen(limiter) == ft_strlen(buf))
+			&& !ft_strncmp(limiter, buf, ft_strlen(limiter)))
 			break ;
-		}
 		ft_putstr_fd(buf, fd);
 		write(fd, "\n", 1);
 		free(buf);
 	}
-	g_exit_val = 0;
-	close(fd);
 	dup2(dup_stdin, STDIN_FILENO);
+	closes_heredoc(fd, dup_stdin);
 	ft_handle_signals();
-	close(dup_stdin);
+}
+
+
+//void	create_heredoc(t_cmd ***cmd_tab, t_env *env, t_lexer *lex, char *limiter)
+void	create_heredoc(t_env *env, t_lexer *lex, char *limiter)
+{
+	int		fd;
+	char	*buf;
+
+	buf = NULL;
+	fd = open(lex->word, O_WRONLY | O_TRUNC | O_CREAT, 0644);
+	if (fd < 0)
+	{
+		ft_putstr_fd("could not open heredoc\n", 2);
+		exit (1);
+	}
+	//fill_heredoc(cmd_tab, env, fd, limiter);
+	fill_heredoc(buf , env, fd, limiter);
+	close(fd);
 }
 
 
@@ -119,8 +119,8 @@ char	*name_heredoc(char *limiter, int index, int k)
 	return (tmp);
 }
 
-//void	modify_limiter_nodes(t_env *env, t_lexer *lst, int index)
-void	modify_limiter_nodes(t_cmd ***cmd_tab, t_env *env, t_lexer *lst, int index)
+
+void	modify_limiter_nodes(t_env *env, t_lexer *lst, int index)
 {
 	char	*tmp;
 	char	*limiter;
@@ -137,13 +137,14 @@ void	modify_limiter_nodes(t_cmd ***cmd_tab, t_env *env, t_lexer *lst, int index)
 			free (lst->word);
 			lst->word = ft_strjoin(".", tmp);
 			free (tmp);
-			create_heredoc(cmd_tab, env, lst, limiter);
+			create_heredoc(env, lst, limiter);
 			free (limiter);
 			k++;
 		}
 		lst = lst->next;
 	}
 }
+
 //void	init_heredocs(t_env *env, t_cmd **cmd_tab)
 void	init_heredocs(t_env *env, t_cmd **cmd_tab)
 {
@@ -153,7 +154,10 @@ void	init_heredocs(t_env *env, t_cmd **cmd_tab)
 	while (cmd_tab[i])
 	{
 		if (cmd_tab[i]->input)
-			modify_limiter_nodes(&cmd_tab, env, cmd_tab[i]->input, i);
+		{
+			//modify_limiter_nodes(&cmd_tab, env, cmd_tab[i]->input, i);
+			modify_limiter_nodes(env, cmd_tab[i]->input, i);
+		}
 		i++;
 	}
 }
