@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/22 18:51:14 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/23 10:54:51 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ extern int g_exit_val;
 /***************TO ORDER*******************/
 /******************************************/
 
+int			quote_is_space(t_lexer *lex);
 void		remove_space_nodes(t_lexer **lexer);
 void		handle_space(char *epur_line, int *i, t_lexer **head);
 bool		is_directory(char *cmd);

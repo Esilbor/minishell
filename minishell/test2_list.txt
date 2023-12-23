@@ -1,4 +1,3 @@
-
 echo "Simple echo"
 echo 'Single quotes'
 echo "Double quotes with a variable $USER"

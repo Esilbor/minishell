@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 10:53:54 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/22 22:49:47 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/23 11:56:34 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,49 @@ void	remove_space_nodes(t_lexer **lexer)
 	}
 }
 
+void	clean_space_nodes2(t_lexer **lexer)
+{
+	t_lexer	*lex;
+	char	*tmp;
+	t_lexer *previous;
+	
+	previous = *lexer;
+	lex = *lexer;
+	while (lex)
+	{
+		if (quote_is_space(lex) < 0)
+		{
+			tmp = ft_strdup(previous->word);
+			free(previous->word);
+			previous->word = ft_strjoin(tmp, " ");
+			free (tmp);			
+			lex = lex->next;
+		}
+		previous = lex;
+		lex = lex->next;
+	}
+}
+
+int	quote_is_space(t_lexer *lex)
+{
+	if (lex->type == QSPACE && lex->next && lex->next->type == ISSPACE
+	&& lex->next->next && lex->next->next->type == QSPACE
+	&& lex->next->next->next && (lex->next->next->next->type == WORD
+	|| (lex->next->next->next->type >= EXPAND
+	&& lex->next->next->next->type <= EMERGE)))
+		return (1);
+	else if (lex->type == QSPACE && lex->next && lex->next->type == ISSPACE
+	&& lex->next->next && lex->next->next->type == QSPACE
+	&& (!lex->next->next->next || (lex->next->next->next->type >= PIPE
+	&& lex->next->next->next->type <= LESS_LESS)))
+		return (-1);
+	else if (lex->type == QSPACE && lex->next && lex->next->type == ISSPACE
+	&& (lex->next->next && (lex->next->next->type >= PIPE
+	&& lex->next->next->type <= LESS_LESS)))
+		return (-1);
+	return (0);
+}
+
 void	clean_space_nodes(t_lexer **lexer)
 {
 	t_lexer	*lex;
@@ -133,17 +176,18 @@ void	clean_space_nodes(t_lexer **lexer)
 	lex = *lexer;
 	while (lex)
 	{
-		if (lex->type == QSPACE && lex->next && lex->next->type == ISSPACE
-			&& lex->next->next && lex->next->next->type == QSPACE
-			&& lex->next->next->next && (lex->next->next->next->type == WORD
-			|| (lex->next->next->next->type >= EXPAND
-			&& lex->next->next->next->type <= EMERGE)))
+		if (quote_is_space(lex) == 1)
 		{
+			// ft_printf("***********************************\n");
 			tmp = lex->next->next->next->word;
 			tmp2 = ft_strjoin(" ", tmp);
 			free(lex->next->next->next->word);
 			lex->next->next->next->word = tmp2;
 			lex = lex->next;
+		}
+		else if (quote_is_space(lex) < 0)
+		{
+			clean_space_nodes2(lexer);
 		}
 		lex = lex->next;
 	}

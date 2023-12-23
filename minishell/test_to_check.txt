@@ -1,0 +1,6 @@
+echo $""
+echo"'hola'"
+e"cho hola"
+e'cho hola'
+echo ""
+echo ''

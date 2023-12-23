@@ -1,3 +1,12 @@
+echo  "" la ""
+echo  "" la "" this is it
+echo  la ""
+echo  la "" | cat -e
+echo la ""| cat -e
+echo la ""-
+echo  la ''
+echo  "" la ''
+echo  la ""bom ''
 echo "$"""
 echo '$'''
 echo $"HOME"
@@ -14,7 +23,6 @@ echo $"HO""ME"
 echo $'HO''ME'
 echo $'HOME'
 echo "$"HOME
-echo $=HOME
 echo $"HOLA"
 echo $'HOLA'
 echo $DONTEXIST Hola
@@ -57,28 +65,21 @@ echo ""ho la
 echo ''ho la
 echo "" ho la
 echo '' ho la
-echo $""
-echo"'hola'"
-e"cho hola"
-e'cho hola'
-echo ""
-echo ''
-echo $9HOME
 echo $"HOME"
 echo $''HOME
 echo $""HOME
 echo $"HO""ME"
 echo $'HO''ME'
 echo $'HOME'
-echo  "" la ""
-echo  la ""
-echo  la ''
-echo  "" la ''
+echo  "" la '' bam
+echo  "" la '' $
+echo  "" la ''_
 echo  la ''bom
 echo  la ""bom
 echo  la ""bom''
-echo  la ""bom ''
 echo  "" la''
 echo  "" la""
 echo  "" la " "
 echo  "" la ' '
+echo $=HOME
+echo $9HOME
