@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 17:28:56 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/21 17:30:49 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/23 18:56:03 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,9 +138,10 @@ void ft_dup2(t_set *set, int index)
 	{
 		close_pipe(set, 0);
 		close_pipe(set, 1);
-		if (fd_stdin != 0)
-			close(fd_stdin);
-		if (fd_stdout != 1)
-			close(fd_stdout);
 	}
+	if (fd_stdin != 0)
+		close(fd_stdin);
+	if (fd_stdout != 1)
+		close(fd_stdout);
+	
 }

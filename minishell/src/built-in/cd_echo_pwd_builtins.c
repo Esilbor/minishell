@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_echo_pwd_builtins.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 15:09:16 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/14 20:00:54 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/23 18:42:20 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int	do_echo(t_env **env, char **str)
 	int	j;
 	int cmd_nb;
 
+	write(2, "echo\n", 6);
 	n_flag = 1;
 	i = 1;
 	j = 1;

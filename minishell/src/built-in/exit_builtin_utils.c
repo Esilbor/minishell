@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_builtin_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 07:10:03 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/14 07:11:48 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/23 19:53:03 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	candy_crush(t_set *set)
 	free (set->pipe[0]);
 	free (set->pipe[1]);
 	free (set->pipe);
-	free (set->pid);
+	//free (set->pid);
 	free (set);
 }
 

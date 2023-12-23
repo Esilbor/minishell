@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:13:47 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/21 21:01:21 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/23 20:10:03 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,24 +45,24 @@ void	init_pipe_set(t_set *set)
 	set->pipe[1][1] = 0;
 }
 
-void	init_pid_tab(t_set *set)
-{
-	int	i;
+// void	init_pid_tab(t_set *set)
+// {
+// 	int	i;
 
-	i = -1;
-	set->pid = malloc(sizeof (pid_t) * set->cmd_nb);
-	if (!set->pid)
-		return (ft_putstr_fd("could not malloc pid_tab", 2));
-	while (++i < set->cmd_nb)
-		set->pid[i] = 0;
-}
+// 	i = -1;
+// 	set->pid = malloc(sizeof (pid_t) * set->cmd_nb);
+// 	if (!set->pid)
+// 		return (ft_putstr_fd("could not malloc pid_tab", 2));
+// 	while (++i < set->cmd_nb)
+// 		set->pid[i] = 0;
+// }
 
 void	exit_err(t_set *set, int err_nb)
 {
 	ft_close_pipes(set);
 	free_redirections(set->cmd_set);
 	free_after_builtin(set);
-	exit(err_nb); // a verifier avec update_ret
+	exit(err_nb);
 }
 
 void ft_execve(t_set *set, int index)
@@ -101,9 +101,10 @@ void	free_after_builtin(t_set *set)
 	ft_free_tab((void **)set->paths);
 	ft_free_tab((void **)set->envp);
 	free_cmds((t_cmd **)set->cmd_set);
-	free(set->pid);
+	//free(set->pid);
 	free (set);
 }
+
 void	ft_error(char *message, t_set *set)
 {
 	write(2, message, ft_strlen(message));
@@ -125,7 +126,7 @@ pid_t	ft_fork(t_set *set, int index)
 {
 	pid_t	pid;
 
-	if (index < set->cmd_nb)
+	if (index < set->cmd_nb)// (index < set->cmd_nb)
 	{
 		if (pipe(set->pipe[index % 2]) == -1)
 		{
@@ -138,8 +139,11 @@ pid_t	ft_fork(t_set *set, int index)
 			candy_crush(set);
 			ft_error(ERR_PIPE, set);
 		}
+		
 	}
 	ign_sigint(); // ignore sigquit (ctrl-\) + sigint (ctrl-c)
+	if (set->cmd_nb < 2)
+		ft_close_pipes(set);	
 	pid = fork();
 	if (pid == -1)
 	{
@@ -162,12 +166,12 @@ pid_t	ft_fork(t_set *set, int index)
 		if (set->cmd_set[index]->cmd[0] && is_builtin(set->cmd_set[index]->cmd) == 1)
 		{
 			do_builtins(set, index); // je ne me souviens plus pourquoi jai rajoute ca
-		
 		}
-		if (set->cmd_set[index]->cmd[0])
+		else if (set->cmd_set[index]->cmd[0])
 		{
 			signals_simple(); // fonction par defaut
-			ft_execve(set, index);		
+			ft_close_pipes(set);	
+			ft_execve(set, index);
 		}
 		else
 		{
@@ -190,13 +194,20 @@ pid_t	ft_fork(t_set *set, int index)
 void	ft_wait(t_set *set)
 {
 	int status;
+	int lastpid;
 
-	while (wait(&status) > 0)
+	while (set->cmd_nb > 0)
 	{
-		if (WIFEXITED(status))
-			update_ret(&set->env_lst, WEXITSTATUS(status));
-		else if (WIFSIGNALED(status))
-			update_ret(&set->env_lst, 128 + WTERMSIG(status));			
+		lastpid = wait(&status);
+		//if (set->pid[set->cmd_nb - 1] == lastpid)
+		if (set->pid == lastpid)
+		{
+			if (WIFEXITED(status))
+				update_ret(&set->env_lst, WEXITSTATUS(status));
+			else if (WIFSIGNALED(status))
+				update_ret(&set->env_lst, 128 + WTERMSIG(status));
+		}
+		set->cmd_nb--;		
 	}
 	//free_redirections((t_cmd **)set->cmd_set);
 	ft_handle_signals(); // ignor sigquit (ctrl-\)
@@ -228,15 +239,17 @@ void	ft_pipex(t_set *set)
 	}
 	else
 	{
-		while (i < set->cmd_nb)
+		while (i  < set->cmd_nb)
 		{
 			last_pid = ft_fork(set, i);
-			set->pid[i] = last_pid;
+			//set->pid[i] = last_pid;
+			set->pid = last_pid;
 			i++;
 		}
 		ft_wait(set);
 		close_pipe(set, i); // +++ 19 decembre ---> a garder sinon open file descriptor ouverts si cmd not found
 		//free_after_builtin(set);
 		//free(set->pid);  // --------- > voir sugar_rush(t_set *set)
+		//ft_close_pipes(set);
 	}
 }

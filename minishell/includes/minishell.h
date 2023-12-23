@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/22 19:29:10 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/23 19:52:06 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ typedef struct t_set
 	struct s_env	*env_lst;
 	struct s_cmd	**cmd_set;
 	char			**envp;
-	pid_t			*pid;
+	pid_t			pid;
 	int				**pipe;
 }	t_set;
 
@@ -168,7 +168,7 @@ void		close_pipe(t_set *set, int index);
 pid_t		ft_fork(t_set *set, int index);
 void		ft_pipex(t_set *set);
 void		init_pipe_set(t_set *set);
-void		init_pid_tab(t_set *set);
+//void		init_pid_tab(t_set *set);
 void		ft_execve(t_set *set, int index);
 char		*set_path_cmd(t_set *set, char *cmd);
 void		ft_dup2(t_set *set, int index);

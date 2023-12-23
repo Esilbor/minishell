@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 23:02:12 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/22 19:12:54 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/23 19:54:50 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	free_redirections(t_cmd **tab)
 
 void	sugar_rush(t_set *set)
 {
-	free(set->pid);
+	//free(set->pid);
 	free(set->pipe[0]);
 	free(set->pipe[1]);
 	free(set->pipe);
@@ -48,7 +48,7 @@ void	execution(t_set *set, t_cmd **cmd_struct_tab, t_env *envb)
 {
 	init_set(&set, cmd_struct_tab, envb);
 	init_pipe_set(set);
-	init_pid_tab(set);
+	//init_pid_tab(set);
 	ft_pipex(set);
 	sugar_rush(set);
 }

@@ -217,6 +217,15 @@ yes\n
 
 *********************************
 
+23 decembre
+
+verifier si:
+    --> free(cmd_tab[i]->heredoc_path); a ete fait? (voir  shell_parser) // pour tout free() dans cmd.c
+
+
+
+
+
 
 
 commande env | ls 
