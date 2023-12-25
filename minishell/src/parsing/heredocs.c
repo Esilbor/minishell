@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 09:39:05 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/22 19:42:15 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/23 21:14:20 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ char	*name_heredoc(char *limiter, int index, int k)
 	tmp = ft_strjoin(tmp2, tmp3);
 	free (tmp2);
 	free (tmp3);
+	//printf("%s\n", tmp);
 	return (tmp);
 }
 

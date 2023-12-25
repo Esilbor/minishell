@@ -3,14 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   cd_builtin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 11:28:12 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/14 07:12:02 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/25 17:26:02 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+
+	// pwd = get_env_node(*envb, "PWD");
+	// oldpwd = get_env_node(*envb, "OLDPWD");
+	// tmp = ft_strjoin("OLD", pwd->var_str);
+	// free(oldpwd->var_str);
+	// oldpwd->var_str = ft_strdup(tmp);
+	// free (tmp);
+	// tmp = getcwd(NULL, 0);
+	// new_pwd = ft_strjoin("PWD=", tmp);
+	// free (tmp);
+	// free (pwd->var_str);
+	// pwd->var_str = ft_strdup(new_pwd);
+	// free (new_pwd);
 
 static void	update_pwd(t_env **envb)
 {
@@ -20,17 +34,25 @@ static void	update_pwd(t_env **envb)
 	char	*new_pwd;
 
 	pwd = get_env_node(*envb, "PWD");
-	oldpwd = get_env_node(*envb, "OLDPWD");
-	tmp = ft_strjoin("OLD", pwd->var_str);
-	free(oldpwd->var_str);
-	oldpwd->var_str = ft_strdup(tmp);
-	free (tmp);
-	tmp = getcwd(NULL, 0);
-	new_pwd = ft_strjoin("PWD=", tmp);
-	free (tmp);
-	free (pwd->var_str);
-	pwd->var_str = ft_strdup(new_pwd);
-	free (new_pwd);
+    oldpwd = get_env_node(*envb, "OLDPWD");   
+    if (pwd && oldpwd) 
+	{
+        tmp = ft_strjoin("OLD", pwd->var_str);
+        if (oldpwd->var_str)
+            free(oldpwd->var_str);
+        oldpwd->var_str = ft_strdup(tmp);
+        free(tmp);
+        tmp = getcwd(NULL, 0);
+        if (tmp) 
+		{
+            new_pwd = ft_strjoin("PWD=", tmp);
+            free(tmp);
+            if (pwd->var_str) 
+                free(pwd->var_str);
+            pwd->var_str = ft_strdup(new_pwd);
+            free(new_pwd);
+        }
+    }	
 }
 
 int	do_cd(char **cmd_tab, t_env **envb)

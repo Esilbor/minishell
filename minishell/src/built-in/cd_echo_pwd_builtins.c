@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 15:09:16 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/23 18:42:20 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/25 17:36:19 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	do_echo(t_env **env, char **str)
 	int	j;
 	int cmd_nb;
 
-	write(2, "echo\n", 6);
+	//write(2, "echo\n", 6);
 	n_flag = 1;
 	i = 1;
 	j = 1;

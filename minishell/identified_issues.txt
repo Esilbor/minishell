@@ -189,7 +189,6 @@ quand une commande sans cmd les heredoc ne sont pas effaces
 
 
 
-
 16 decembre:
 
 *******************************
@@ -224,129 +223,100 @@ verifier si:
 
 
 
+********************************************************************************************************
+Candy_$hell> unset PWD  ---- > regle 
+
+******************
+
+➜  minishell git:(zora-branch) ✗ valgrind ./minishell
+==323925== Memcheck, a memory error detector
+==323925== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==323925== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==323925== Command: ./minishell
+==323925== 
+Candy_$hell> cd src
+Candy_$hell> unset PWD
+Candy_$hell> cd ..
+==323925== Invalid read of size 8
+==323925==    at 0x401474: update_pwd (cd_builtin.c:24)
+==323925==    by 0x4013B1: do_cd (cd_builtin.c:47)
+==323925==    by 0x401BB3: do_builtins (do_builtins.c:61)
+==323925==    by 0x404465: ft_pipex (pipex.c:238)
+==323925==    by 0x408B66: execution (main.c:52)
+==323925==    by 0x408D6F: shell_loop (main.c:122)
+==323925==    by 0x408E56: main (main.c:150)
+==323925==  Address 0x0 is not stack'd, malloc'd or (recently) free'd
+==323925== 
+==323925== 
+
+==323925== 
+==323925== For lists of detected and suppressed errors, rerun with: -s
+==323925== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+[1]    323925 segmentation fault (core dumped)  valgrind ./minishell
+➜  minishell git:(zora-branch) ✗ valgrind ./minishell
+
+
+**************************
+
+Candy_$hell> cd src
+Candy_$hell> unset OLDPWD
+Candy_$hell> cd ..
+==324028== Invalid read of size 8
+....
+==324028==    indirectly lost: 0 bytes in 0 blocks
+==324028==      possibly lost: 0 bytes in 0 blocks
+==324028==    still reachable: 223,447 bytes in 444 blocks
+==324028==         suppressed: 0 bytes in 0 blocks
+==324028== Rerun with --leak-check=full to see details of leaked memory
+==324028== 
+==324028== For lists of detected and suppressed errors, rerun with: -s
+==324028== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+[1]    324028 segmentation fault (core dumped)  valgrind ./minishell
+➜  minishell git:(zora-branch) ✗ 
+
+*******************
+**********************************************************************************************************
 
 
 
 
-commande env | ls 
 
-bash : meme comportement que ds le minishell :  signal 13 (SIGPIPE)
+ Le builtin " export" ============> a regler 
 
-zaquedev@paul-f3Br3s6:~/Projets_zo/MINISHELL/minishell/minishell$ valgrind -s --leak-check=full --show-leak-kinds=all --track-fds=yes env | ls
-art.txt  git_pull_clone.txt  identified_issues.txt  includes  libft  Makefile  minishell  obj  readme  src  suppressions.supp
-==197542== Memcheck, a memory error detector
-==197542== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==197542== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==197542== Command: env
-==197542== 
-==197542== 
-==197542== Process terminating with default action of signal 13 (SIGPIPE)
-==197542==    at 0x4988697: write (write.c:26)
-==197542==    by 0x48FEEEC: _IO_file_write@@GLIBC_2.2.5 (fileops.c:1180)
-==197542==    by 0x49009E0: new_do_write (fileops.c:448)
-==197542==    by 0x49009E0: _IO_new_do_write (fileops.c:425)
-==197542==    by 0x49009E0: _IO_do_write@@GLIBC_2.2.5 (fileops.c:422)
-==197542==    by 0x48FE4D7: _IO_file_sync@@GLIBC_2.2.5 (fileops.c:798)
-==197542==    by 0x48F31A9: fflush (iofflush.c:40)
-==197542==    by 0x10CBE8: ??? (in /usr/bin/env)
-==197542==    by 0x10EE94: ??? (in /usr/bin/env)
-==197542==    by 0x48B9494: __run_exit_handlers (exit.c:113)
-==197542==    by 0x48B960F: exit (exit.c:143)
-==197542==    by 0x489DD96: (below main) (libc_start_call_main.h:74)
-==197542== 
-==197542== FILE DESCRIPTORS: 3 open (3 std) at exit.
-==197542== 
-==197542== HEAP SUMMARY:
-==197542==     in use at exit: 8,416 bytes in 31 blocks
-==197542==   total heap usage: 32 allocs, 1 frees, 8,421 bytes allocated
-==197542== 
-==197542== 10 bytes in 1 blocks are still reachable in loss record 1 of 9
-==197542==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==197542==    by 0x491C58E: strdup (strdup.c:42)
-==197542==    by 0x48B1D57: __textdomain (textdomain.c:94)
-==197542==    by 0x48B1D57: textdomain (textdomain.c:64)
-==197542==    by 0x10A93F: ??? (in /usr/bin/env)
-==197542==    by 0x489DD8F: (below main) (libc_start_call_main.h:58)
-==197542== 
-==197542== 12 bytes in 1 blocks are still reachable in loss record 2 of 9
-==197542==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==197542==    by 0x491C58E: strdup (strdup.c:42)
-==197542==    by 0x48AC31A: _nl_load_locale_from_archive (loadarchive.c:464)
-==197542==    by 0x48AB0DF: _nl_find_locale (findlocale.c:152)
-==197542==    by 0x48AA856: setlocale (setlocale.c:337)
-==197542==    by 0x48AA856: setlocale (setlocale.c:217)
-==197542==    by 0x10A928: ??? (in /usr/bin/env)
-==197542==    by 0x489DD8F: (below main) (libc_start_call_main.h:58)
-==197542== 
-==197542== 12 bytes in 1 blocks are still reachable in loss record 3 of 9
-==197542==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==197542==    by 0x48AA6EB: new_composite_name (setlocale.c:165)
-==197542==    by 0x48AABAA: setlocale (setlocale.c:375)
-==197542==    by 0x48AABAA: setlocale (setlocale.c:217)
-==197542==    by 0x10A928: ??? (in /usr/bin/env)
-==197542==    by 0x489DD8F: (below main) (libc_start_call_main.h:58)
-==197542== 
-==197542== 34 bytes in 1 blocks are still reachable in loss record 4 of 9
-==197542==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==197542==    by 0x48AE5DE: set_binding_values.part.0 (bindtextdom.c:203)
-==197542==    by 0x48AE89B: set_binding_values (bindtextdom.c:322)
-==197542==    by 0x48AE89B: bindtextdomain (bindtextdom.c:320)
-==197542==    by 0x10A937: ??? (in /usr/bin/env)
-==197542==    by 0x489DD8F: (below main) (libc_start_call_main.h:58)
-==197542== 
-==197542== 120 bytes in 1 blocks are still reachable in loss record 5 of 9
-==197542==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==197542==    by 0x48AC2FF: _nl_load_locale_from_archive (loadarchive.c:460)
-==197542==    by 0x48AB0DF: _nl_find_locale (findlocale.c:152)
-==197542==    by 0x48AA856: setlocale (setlocale.c:337)
-==197542==    by 0x48AA856: setlocale (setlocale.c:217)
-==197542==    by 0x10A928: ??? (in /usr/bin/env)
-==197542==    by 0x489DD8F: (below main) (libc_start_call_main.h:58)
-==197542== 
-==197542== 144 bytes in 12 blocks are still reachable in loss record 6 of 9
-==197542==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==197542==    by 0x491C58E: strdup (strdup.c:42)
-==197542==    by 0x48AAC84: setlocale (setlocale.c:366)
-==197542==    by 0x48AAC84: setlocale (setlocale.c:217)
-==197542==    by 0x10A928: ??? (in /usr/bin/env)
-==197542==    by 0x489DD8F: (below main) (libc_start_call_main.h:58)
-==197542== 
-==197542== 260 bytes in 1 blocks are still reachable in loss record 7 of 9
-==197542==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==197542==    by 0x10A964: ??? (in /usr/bin/env)
-==197542==    by 0x489DD8F: (below main) (libc_start_call_main.h:58)
-==197542== 
-==197542== 3,728 bytes in 12 blocks are still reachable in loss record 8 of 9
-==197542==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==197542==    by 0x48AB96E: _nl_intern_locale_data (loadlocale.c:97)
-==197542==    by 0x48AC370: _nl_load_locale_from_archive (loadarchive.c:477)
-==197542==    by 0x48AB0DF: _nl_find_locale (findlocale.c:152)
-==197542==    by 0x48AA856: setlocale (setlocale.c:337)
-==197542==    by 0x48AA856: setlocale (setlocale.c:217)
-==197542==    by 0x10A928: ??? (in /usr/bin/env)
-==197542==    by 0x489DD8F: (below main) (libc_start_call_main.h:58)
-==197542== 
-==197542== 4,096 bytes in 1 blocks are still reachable in loss record 9 of 9
-==197542==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==197542==    by 0x48F2BA3: _IO_file_doallocate (filedoalloc.c:101)
-==197542==    by 0x4901CDF: _IO_doallocbuf (genops.c:347)
-==197542==    by 0x4900F5F: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:744)
-==197542==    by 0x48FF6D4: _IO_new_file_xsputn (fileops.c:1243)
-==197542==    by 0x48FF6D4: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1196)
-==197542==    by 0x48EB00B: outstring_func (vfprintf-internal.c:239)
-==197542==    by 0x48EB00B: __vfprintf_internal (vfprintf-internal.c:1517)
-==197542==    by 0x49A8A5A: __printf_chk (printf_chk.c:33)
-==197542==    by 0x10B5A4: ??? (in /usr/bin/env)
-==197542==    by 0x489DD8F: (below main) (libc_start_call_main.h:58)
-==197542== 
-==197542== LEAK SUMMARY:
-==197542==    definitely lost: 0 bytes in 0 blocks
-==197542==    indirectly lost: 0 bytes in 0 blocks
-==197542==      possibly lost: 0 bytes in 0 blocks
-==197542==    still reachable: 8,416 bytes in 31 blocks
-==197542==         suppressed: 0 bytes in 0 blocks
-==197542== 
-==197542== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
-zaquedev@paul-f3Br3s6:~/Projets_zo/MINISHELL/minishell/minishell
 
+commande "export" ???
+
+
+Candy_$hell> export cmd="ls -l"
+Candy_$hell> $cmd
+ls -l: cmd_path not found
+
+
+[1]    324028 segmentation fault (core dumped)  valgrind ./minishell
+
+
+
+
+******************************************************************************
+
+Pour  cd : 
+
+-> ne renvoie pas le meme path
+
+
+bash :
+
+
+zaquedev@paul-f3Br3s6:~$ cd ~/Projets_zo/MINISHELL/minishell/minishell
+zaquedev@paul-f3Br3s6:~/Projets_zo/MINISHELL/minishell/minishell$ pwd
+/mnt/nfs/homes/zaquedev/Projets_zo/MINISHELL/minishell/minishell
+zaquedev@paul-f3Br3s6:~/Projets_zo/MINISHELL/minishell/minishell$ 
+
+
+minishell: 
+
+Candy_$hell> cd ~/Projets_zo/MINISHELL/minishell/minishell
+Candy_$hell> pwd
+/mnt/nfs/homes/zaquedev
+Candy_$hell>
 
