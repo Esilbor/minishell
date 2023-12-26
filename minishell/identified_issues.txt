@@ -224,7 +224,7 @@ verifier si:
 
 
 ********************************************************************************************************
-Candy_$hell> unset PWD  ---- > regle 
+Candy_$hell> unset PWD  ---- > regle --> modifications faites --> ok?
 
 ******************
 
@@ -299,7 +299,7 @@ ls -l: cmd_path not found
 
 ******************************************************************************
 
-Pour  cd : 
+Pour  cd : pour retrouver un path
 
 -> ne renvoie pas le meme path
 
@@ -315,8 +315,43 @@ zaquedev@paul-f3Br3s6:~/Projets_zo/MINISHELL/minishell/minishell$
 
 minishell: 
 
+
+
+
+PATH (tests): Nok ?  cd ~/Projets_zo/MINISHELL/minishell/minishell
+
+
+Candy_$hell> cd ~
 Candy_$hell> cd ~/Projets_zo/MINISHELL/minishell/minishell
 Candy_$hell> pwd
 /mnt/nfs/homes/zaquedev
-Candy_$hell>
+Candy_$hell> cd Projets_zo/MINISHELL/minishell/minishell
+Candy_$hell> pwd
+/mnt/nfs/homes/zaquedev/Projets_zo/MINISHELL/minishell/minishell
+
+
+
+PATH (tests): ok ? cd Projets_zo/MINISHELL/minishell/minishell
+
+Candy_$hell> cd src
+Candy_$hell> ls
+==460714== Memcheck, a memory error detector
+==460714== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==460714== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==460714== Command: /usr/bin/ls
+==460714== 
+built-in  env  exec  main.c  parsing
+
+Candy_$hell> pwd
+/mnt/nfs/homes/zaquedev/Projets_zo/MINISHELL/minishell/minishell/src
+Candy_$hell> cd built-in/
+Candy_$hell> pwd
+/mnt/nfs/homes/zaquedev/Projets_zo/MINISHELL/minishell/minishell/src/built-in
+Candy_$hell> cd ~
+Candy_$hell> pwd
+/mnt/nfs/homes/zaquedev
+Candy_$hell> cd Projets_zo/MINISHELL/minishell/minishell/src/built-in
+Candy_$hell> pwd
+/mnt/nfs/homes/zaquedev/Projets_zo/MINISHELL/minishell/minishell/src/built-in
+
 

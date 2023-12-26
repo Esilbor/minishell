@@ -6,13 +6,12 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 09:45:47 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/25 18:57:40 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/26 16:22:50 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../includes/minishell.h"
-
 
 
 char	**assign_paths(t_set **set, t_env *envb)
@@ -73,4 +72,36 @@ char	**env_to_tab(t_env *lst)
 		i ++;
 	}
 	return (tab);
+}
+
+void	sugar_rush(t_set *set)
+{
+	free(set->pipe[0]);
+	free(set->pipe[1]);
+	free(set->pipe);
+	ft_free_tab((void **) set->paths);
+	ft_free_tab((void **) set->envp);
+	free_redirections(set->cmd_set);
+	free_cmds((t_cmd **)set->cmd_set);
+	free(set);
+}
+
+// void	init_pid_tab(t_set *set)
+// {
+// 	int	i;
+
+// 	i = -1;
+// 	set->pid = malloc(sizeof (pid_t) * set->cmd_nb);
+// 	if (!set->pid)
+// 		return (ft_putstr_fd("could not malloc pid_tab", 2));
+// 	while (++i < set->cmd_nb)
+// 		set->pid[i] = 0;
+// }
+
+void	execution(t_set *set, t_cmd **cmd_struct_tab, t_env *envb)
+{
+	init_set(&set, cmd_struct_tab, envb);
+	init_pipe_set(set);
+	ft_pipex(set);
+	sugar_rush(set);
 }

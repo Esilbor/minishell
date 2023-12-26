@@ -6,64 +6,12 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:13:47 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/25 18:53:31 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/26 16:48:21 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-// closes pipe file descriptors if exist
-void	ft_close_pipes(t_set *set)
-{
-	if (set->pipe[0][0])
-		close(set->pipe[0][0]);
-	if (set->pipe[0][1])
-		close(set->pipe[0][1]);
-	if (set->pipe[1][0])
-		close(set->pipe[1][0]);
-	if (set->pipe[1][1])
-		close(set->pipe[1][1]);
-}
-
-void	init_pipe_set(t_set *set)
-{
-	set->pipe = malloc(sizeof(int *) * 2);
-	if (!set->pipe)
-		return (free (set->pipe), ft_putstr_fd("could not malloc pipe set", 2));
-	set->pipe[0] = malloc(sizeof (int) * 2);
-	if (!set->pipe[0])
-		return (free (set->pipe), ft_putstr_fd("could not malloc pipe[0]", 2));
-	set->pipe[1] = malloc(sizeof (int) * 2);
-	if (!set->pipe[1])
-	{
-		free (set->pipe[0]);
-		return (free (set->pipe), ft_putstr_fd("could not malloc pipe[1]", 2));
-	}
-	set->pipe[0][0] = 0;
-	set->pipe[0][1] = 0;
-	set->pipe[1][0] = 0;
-	set->pipe[1][1] = 0;
-}
-
-// void	init_pid_tab(t_set *set)
-// {
-// 	int	i;
-
-// 	i = -1;
-// 	set->pid = malloc(sizeof (pid_t) * set->cmd_nb);
-// 	if (!set->pid)
-// 		return (ft_putstr_fd("could not malloc pid_tab", 2));
-// 	while (++i < set->cmd_nb)
-// 		set->pid[i] = 0;
-// }
-
-void	exit_err(t_set *set, int err_nb)
-{
-	ft_close_pipes(set);
-	free_redirections(set->cmd_set);
-	free_after_builtin(set);
-	exit(err_nb);
-}
 
 void ft_execve(t_set *set, int index)
 {
@@ -86,102 +34,32 @@ void ft_execve(t_set *set, int index)
 	exit_err(set, 126);
 }
 
-void	close_pipe(t_set *set, int index)
-{
-	close(set->pipe[(index + 1) % 2][0]);
-	close(set->pipe[(index + 1) % 2][1]);
-}
-
-void	free_after_builtin(t_set *set)
-{
-	ft_free_env_lst(set->env_lst);
-	free(set->pipe[0]);
-	free(set->pipe[1]);
-	free(set->pipe);
-	ft_free_tab((void **)set->paths);
-	ft_free_tab((void **)set->envp);
-	free_cmds((t_cmd **)set->cmd_set);
-	//free(set->pid);
-	free (set);
-}
-
-void	ft_error(char *message, t_set *set)
-{
-	write(2, message, ft_strlen(message));
-	// if (set->pipe)
-	// {
-	// 	//close_pipe(set, index);
-	// 	free(set->pipe[0]);
-	// 	free(set->pipe[1]);
-	// 	free(set->pipe);
-	// }
-	// free(set->pid);
-	free_after_builtin(set);
-	exit(1); // EXIT_FAILURE
-}
-//close (set->cmd_set[index]->fd_input); ?
-// free(set->pipe);?
-
 pid_t	ft_fork(t_set *set, int index)
 {
 	pid_t	pid;
 
-	if (index < set->cmd_nb)// (index < set->cmd_nb)
-	{
+	if (index < set->cmd_nb)
 		if (pipe(set->pipe[index % 2]) == -1)
-		{
-			ft_close_pipes(set);
-			// close (set->cmd_set[index]->fd_input);
-			// close (set->cmd_set[index]->fd_output);
-		
-			// free_cmd_struct_tab(set->cmd_set); // ? 
-			
-			// candy_crush(set);
 			ft_error(ERR_PIPE, set);
-			
-		}
-		
-	}
-	ign_sigint(); // ignore sigquit (ctrl-\) + sigint (ctrl-c)
-	// if (set->cmd_nb < 2)
-	// 	ft_close_pipes(set);	
+	ign_sigint(); // ignore sigquit (ctrl-\) + sigint (ctrl-c)	
 	pid = fork();
 	if (pid == -1)
-	{
-		ft_close_pipes(set);	
-		//candy_crush(set);
 		ft_error(ERR_FORK, set);
-			//EXIT_FAILURE
-		//exit_err(set, EXIT_FAILURE);
-	}	
 	if (pid == 0)
 	{
 		ft_dup2(set, index);
 		if (set->cmd_set[index]->cmd[0] && is_builtin(set->cmd_set[index]->cmd) == 1)
-		{
 			do_builtins(set, index); 
-		}
 		else if (set->cmd_set[index]->cmd[0])
 		{
 			signals_simple(); // fonction par defaut
 			ft_close_pipes(set);	
 			ft_execve(set, index);
 		}
-		// else
-		// {
-		// 	//free_redirections((t_cmd **)set->cmd_set);
-		// 	//free_after_builtin(set);
-		// 	//ft_close_pipes(set);
-		// 	//candy_crush(set);	
-		// }
 		exit_err(set, 1);
-		//ft_error(ERR_, set);
 	}
 	if (index)
-	{
 		close_pipe(set, index);
-	}
-	//close_pipe(set, index);
 	return (pid);
 }
 
@@ -204,7 +82,6 @@ void	ft_wait(t_set *set)
 		}
 		set->cmd_nb--;		
 	}
-	//free_redirections((t_cmd **)set->cmd_set);
 	ft_handle_signals(); // ignor sigquit (ctrl-\)
 	
 }
@@ -242,6 +119,6 @@ void	ft_pipex(t_set *set)
 			i++;
 		}
 		ft_wait(set);
-		close_pipe(set, i); // +++ 19 decembre ---> a garder sinon open file descriptor ouverts si cmd not found
+		close_pipe(set, i);
 	}
 }
