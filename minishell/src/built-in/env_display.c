@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 10:23:53 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/20 12:23:37 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/26 20:15:34 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ int	print_env(t_set *set, t_env **head)
 		if (lst->var_str)
 		{
 			if (ft_print_rainbow(lst->var_str) < 0)
-				// return (update_ret(head, 1));
 				exit_err(set, 1);
 		}
 		else

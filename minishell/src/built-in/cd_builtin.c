@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 11:28:12 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/14 07:12:02 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/26 19:48:25 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,23 @@ static void	update_pwd(t_env **envb)
 int	do_cd(char **cmd_tab, t_env **envb)
 {
 	char	*tmp;
+	char	*tmp2;
 
-	if (cmd_tab[1] == NULL || cmd_tab[1][0] == '~')
+	if (cmd_tab[1] == NULL || (cmd_tab[1][0] == '~' && !cmd_tab[1][1]))
 	{
 		tmp = &get_env_node(*envb, "HOME")->var_str[5];
 		if (is_directory(tmp) && !chdir(tmp))
 			update_pwd(envb);
+	}
+	else if (cmd_tab[1][0] == '~' && cmd_tab[1][1] == '/')
+	{
+		tmp = &get_env_node(*envb, "HOME")->var_str[5];
+		tmp2 = ft_strjoin(tmp, &cmd_tab[1][1]);
+		if (is_directory(tmp2) && !chdir(tmp2))
+		{
+			free (tmp2);
+			update_pwd(envb);
+		}
 	}
 	else if (cmd_tab[1] && is_directory(cmd_tab[1]) && !chdir(cmd_tab[1]))
 		update_pwd(envb);

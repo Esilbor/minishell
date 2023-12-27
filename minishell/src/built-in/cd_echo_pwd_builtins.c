@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_echo_pwd_builtins.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 15:09:16 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/14 20:00:54 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/26 20:17:37 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	do_echo(t_env **env, char **str)
 	int	n_flag;
 	int	i;
 	int	j;
-	int cmd_nb;
+	int	cmd_nb;
 
 	n_flag = 1;
 	i = 1;
