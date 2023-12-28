@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 10:35:32 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/25 18:45:38 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/28 18:51:42 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ t_env	*get_env_node(t_env *lst, char *str)
 }
 
 // split the input line for export according to '=' or "+="
+
 char	**ft_split_value(char *var)
 {
 	char	*equal;
@@ -57,3 +58,38 @@ char	**ft_split_value(char *var)
 		ret_tab = ft_split(var, '=');
 	return (ret_tab);
 }
+
+
+
+// char	**ft_split_value(char *var)
+// {
+// 	char	*equal;
+// 	char	*plus;
+// 	char	**ret_tab;
+
+// 	equal = ft_strchr(var, '=');
+// 	if (!equal)
+// 	{
+// 		ret_tab = malloc(sizeof(char *) * 2);
+// 		if (!ret_tab)
+// 			return (NULL);
+// 		ret_tab[0] = ft_strdup(var);
+// 		ret_tab[1] = NULL;
+// 		return (ret_tab);
+// 	// ret_tab = malloc(sizeof(char *) * (3));
+// 	// ret_tab[0] = ft_substr(var, 0, equal - var);
+// 	// ret_tab[0] = ft_substr(equal, 1, ft_strlen(equal));
+// 	// ret_tab[0] = NULL;
+// 	// return (ret_tab);
+// 	}
+// 	plus = ft_strchr(var, '+');
+// 	if (plus && *(plus + 1) == '=')
+// 	{
+// 		ret_tab = ft_split(var, '+');
+// 		free(ret_tab[1]);
+// 		ret_tab[1] = ft_strdup(equal + 1);
+// 	}
+// 	if (equal && !plus)
+// 		ret_tab = ft_split(var, '=');
+// 	return (ret_tab);
+// }

@@ -306,7 +306,6 @@ Pour  cd : pour retrouver un path
 
 bash :
 
-
 zaquedev@paul-f3Br3s6:~$ cd ~/Projets_zo/MINISHELL/minishell/minishell
 zaquedev@paul-f3Br3s6:~/Projets_zo/MINISHELL/minishell/minishell$ pwd
 /mnt/nfs/homes/zaquedev/Projets_zo/MINISHELL/minishell/minishell
@@ -314,9 +313,6 @@ zaquedev@paul-f3Br3s6:~/Projets_zo/MINISHELL/minishell/minishell$
 
 
 minishell: 
-
-
-
 
 PATH (tests): Nok ?  cd ~/Projets_zo/MINISHELL/minishell/minishell
 
@@ -328,7 +324,6 @@ Candy_$hell> pwd
 Candy_$hell> cd Projets_zo/MINISHELL/minishell/minishell
 Candy_$hell> pwd
 /mnt/nfs/homes/zaquedev/Projets_zo/MINISHELL/minishell/minishell
-
 
 
 PATH (tests): ok ? cd Projets_zo/MINISHELL/minishell/minishell
