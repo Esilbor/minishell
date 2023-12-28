@@ -82,7 +82,6 @@ echo  "" la""
 echo  "" la " "
 echo  "" la ' '
 echo $=HOME
-echo $9HOME
 echo "Simple echo"
 echo 'Single quotes'
 echo "Double quotes with a variable $USER"
@@ -148,3 +147,36 @@ echo "Print - as literal"
 echo "Print _ as literal"
 echo "Print + as literal"
 echo "Print = as literal"
+echo $al-PWD
+echo $?*PWD
+echo $=pop
+echo $=PWD
+echo $:PWD
+echo $'PWD$=hola'
+echo $:=PWD
+echo $P@WD
+echo $'P:WD'
+echo $"P:WD"
+echo $@PWD
+echo $@PWD@
+echo $PWD@
+echo $PW@D
+echo $9HOME
+echo $9PWD
+echo $?PWD
+echo $??PWD
+echo $*PWD
+echo $*PWD*
+echo $=*PWD
+echo $==*PWD
+echo $!PWD
+echo $PWD:
+echo $PWD?
+echo $P:WD
+echo $P=WD
+echo $PWD$=hola
+echo $"PWD$=hola"
+echo $PWD$9hola
+echo $PWD$PWD
+echo $PWD$PWD$USER$USER$USER_
+echo $PWD$PWD$USER$USER\$USER_
