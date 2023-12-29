@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 10:23:53 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/26 20:15:34 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/29 10:59:47 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int	print_env(t_set *set, t_env **head)
 {
 	t_env	*lst;
 
+	(void) set;
 	lst = *head;
 	lst = lst->next;
 	while (lst)
@@ -49,11 +50,12 @@ int	print_env(t_set *set, t_env **head)
 		if (lst->var_str)
 		{
 			if (ft_print_rainbow(lst->var_str) < 0)
-				exit_err(set, 1);
+				return (update_ret(head, -1));
 		}
 		else
 		{
-			ft_printf("(null)\n");
+			if (fail_to_write_fd("(null)\n", 1))
+				return (update_ret(head, -1));
 			return (update_ret(head, 1));
 		}
 		lst = lst->next;

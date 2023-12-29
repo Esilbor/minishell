@@ -6,13 +6,13 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 15:09:16 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/29 09:15:14 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/29 09:57:30 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static int	ft_protected_write_fd(char *s, int fd, t_env **env)
+int	fail_to_write_fd(char *s, int fd)
 {
 	int	i;
 
@@ -22,13 +22,12 @@ static int	ft_protected_write_fd(char *s, int fd, t_env **env)
 	while (s[i])
 	{
 		if (write(fd, &s[i], 1) != 1)
-			return (update_ret(env, 1));
+		{
+			ft_putstr_fd(strerror(errno), 2);
+			ft_putchar_fd('\n', 2);
+			return (1);
+		}
 		i++;
-	}
-	if (i != ft_strlen2(s))
-	{
-		ft_putstr_fd ("ERROR WRITE : could not write string to fd\n", 2);
-		return (update_ret(env, 1));
 	}
 	return (0);
 }
@@ -52,15 +51,16 @@ int	do_echo(t_env **env, char **str)
 	}
 	while (i < cmd_nb)
 	{
-		ft_protected_write_fd(str[i], 1, env);
-		// ft_putstr_fd(str[i], 1); // proteger
+		if (fail_to_write_fd(str[i], 1))
+			return (update_ret(env, -1));
 		if (i < cmd_nb - 1)
-			ft_protected_write_fd(" ", 1, env);
-			// ft_printf(" "); // write et proteger les write
+			if (fail_to_write_fd(" ", 1))
+				return (update_ret(env, -1));
 		i++;
 	}
 	if (n_flag)
-		ft_printf("\n");
+		if (fail_to_write_fd("\n", 1))
+			return (update_ret(env, -1));
 	return (update_ret(env, 0));
 }
 
@@ -79,7 +79,12 @@ int	do_pwd(char **cmd_tab, t_env **env)
 	}
 	cwd = getcwd(buffer, sizeof(buffer));
 	if (cwd != NULL)
-		ft_printf("%s\n", cwd);
+	{
+		if (fail_to_write_fd(cwd, 1))
+			return (update_ret(env, -1));
+		if (fail_to_write_fd("\n", 1))
+			return (update_ret(env, -1));
+	}
 	else
 	{
 		perror("minishell: pwd");
