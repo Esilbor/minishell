@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:36:38 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/27 18:02:46 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/29 19:45:31 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,14 @@ t_lexer	*expand_dquote(char *tmp, t_lexer *node, t_env *envb)
 	if (var)
 		new_str = ft_strjoin(tmp_str, var);
 	else
+	{
 		new_str = ft_strdup(tmp_str);
+		if (!new_str && tmp_str)
+		{
+			free (tmp_str);
+			return (NULL);
+		}
+	}
 	free (var);
 	free (tmp_str);
 	if (ptr)
@@ -55,6 +62,11 @@ t_lexer	*expand_dquote(char *tmp, t_lexer *node, t_env *envb)
 	free (node->word);
 	free (new_str);
 	node->word = ft_strdup(tmp_str);
+	if (!node->word && tmp_str)
+	{
+		free (tmp_str);
+		return (NULL);
+	}
 	free (tmp_str);
 	tmp = dol_to_expand(node->word);
 	if (tmp)

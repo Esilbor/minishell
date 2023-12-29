@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/29 12:07:40 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/29 21:45:46 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,8 +149,8 @@ void		create_heredoc(t_env *env, t_lexer *lex, char *limiter);
 void		fill_heredoc(t_env *env, int fd, char *limiter);
 //void		fill_heredoc(int fd, char *limiter, t_set *set);
 char		*name_heredoc(char *limiter, int index, int k);
-void		modify_limiter_nodes(t_env *env, t_lexer *lst, int index);
-void		init_heredocs(t_env *env, t_cmd **cmd_tab);
+int			modify_limiter_nodes(t_env *env, t_lexer *lst, int index);
+int			init_heredocs(t_env *env, t_cmd **cmd_tab);
 
 int			inputs_are_valid(t_cmd **cmd_tab);
 int			invalid_input(char *filename);
@@ -277,7 +277,7 @@ void		clean_lexer3(t_lexer **lexer);
 
 /*	expansion_merge.c	*/
 
-void		process_expander_node(t_lexer **lst, t_env *envb);
+int			process_expander_node(t_lexer **lst, t_env *envb);
 void		merge_nodes(t_lexer **lexer);
 t_lexer		*parsing(char *input, t_lexer **lexer, t_env *envb);
 void		ft_expander(t_lexer **lexer, t_env *envb);
@@ -336,7 +336,7 @@ t_lexer		*ft_lexer(char *line, t_env *env);
 /*	lexer_utils_3.c	*/
 
 void		clean_squotes(t_lexer **lexer);
-void		clean_esc(t_lexer **lex, char **esc);
+int			clean_esc(t_lexer **lex, char **esc);
 t_lexer		**clean_empty_nodes(t_lexer **lexer, t_tokens type);
 void		quotes_to_words(t_lexer **lexer);
 

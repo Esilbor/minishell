@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 10:53:54 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/29 16:21:36 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/29 21:34:08 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,16 @@ void	ft_expander(t_lexer **lexer, t_env *envb)
 	lst = *lexer;
 	while (lst)
 	{
-		process_expander_node(&lst, envb);
+		if (process_expander_node(&lst, envb) < 0)
+		{
+			free_lexer_list(lexer);
+			return ;
+		}
 		lst = lst->next;
 	}
 }
 
-void	process_expander_node(t_lexer **lst, t_env *envb)
+int	process_expander_node(t_lexer **lst, t_env *envb)
 {
 	char	*tmp;
 	char	*esc;
@@ -60,21 +64,37 @@ void	process_expander_node(t_lexer **lst, t_env *envb)
 	{
 		tmp = dol_to_expand((*lst)->word);
 		if (tmp)
+		{
 			*lst = expand_dquote(tmp, *lst, envb);
+			if (!(*lst))
+			{
+				return (-1);
+			}
+			
+		}
 		esc = ft_strchr((*lst)->word, '\\');
 		while (esc && esc[1] != '\"' && esc[1] != '?')
-			clean_esc(lst, &esc);
+			if (clean_esc(lst, &esc) < 0)
+				return (-1);
 		*lst = clean_quotes(*lst);
 	}
 	else if ((*lst)->type == EXPAND || (*lst)->type == EMERGE)
 	{
 		tmp = dol_to_expand((*lst)->word);
 		if (tmp)
+		{
 			*lst = expand_node2(tmp, *lst, envb);
+			if (!(*lst))
+			{
+				return (-1);
+			}
+		}
 		esc = ft_strchr((*lst)->word, '\\');
 		while (esc && esc[1])
-			clean_esc(lst, &esc);
+			if (clean_esc(lst, &esc) < 0)
+				return (-1);
 	}
+	return (0);
 }
 
 t_lexer	**expand_cmds(t_lexer **lexer)
