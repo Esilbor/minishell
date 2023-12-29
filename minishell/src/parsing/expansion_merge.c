@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 10:53:54 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/29 08:40:31 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/29 16:21:36 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,12 @@ void	clean_space_nodes2(t_lexer **lexer)
 		if (quote_is_space(lex) < 0)
 		{
 			tmp = ft_strdup(previous->word);
+			if (!tmp && previous->word)
+			{
+				free(tmp);
+				free_lexer_list(lexer);
+				return ;
+			}
 			free(previous->word);
 			previous->word = ft_strjoin(tmp, " ");
 			free (tmp);			
@@ -176,7 +182,7 @@ void	clean_space_nodes(t_lexer **lexer)
 	lex = *lexer;
 	while (lex)
 	{
-		if (quote_is_space(lex) == 1)
+		if (lexer && quote_is_space(lex) == 1)
 		{
 			// ft_printf("***********************************\n");
 			tmp = lex->next->next->next->word;
@@ -189,6 +195,8 @@ void	clean_space_nodes(t_lexer **lexer)
 		{
 			clean_space_nodes2(lexer);
 		}
+		if (!(*lexer))
+			return ;
 		lex = lex->next;
 	}
 }
@@ -199,10 +207,9 @@ void	lexer_polish(t_lexer **lexer)
 	quotes_to_words(lexer);
 	clean_lexer(lexer);
 	// print_lexer(lexer, "after clean_lexer");
-	
+
 	clean_space_nodes(lexer);
 	// print_lexer(lexer, "after clean_space_nodes");
-	
 	clean_lexer2(lexer);
 	// print_lexer(lexer, "after clean_lexer2");
 	clean_lexer3(lexer);

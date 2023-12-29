@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 15:11:47 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/29 10:57:06 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/29 15:10:10 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,18 +58,24 @@ void	do_builtins(t_set *set, int index)
 	if (ft_strncmp(set->cmd_set[index]->cmd[0], "export", 7) == 0)
 	{
 		if (set->cmd_set[index]->cmd[1])
-			do_export(ft_tab_len(set->cmd_set[index]->cmd),
-				set->cmd_set[index]->cmd, &set->env_lst);
+		{
+			if (do_export(ft_tab_len(set->cmd_set[index]->cmd),
+				set->cmd_set[index]->cmd, &set->env_lst) < 0)
+				failed_write(env_dup, set);
+		}
 		else
+		{
 			if (print_env(set, sort_env(env_dup)) < 0)
 				failed_write(env_dup, set);
+			update_ret(&set->env_lst, 0);
+		}
 	}
 	ft_free_env_lst(*env_dup);
 	free(env_dup);
 	if (ft_strncmp(set->cmd_set[index]->cmd[0], "unset", 6) == 0)
 		do_unset(set->cmd_set[index]->cmd, &set->env_lst);
 	if (ft_strncmp(set->cmd_set[index]->cmd[0], "cd", 3) == 0)
-		do_cd(set->cmd_set[index]->cmd, &set->env_lst);
+		do_cd(set->cmd_set[index]->cmd, &set->env_lst, set);
 	if (ft_strncmp(set->cmd_set[index]->cmd[0], "exit", 5) == 0)
 		do_exit(set, index);
 }

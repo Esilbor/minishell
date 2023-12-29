@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/29 09:49:21 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/29 12:07:40 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,7 @@ void		do_exit(t_set *set, int index);
 
 /*	cd_echo_pwd_builtins.c	*/
 
-int			do_cd(char **str, t_env **envb);
+int			do_cd(char **str, t_env **envb, t_set *set);
 int			do_echo(t_env **env, char **str);
 int			do_pwd(char **cmd_tab, t_env **env);
 
@@ -204,7 +204,7 @@ t_env		*get_env(char **envp);
 /*	export_handling_1.c	*/
 
 void		create_var(char **v_tab, char **cmd_tab, t_env **env, int i);
-void		modify_var(t_env *node, char **v_tab, char **cmd_tab, int i);
+int			modify_var(t_env *node, char **v_tab, char **cmd_tab, int i);
 int			update_ret(t_env **env, int ret);
 int			do_export(int cmd_nb, char **cmd_tab, t_env **env);
 
