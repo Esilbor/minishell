@@ -6,11 +6,32 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 15:09:16 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/26 20:17:37 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/29 09:15:14 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+static int	ft_protected_write_fd(char *s, int fd, t_env **env)
+{
+	int	i;
+
+	i = 0;
+	if (!s)
+		return (0);
+	while (s[i])
+	{
+		if (write(fd, &s[i], 1) != 1)
+			return (update_ret(env, 1));
+		i++;
+	}
+	if (i != ft_strlen2(s))
+	{
+		ft_putstr_fd ("ERROR WRITE : could not write string to fd\n", 2);
+		return (update_ret(env, 1));
+	}
+	return (0);
+}
 
 int	do_echo(t_env **env, char **str)
 {
@@ -31,9 +52,11 @@ int	do_echo(t_env **env, char **str)
 	}
 	while (i < cmd_nb)
 	{
-		ft_putstr_fd(str[i], 1); // proteger
+		ft_protected_write_fd(str[i], 1, env);
+		// ft_putstr_fd(str[i], 1); // proteger
 		if (i < cmd_nb - 1)
-			ft_printf(" "); // write et proteger les write
+			ft_protected_write_fd(" ", 1, env);
+			// ft_printf(" "); // write et proteger les write
 		i++;
 	}
 	if (n_flag)

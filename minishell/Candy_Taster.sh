@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Path to the test_list.txt file
-test_list_file="test2_list.txt"
+test_list_file="test_list.txt"
 
 # ANSI color codes
 RED='\033[0;31m'

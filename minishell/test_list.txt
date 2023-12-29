@@ -180,3 +180,82 @@ echo $PWD$9hola
 echo $PWD$PWD
 echo $PWD$PWD$USER$USER$USER_
 echo $PWD$PWD$USER$USER\$USER_
+echo This is a "quoted" and unquoted test
+echo "Mixed" unquoted and 'quoted' strings
+echo "A 'nested' quote inside"
+echo 'A "nested" quote inside'
+echo "   "
+echo '   '
+echo """"Empty quotes""""
+echo ''''Empty quotes''''
+echo "Variable USER is $USER and this is text"
+echo 'Non-expanded $USER with text'
+echo "Ending with backslash\\"
+echo 'Ending with backslash\\'
+echo "Path: $PATH, User: $USER, Special: %^&*()"
+echo 'Literal %^&*() and $PATH'
+echo Test with trailing spaces     
+echo "Test with trailing spaces     "
+echo This is a "quoted" and unquoted test
+echo "Mixed" unquoted and 'quoted' strings
+echo "A 'nested' quote inside"
+echo 'A "nested" quote inside'
+echo "This is a quoted string"
+echo 'This is a quoted string with a $ symbol'
+echo "   "
+echo '   '
+echo """"Empty quotes""""
+echo ''''Empty quotes''''
+echo "Variable USER is $USER and this is text"
+echo 'Non-expanded $USER with text'
+echo "Ending with a special character%"
+echo 'Ending with a special character%'
+echo 'Static text' $USER 'Static text'
+echo "Path: $PATH, User: $USER, Special: %^&*()"
+echo 'Literal %^&*() and a non-expanded $PATH'
+echo Test with trailing spaces    
+echo "Test with trailing spaces    "
+echo "USER:"$USER"HOME:"$HOME
+echo 'Static text'$USER'Static text'
+echo "USER:"$USER" HOME:"$HOME
+echo Static text$USER'Static text'
+echo Static "text$USER'Static text'"
+echo Static text $USER'Static text'
+echo Static text_$USER'Static text'
+echo "Text with spaces"
+echo 'Single quote inside single quotes '' embedded'
+echo "Double quote inside double quotes "" embedded"
+echo $USER and text after
+echo text before $PATH
+echo "Quote 'inside' other quote"
+echo 'Another quote "inside" other quote'
+echo Text with multiple variables $USER $PATH $PWD
+echo "Concatenated$USER$PATH"
+echo Multiple spaces in text
+echo "Starts with space"
+echo Ends with space
+echo 'Unquoted $USER with single quotes'
+echo "Double quotes around $PATH and text"
+echo 'Single quotes with !@#$% characters'
+echo "Double quotes with ^&*_ characters"
+echo No space between words$text
+echo "Quoted string with a trailing characterX"
+echo 'Single quoted with a trailing characterY'
+echo "Concatenating two variables: $USER$HOME"
+echo 'Text before a variable'$PATH
+echo Variable in middle $USER text after
+echo 'Mixed: "$USER" and non-expanded $PATH'
+echo "Quoted string with ampersand & character"
+echo 'Text with multiple special characters #$%^&'
+echo 'Text with different case letters'
+echo "Leading and trailing spaces "
+echo 'Embedded "double quotes" in single quotes'
+echo String with, comma and period. inside
+echo 'String ending with an exclamation!'
+echo "Quoted string with @ symbol"
+echo 'Unquoted string with plus + sign'
+echo 'String with slash / and backslash \ characters'
+echo 'Text with only a single quote ' at the end
+echo "Echoing a question mark ?"
+echo 'String with a hash # and percent % signs'
+echo "Variable followed by text$USER-text"

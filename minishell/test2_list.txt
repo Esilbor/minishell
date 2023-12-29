@@ -1,4 +1,3 @@
-echo "String with !@#$% special characters"
 echo "Date: `date`"
 echo "User: `whoami`"
 echo "Uptime: `uptime`"
