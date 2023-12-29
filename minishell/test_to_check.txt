@@ -1,0 +1,8 @@
+echo $""
+echo"'hola'"
+e"cho hola"
+e'cho hola'
+echo ""
+echo ''
+echo $PWDPWD
+echo "String with a backtick \ character"`

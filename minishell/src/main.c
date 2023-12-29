@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 23:02:12 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/15 20:00:10 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/29 15:31:27 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,30 +123,25 @@ int	shell_loop(t_env *envb)
 		input = ft_prompt(envb);
 		if (input && input[0] && !shell_parser(input, &lexer, envb, &cmd_tab))
 		{
-			if (cmd_tab[0]->cmd[0])
+			if (cmd_tab[0]->cmd[0][0])
 			{
 				execution(set, cmd_tab, envb);
 				free(input);
 			}
+			else
+			{
+				free_redirections(cmd_tab);
+				free_cmd_struct_tab(cmd_tab);	
+			}
 		}
 		else if (input)
-		{
 			continue ;
-		}
 		else
 		{
 			ft_printf("exit\n"RESET);
 			rl_clear_history();
-			ft_free_tab((void **)set->cmd_set);
-
-			// free_redirections(set->cmd_set);
 			ft_free_env_lst(envb);
-			// ft_free_tab((void **)set->paths);
-			// ft_free_tab((void **)set->envp);
-			// free_cmds((t_cmd **)set->cmd_set);
-			// free(set->pid);
 			free (set);
-			// free_after_builtin(set); // a renomer
 			return (2);
 		}
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_utils_1.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:36:38 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/13 12:48:39 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/28 12:04:53 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,17 @@ t_lexer	*expand_node2(char *tmp, t_lexer *node, t_env *envb)
 	char	*ptr;
 
 	var = extract_var(tmp + 1, &ptr);
-	tmp_str = ft_strpcpy(node->word, tmp);
+	if (var && (var[0] == '=' || var[0] == ':'))
+	{
+		tmp_str = ft_strjoin("$", var);
+		free (node->word);
+		node->word = ft_strdup(tmp_str);
+		free (tmp_str);
+		free (var);
+		return (node);
+	}
+	else
+		tmp_str = ft_strpcpy(node->word, tmp);
 	get_env_value(envb, &var);
 	if (var)
 		new_str = ft_strjoin(tmp_str, var);
@@ -81,7 +91,9 @@ t_lexer	*expand_node2(char *tmp, t_lexer *node, t_env *envb)
 	free (var);
 	free (tmp_str);
 	if (ptr)
+	{
 		tmp_str = ft_strjoin(new_str, ptr);
+	}
 	free (node->word);
 	free (new_str);
 	node->word = ft_strdup(tmp_str);
@@ -100,8 +112,26 @@ char	*extract_var(char *str, char **ptr)
 
 	i = 0;
 	var = NULL;
-	while (str[i] && (ft_isalnum(str[i]) || str[i] == '_' || str[i] == '?'))
+	while (str[i] && (ft_isalnum(str[i]) || str[i] == '_' || str[0] == '?'
+			|| str[0] == '=' || str[0] == ':' || str[0] == '!' || str[0] == '*'
+			|| str[0] == '@'))
+	{
+		if (str[0] == '?' || str[0] == '!' || str[0] == '*' || str[0] == '@'
+			|| ft_isdigit(str[0]))
+		{
+			*ptr = &str[1];
+			var = malloc(sizeof(char) * i + 1);
+			if (!var)
+				return (NULL);
+			if (str[0] == '!' || str[0] == '*' || str[0] == '@'
+				|| ft_isdigit(str[0]))
+				ft_strlcpy(var, str, i + 1);
+			else
+				ft_strlcpy(var, str, i + 2);
+			return (var);
+		}
 		i++;
+	}
 	*ptr = &str[i];
 	var = malloc(sizeof(char) * i + 1);
 	if (!var)

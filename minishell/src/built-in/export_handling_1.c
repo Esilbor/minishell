@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 20:27:54 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/21 10:37:30 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/29 15:07:39 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	create_var(char **v_tab, char **cmd_tab, t_env **env, int i)
 
 // variable already exists and is assigned a new value
 // variable already exists and appends a value
-void	modify_var(t_env *node, char **v_tab, char **cmd_tab, int i)
+int	modify_var(t_env *node, char **v_tab, char **cmd_tab, int i)
 {
 	char	*tmp;
 
@@ -43,14 +43,19 @@ void	modify_var(t_env *node, char **v_tab, char **cmd_tab, int i)
 	{
 		free(node->var_str);
 		node->var_str = ft_strdup(cmd_tab[i]);
+		if (!node->var_str)
+			return (-1);
 	}
 	else if (node && assign_or_append(cmd_tab[i]) == 1)
 	{
 		tmp = ft_strdup(node->var_str);
+		if (!tmp)
+			return (-1);
 		free(node->var_str);
 		node->var_str = ft_strjoin(tmp, v_tab[1]);
 		free(tmp);
 	}
+	return (0);
 }
 
 int	update_ret(t_env **env, int ret)
@@ -82,9 +87,17 @@ int	do_export(int cmd_nb, char **cmd_tab, t_env **env)
 		if (cmd_is_valid(cmd_tab, i, &ret) && assign_or_append(cmd_tab[i]) >= 0)
 		{
 			value_tab = ft_split_value(cmd_tab[i]);
+			if (!value_tab)
+				return (-1);
 			node = get_env_node(*env, value_tab[0]);
 			if (node)
-				modify_var(node, value_tab, cmd_tab, i);
+			{
+				if (modify_var(node, value_tab, cmd_tab, i) < 0)
+				{
+					ft_free_tab((void **)value_tab);
+					return (-1);
+				}
+			}
 			else if (!node)
 				create_var(value_tab, cmd_tab, env, i);
 			ft_free_tab((void **)value_tab);

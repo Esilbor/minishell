@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/15 18:34:23 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/29 12:07:40 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,10 @@
 # define RESET "\x1B[0m"
 # define PROMPT "\001\033[38;2;255;105;180m\002Candy_$hell> \001\033[33m\002"
 # define PROMPT1 "\001\033[38;2;255;105;280m\0021_Candy_$hell> \001\033[35m\002"
-# define PROMPT2 "\001\033[35m\0022_Candy_$hell> \001\033[34m\002"
-# define PROMPT3 "\001\033[92m\002Candy_$hell?> \001\033[34m\002"
+# define PROMPT2 "\001\033[35m\0022_Candy_$hell> \001\033[92m\002"
+# define PROMPT3 "\001\033[92m\002?_Candy_$hell> \001\033[92m\002"
+# define PROMPT126 "\001\033[92m\002126_Candy_$hell> \001\033[92m\002"
+# define PROMPT127 "\001\033[92m\002127_Candy_$hell> \001\033[92m\002"
 # define MAX_LL "9223372036854775807"
 
 # include <string.h>
@@ -52,23 +54,25 @@
 typedef enum e_tokens
 {
 	WORD,
-	PIPE,
-	LESS,
-	GREAT,
-	GREAT_GREAT,
-	LESS_LESS,
+	PIPE, //
+	LESS, //
+	GREAT, //
+	GREAT_GREAT, //
+	LESS_LESS, //
 	DOLLAR,
 	DQUOTE,
 	SQUOTE,
-	INPUT,
-	OUTPUT,
-	APPEND,
-	LIMITER,
+	INPUT, //
+	OUTPUT, //
+	APPEND, //
+	LIMITER, //
 	EXPAND,
-	SMERGE,
-	DMERGE,
-	WMERGE,
-	EMERGE,
+	SMERGE, //
+	DMERGE, //
+	WMERGE,//
+	EMERGE, // can add after
+	ISSPACE,
+	QSPACE,
 }	t_tokens;
 
 typedef struct s_lexer
@@ -114,7 +118,10 @@ extern int g_exit_val;
 /******************************************/
 /***************TO ORDER*******************/
 /******************************************/
-
+int			fail_to_write_fd(char *s, int fd);
+int			quote_is_space(t_lexer *lex);
+void		remove_space_nodes(t_lexer **lexer);
+void		handle_space(char *epur_line, int *i, t_lexer **head);
 bool		is_directory(char *cmd);
 void		print_cmd_not_found(char *cmd);
 void		exit_err(t_set *set, int err_nb);
@@ -155,6 +162,8 @@ bool		outputs_are_valid(t_lexer *lex);
 /***************BUILT-IN*******************/
 /******************************************/
 
+int 		do_env(t_set *set, t_env *env, int index);
+
 /*do_builtins.c*/
 
 void		do_builtins(t_set *set, int index);
@@ -166,7 +175,7 @@ void		do_exit(t_set *set, int index);
 
 /*	cd_echo_pwd_builtins.c	*/
 
-int			do_cd(char **str, t_env **envb);
+int			do_cd(char **str, t_env **envb, t_set *set);
 int			do_echo(t_env **env, char **str);
 int			do_pwd(char **cmd_tab, t_env **env);
 
@@ -195,7 +204,7 @@ t_env		*get_env(char **envp);
 /*	export_handling_1.c	*/
 
 void		create_var(char **v_tab, char **cmd_tab, t_env **env, int i);
-void		modify_var(t_env *node, char **v_tab, char **cmd_tab, int i);
+int			modify_var(t_env *node, char **v_tab, char **cmd_tab, int i);
 int			update_ret(t_env **env, int ret);
 int			do_export(int cmd_nb, char **cmd_tab, t_env **env);
 
@@ -320,15 +329,15 @@ int			ft_fill_lexer(t_lexer **lexer_lst, char *cmd_line);
 
 t_lexer		*ft_last_lexer_node(t_lexer *node);
 void		ft_add_lex_node(t_lexer **lexer, char *word, t_tokens type);
-t_lexer		*syntax_error(t_lexer *lexer, t_lexer **lexer_head);
-t_lexer		*check_valid_input(t_lexer **lexer_head);
-t_lexer		*ft_lexer(char *line);
+t_lexer		*syntax_error(t_lexer *lexer, t_lexer **lexer_head, t_env *env);
+t_lexer		*check_valid_input(t_lexer **lexer_head, t_env *env);
+t_lexer		*ft_lexer(char *line, t_env *env);
 
 /*	lexer_utils_3.c	*/
 
 void		clean_squotes(t_lexer **lexer);
 void		clean_esc(t_lexer **lex, char **esc);
-t_lexer		**clean_empty_nodes(t_lexer **lexer);
+t_lexer		**clean_empty_nodes(t_lexer **lexer, t_tokens type);
 void		quotes_to_words(t_lexer **lexer);
 
 	/*to be commented out */

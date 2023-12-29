@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 18:19:41 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/15 12:02:25 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/22 15:36:50 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,10 @@ char	*print_token(t_tokens token)
 		return ("WMERGE");
 	else if (token == EMERGE)
 		return ("EMERGE");
+	else if (token == ISSPACE)
+		return ("SPACE");
+	else if (token == QSPACE)
+		return ("QSPACE");
 	return ("ERROR");
 }
 

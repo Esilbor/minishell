@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredocs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 09:39:05 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/15 19:47:16 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/28 12:02:27 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,9 @@ void	sig_heredoc_handler(int signum)
 		close(STDIN_FILENO);
 		g_exit_val = 130;
 	}
-
 }
 
-void signal_heredoc(void)
+void	signal_heredoc(void)
 {
 	struct sigaction	sa;
 
@@ -47,16 +46,16 @@ void	create_heredoc(t_env *env, t_lexer *lex, char *limiter)
 	close(fd);
 }
 
-void	fill_heredoc(t_env *env, int fd, char *limiter) // changer env pour set pour free quand le heredoc est ferme
+void	fill_heredoc(t_env *env, int fd, char *limiter)
 {
 	char	*buf;
 	size_t	eof_len;
 	int		dup_stdin;
 
 	eof_len = ft_strlen(limiter);
-	dup_stdin = dup(STDIN_FILENO); // sauvegard du stdin
+	dup_stdin = dup(STDIN_FILENO);
 	update_ret(&env, 0);
-	signal_heredoc(); // met la variable globale a 130
+	signal_heredoc();
 	while (1)
 	{
 		buf = readline("heredoc> ");
@@ -70,11 +69,6 @@ void	fill_heredoc(t_env *env, int fd, char *limiter) // changer env pour set pou
 			&& !ft_strncmp(limiter, buf, eof_len))
 		{
 			free(buf);
-			// ft_free_tab((void **)set->paths);
-			// ft_free_tab((void **)set->envp);
-			// free_cmds((t_cmd **)set->cmd_set);
-			// free(set->pid);
-			// free (set);
 			break ;
 		}
 		ft_putstr_fd(buf, fd);
@@ -83,7 +77,7 @@ void	fill_heredoc(t_env *env, int fd, char *limiter) // changer env pour set pou
 	}
 	g_exit_val = 0;
 	dup2(dup_stdin, STDIN_FILENO);
-	ft_handle_signals(); // ignor sigquit (ctrl-\)
+	ft_handle_signals();
 	close(dup_stdin);
 }
 

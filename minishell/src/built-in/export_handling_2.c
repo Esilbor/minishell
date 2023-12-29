@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 10:35:32 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/14 07:11:30 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/29 15:12:27 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,11 @@ char	**ft_split_value(char *var)
 		if (!ret_tab)
 			return (NULL);
 		ret_tab[0] = ft_strdup(var);
+		if (!ret_tab[0])
+		{
+			free(ret_tab);
+			return (NULL);
+		}
 		ret_tab[1] = NULL;
 		return (ret_tab);
 	}
@@ -52,6 +57,11 @@ char	**ft_split_value(char *var)
 		ret_tab = ft_split(var, '+');
 		free(ret_tab[1]);
 		ret_tab[1] = ft_strdup(equal + 1);
+		if (!ret_tab[1])
+		{
+			free(ret_tab);
+			return (NULL);
+		}
 	}
 	if (equal && !plus)
 		ret_tab = ft_split(var, '=');
