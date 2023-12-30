@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:36:38 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/30 18:03:42 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/30 22:41:39 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,23 +29,20 @@ static int	is_var_char(char *str, size_t i)
 	return (0);
 }
 
-//Extracts substring from `str` until space, $, or ", sets `ptr` to remainder.
 char	*extract_var(char *str, char **ptr)
 {
 	char		*var;
 	size_t		i;
 
 	i = 0;
-	var = malloc(sizeof(char) * i + 1);
-	if (!var)
-		return (NULL);
+	var = NULL;
 	while (is_var_char(str, i))
 	{
 		if (is_var_char2(str))
 		{
 			*ptr = &str[1];
-			if (str[0] == '!' || str[0] == '*' || str[0] == '@'
-				|| ft_isdigit(str[0]))
+			var = malloc(sizeof(char) * i + 2);
+			if (str[0] == '!' || str[0] == '*' || str[0] == '@' || ft_isdigit(str[0]))
 				ft_strlcpy(var, str, i + 1);
 			else
 				ft_strlcpy(var, str, i + 2);
@@ -54,6 +51,7 @@ char	*extract_var(char *str, char **ptr)
 		i++;
 	}
 	*ptr = &str[i];
+	var = malloc(sizeof(char) * i + 1);
 	ft_strlcpy(var, str, i + 1);
 	return (var);
 }
