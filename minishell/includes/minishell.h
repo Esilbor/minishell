@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/30 11:06:08 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/30 17:54:44 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,9 @@ extern int	g_exit_val;
 /******************************************/
 /***************TO ORDER*******************/
 /******************************************/
+
+void		clean_space_nodes(t_lexer **lexer);
+t_lexer		**expand_cmds(t_lexer **lexer);
 int			fail_to_write_fd(char *s, int fd);
 int			quote_is_space(t_lexer *lex);
 void		remove_space_nodes(t_lexer **lexer);
@@ -235,6 +238,7 @@ void		ign_sigquit(void);
 void		sig_heredoc_handler(int signum);
 void		signals_simple(void);
 void		ign_sigint(void);
+void		signal_heredoc(void);
 
 /*	destroyers	*/
 

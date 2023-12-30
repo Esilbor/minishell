@@ -6,120 +6,27 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:36:38 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/29 18:12:31 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/30 18:03:42 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-// Remove a specified node from lexer linked list
-t_lexer	*ft_remove_lex_node(t_lexer **lexer, t_lexer *node_to_remove)
+static int	is_var_char2(char *str)
 {
-	t_lexer	*current;
-	t_lexer	*prev;
-
-	current = *lexer;
-	prev = NULL;
-	if (current != NULL && current == node_to_remove)
-	{
-		*lexer = current->next;
-		free(node_to_remove->word);
-		free(node_to_remove);
-		return (*lexer);
-	}
-	while (current != NULL && current != node_to_remove)
-	{
-		prev = current;
-		current = current->next;
-	}
-	if (current == NULL)
-		return (node_to_remove);
-	prev->next = current->next;
-	free(current->word);
-	free(current);
-	return (prev);
+	if (str[0] == '?' || str[0] == '!' || str[0] == '*' || str[0] == '@'
+		|| ft_isdigit(str[0]))
+		return (1);
+	return (0);
 }
 
-// Expand lexer node for environment variable
-// t_lexer	*expand_node(t_lexer **lexer, t_lexer *lst, t_env *envb)
-// {
-// 	char	*tmp;
-// 	t_env	*var;
-
-// 	var = get_env_node(envb, lst->word);
-// 	if (var)
-// 	{
-// 		tmp = ft_strchr(var->var_str, '=');
-// 		if (tmp)
-// 		{
-// 			tmp++;
-// 			free(lst->word);
-// 			lst->word = ft_strdup(tmp);
-// 			lst->type = WORD;
-// 		}
-// 	}
-// 	else
-// 		lst = ft_remove_lex_node(lexer, lst);
-// 	return (lst);
-// }
-
-// Recursively expand lexer node for env variables (not within quotes)
-t_lexer	*expand_node2(char *tmp, t_lexer *node, t_env *envb)
+static int	is_var_char(char *str, size_t i)
 {
-	char	*var;
-	char	*new_str;
-	char	*tmp_str;
-	char	*ptr;
-
-	var = extract_var(tmp + 1, &ptr);
-	if (var && (var[0] == '=' || var[0] == ':'))
-	{
-		tmp_str = ft_strjoin("$", var);
-		free (node->word);
-		node->word = ft_strdup(tmp_str);
-		if (!node->word && tmp_str)
-		{
-			free(var);
-			free(tmp_str);
-			return (NULL);
-		}
-		free (tmp_str);
-		free (var);
-		return (node);
-	}
-	else
-		tmp_str = ft_strpcpy(node->word, tmp);
-	get_env_value(envb, &var);
-	if (var)
-		new_str = ft_strjoin(tmp_str, var);
-	else
-	{
-		new_str = ft_strdup(tmp_str);
-		if (!new_str && tmp_str)
-		{
-			free (tmp_str);
-			return (NULL);
-		}
-	}
-	free (var);
-	free (tmp_str);
-	if (ptr)
-	{
-		tmp_str = ft_strjoin(new_str, ptr);
-	}
-	free (node->word);
-	free (new_str);
-	node->word = ft_strdup(tmp_str);
-	if (!node->word && tmp_str)
-	{
-		free (tmp_str);
-		return (NULL);
-	}
-	free (tmp_str);
-	tmp = dol_to_expand(node->word);
-	if (tmp)
-		node = expand_node2(tmp, node, envb);
-	return (node);
+	if (str[i] && (ft_isalnum(str[i]) || str[i] == '_' || str[0] == '?'
+			|| str[0] == '=' || str[0] == ':' || str[0] == '!' || str[0] == '*'
+			|| str[0] == '@'))
+		return (1);
+	return (0);
 }
 
 //Extracts substring from `str` until space, $, or ", sets `ptr` to remainder.
@@ -129,18 +36,14 @@ char	*extract_var(char *str, char **ptr)
 	size_t		i;
 
 	i = 0;
-	var = NULL;
-	while (str[i] && (ft_isalnum(str[i]) || str[i] == '_' || str[0] == '?'
-			|| str[0] == '=' || str[0] == ':' || str[0] == '!' || str[0] == '*'
-			|| str[0] == '@'))
+	var = malloc(sizeof(char) * i + 1);
+	if (!var)
+		return (NULL);
+	while (is_var_char(str, i))
 	{
-		if (str[0] == '?' || str[0] == '!' || str[0] == '*' || str[0] == '@'
-			|| ft_isdigit(str[0]))
+		if (is_var_char2(str))
 		{
 			*ptr = &str[1];
-			var = malloc(sizeof(char) * i + 1);
-			if (!var)
-				return (NULL);
 			if (str[0] == '!' || str[0] == '*' || str[0] == '@'
 				|| ft_isdigit(str[0]))
 				ft_strlcpy(var, str, i + 1);
@@ -151,9 +54,6 @@ char	*extract_var(char *str, char **ptr)
 		i++;
 	}
 	*ptr = &str[i];
-	var = malloc(sizeof(char) * i + 1);
-	if (!var)
-		return (NULL);
 	ft_strlcpy(var, str, i + 1);
 	return (var);
 }

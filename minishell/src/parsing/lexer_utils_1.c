@@ -6,24 +6,11 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 15:14:20 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/21 19:01:30 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/30 18:07:55 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-void	free_lexer_list(t_lexer **head)
-{
-	t_lexer	*tmp;
-
-	while (*head)
-	{
-		tmp = *head;
-		*head = (*head)->next;
-		free(tmp->word);
-		free(tmp);
-	}
-}
 
 // return 1 if c is a space or a tab else 0
 int	is_wspace(char c)
