@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 08:04:09 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/29 21:50:35 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/30 10:18:22 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,5 @@ int	shell_parser(char *input, t_lexer **lexer, t_env *envb, t_cmd ***cmd_tab)
 	keep_last_input(*cmd_tab);
 	keep_last_output(*cmd_tab);
 	free_lexer_list(lexer);
-	// if (cmd_tab[0][0]->cmd[0])
-	// {
-	// 	ft_printf("dans shell_parser\n");
-	// 	return (1);
-	// }
 	return (0);
 }

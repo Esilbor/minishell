@@ -6,13 +6,11 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 10:03:51 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/10 12:52:11 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/30 09:25:07 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-
 
 // void	ft_close_and_free(t_set *set)
 // {
@@ -43,7 +41,6 @@
 // 	free_cmd_struct_tab(cmd_struct_tab);
 // 	free(input);
 // }
-
 
 //close pipes, pid_tab + candy-crush + exit
 // void	close_crush_exit(char *msg, t_set *set, int do_exit, int exit_ret)

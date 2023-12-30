@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/29 21:45:46 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/30 10:35:23 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,23 +54,23 @@
 typedef enum e_tokens
 {
 	WORD,
-	PIPE, //
-	LESS, //
-	GREAT, //
-	GREAT_GREAT, //
-	LESS_LESS, //
+	PIPE,
+	LESS,
+	GREAT,
+	GREAT_GREAT,
+	LESS_LESS,
 	DOLLAR,
 	DQUOTE,
 	SQUOTE,
-	INPUT, //
-	OUTPUT, //
-	APPEND, //
-	LIMITER, //
+	INPUT,
+	OUTPUT,
+	APPEND,
+	LIMITER,
 	EXPAND,
-	SMERGE, //
-	DMERGE, //
-	WMERGE,//
-	EMERGE, // can add after
+	SMERGE,
+	DMERGE,
+	WMERGE,
+	EMERGE,
 	ISSPACE,
 	QSPACE,
 }	t_tokens;
@@ -113,7 +113,7 @@ typedef struct t_set
 	int				**pipe;
 }	t_set;
 
-extern int g_exit_val;
+extern int	g_exit_val;
 
 /******************************************/
 /***************TO ORDER*******************/
@@ -162,7 +162,7 @@ bool		outputs_are_valid(t_lexer *lex);
 /***************BUILT-IN*******************/
 /******************************************/
 
-int 		do_env(t_set *set, t_env *env, int index);
+int			do_env(t_set *set, t_env *env, int index);
 
 /*do_builtins.c*/
 
@@ -234,7 +234,7 @@ void		ft_handle_signals(void);
 void		ign_sigquit(void);
 void		sig_heredoc_handler(int signum);
 void		signals_simple(void);
-void		ign_sigint(void) ;
+void		ign_sigint(void);
 
 /*	destroyers	*/
 

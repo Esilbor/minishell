@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 10:53:54 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/29 21:34:08 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/30 10:27:47 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,10 @@ void	merge_nodes(t_lexer **lexer)
 	lex = *lexer;
 	while (lex && lex->next)
 	{
-		if (((lex->type >= SMERGE && lex->type <= EMERGE) || lex->type == ISSPACE)
-			&& ((!(lex->next->type >= INPUT && lex->next->type <= LIMITER) && lex->next->type <= ISSPACE)
-				|| lex->next->type == PIPE))
+		if (((lex->type >= SMERGE && lex->type <= EMERGE)
+				|| lex->type == ISSPACE) && ((!(lex->next->type >= INPUT
+						&& lex->next->type <= LIMITER)
+					&& lex->next->type <= ISSPACE) || lex->next->type == PIPE))
 		{
 			merged_word = ft_strjoin(lex->word, lex->next->word);
 			free(lex->next->word);
@@ -67,10 +68,7 @@ int	process_expander_node(t_lexer **lst, t_env *envb)
 		{
 			*lst = expand_dquote(tmp, *lst, envb);
 			if (!(*lst))
-			{
 				return (-1);
-			}
-			
 		}
 		esc = ft_strchr((*lst)->word, '\\');
 		while (esc && esc[1] != '\"' && esc[1] != '?')
@@ -85,9 +83,7 @@ int	process_expander_node(t_lexer **lst, t_env *envb)
 		{
 			*lst = expand_node2(tmp, *lst, envb);
 			if (!(*lst))
-			{
 				return (-1);
-			}
 		}
 		esc = ft_strchr((*lst)->word, '\\');
 		while (esc && esc[1])
@@ -107,7 +103,8 @@ t_lexer	**expand_cmds(t_lexer **lexer)
 	i = 0;
 	while (lex)
 	{
-		if (lex->type == EXPAND && lex->word[0] && lex->word[1] && ft_strchr(&lex->word[1], ' ')) // should include tab as wspace? crac
+		if (lex->type == EXPAND && lex->word[0] && lex->word[1]
+			&& ft_strchr(&lex->word[1], ' '))
 		{
 			tab = ft_split(lex->word, ' ');
 			if (!tab)
@@ -124,7 +121,6 @@ t_lexer	**expand_cmds(t_lexer **lexer)
 		lex = lex->next;
 	}
 	return (lexer);
-
 }
 
 void	remove_space_nodes(t_lexer **lexer)
@@ -148,13 +144,15 @@ void	clean_space_nodes2(t_lexer **lexer)
 {
 	t_lexer	*lex;
 	char	*tmp;
-	t_lexer *previous;
-	
+	t_lexer	*previous;
+	int		i;
+
 	previous = *lexer;
 	lex = *lexer;
+	i = 0;
 	while (lex)
 	{
-		if (quote_is_space(lex) < 0)
+		if (quote_is_space(lex) < 0 && i > 1)
 		{
 			tmp = ft_strdup(previous->word);
 			if (!tmp && previous->word)
@@ -165,30 +163,31 @@ void	clean_space_nodes2(t_lexer **lexer)
 			}
 			free(previous->word);
 			previous->word = ft_strjoin(tmp, " ");
-			free (tmp);			
+			free (tmp);
 			lex = lex->next;
 		}
 		previous = lex;
 		lex = lex->next;
+		i++;
 	}
 }
 
 int	quote_is_space(t_lexer *lex)
 {
 	if (lex->type == QSPACE && lex->next && lex->next->type == ISSPACE
-	&& lex->next->next && lex->next->next->type == QSPACE
-	&& lex->next->next->next && (lex->next->next->next->type == WORD
-	|| (lex->next->next->next->type >= EXPAND
-	&& lex->next->next->next->type <= EMERGE)))
+		&& lex->next->next && lex->next->next->type == QSPACE
+		&& lex->next->next->next && (lex->next->next->next->type == WORD
+			|| (lex->next->next->next->type >= EXPAND
+				&& lex->next->next->next->type <= EMERGE)))
 		return (1);
 	else if (lex->type == QSPACE && lex->next && lex->next->type == ISSPACE
-	&& lex->next->next && lex->next->next->type == QSPACE
-	&& (!lex->next->next->next || (lex->next->next->next->type >= PIPE
-	&& lex->next->next->next->type <= LESS_LESS)))
+		&& lex->next->next && lex->next->next->type == QSPACE
+		&& (!lex->next->next->next || (lex->next->next->next->type >= PIPE
+				&& lex->next->next->next->type <= LESS_LESS)))
 		return (-1);
 	else if (lex->type == QSPACE && lex->next && lex->next->type == ISSPACE
-	&& (lex->next->next && (lex->next->next->type >= PIPE
-	&& lex->next->next->type <= LESS_LESS)))
+		&& (lex->next->next && (lex->next->next->type >= PIPE
+				&& lex->next->next->type <= LESS_LESS)))
 		return (-1);
 	return (0);
 }
@@ -204,7 +203,6 @@ void	clean_space_nodes(t_lexer **lexer)
 	{
 		if (lexer && quote_is_space(lex) == 1)
 		{
-			// ft_printf("***********************************\n");
 			tmp = lex->next->next->next->word;
 			tmp2 = ft_strjoin(" ", tmp);
 			free(lex->next->next->next->word);
@@ -227,31 +225,22 @@ void	lexer_polish(t_lexer **lexer)
 	quotes_to_words(lexer);
 	clean_lexer(lexer);
 	// print_lexer(lexer, "after clean_lexer");
-
 	clean_space_nodes(lexer);
 	// print_lexer(lexer, "after clean_space_nodes");
 	clean_lexer2(lexer);
 	// print_lexer(lexer, "after clean_lexer2");
 	clean_lexer3(lexer);
 	// print_lexer(lexer, "after clean_lexer3");
-	
 	merge_nodes(lexer);
 	// print_lexer(lexer, "after merge_nodes");
-
 	remove_space_nodes(lexer);
 	// print_lexer(lexer, "after remove_space_nodes");
-
-
 	lexer = expand_cmds(lexer);
 	// print_lexer(lexer, "after expand_cmds");
-
-
 	clean_lexer4(lexer);
 	// print_lexer(lexer, "after clean_lexer4");
 	clean_empty_nodes(lexer, WORD);
 	// print_lexer(lexer, "after clean_empty_nodes");
-
-	
 }
 
 t_lexer	*parsing(char *input, t_lexer **lexer, t_env *envb)

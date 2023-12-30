@@ -6,3 +6,4 @@ echo ""
 echo ''
 echo $PWDPWD
 echo "String with a backtick \ character"`
+echo "$DONTEXIST"

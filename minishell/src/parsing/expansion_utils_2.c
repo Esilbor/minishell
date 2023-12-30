@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:36:38 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/29 19:45:31 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/30 10:17:35 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ char	*dol_to_expand(char *str)
 	i = 0;
 	while (str[i] && str[i + 1])
 	{
-		if (str[i] == '$' && (str[i + 1]) != ' ' && str[i + 1] != '"' && str[i + 1] != '=')
+		if (str[i] == '$' && (str[i + 1]) != ' '
+			&& str[i + 1] != '"' && str[i + 1] != '=')
 		{
 			if (i > 0 && str[i - 1] == '\\')
 				i ++;
@@ -50,10 +51,7 @@ t_lexer	*expand_dquote(char *tmp, t_lexer *node, t_env *envb)
 	{
 		new_str = ft_strdup(tmp_str);
 		if (!new_str && tmp_str)
-		{
-			free (tmp_str);
-			return (NULL);
-		}
+			return (free (tmp_str), NULL);
 	}
 	free (var);
 	free (tmp_str);
@@ -63,10 +61,7 @@ t_lexer	*expand_dquote(char *tmp, t_lexer *node, t_env *envb)
 	free (new_str);
 	node->word = ft_strdup(tmp_str);
 	if (!node->word && tmp_str)
-	{
-		free (tmp_str);
-		return (NULL);
-	}
+		return (free (tmp_str), NULL);
 	free (tmp_str);
 	tmp = dol_to_expand(node->word);
 	if (tmp)

@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 23:02:12 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/29 15:31:27 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/30 10:31:20 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ int	shell_loop(t_env *envb)
 			else
 			{
 				free_redirections(cmd_tab);
-				free_cmd_struct_tab(cmd_tab);	
+				free_cmd_struct_tab(cmd_tab);
 			}
 		}
 		else if (input)

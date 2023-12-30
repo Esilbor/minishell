@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 09:39:05 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/29 22:00:56 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/30 09:26:19 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ int	modify_limiter_nodes(t_env *env, t_lexer *lst, int index)
 	return (0);
 }
 
-int		init_heredocs(t_env *env, t_cmd **cmd_tab)
+int	init_heredocs(t_env *env, t_cmd **cmd_tab)
 {
 	int		i;
 
