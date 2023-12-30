@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 15:11:47 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/29 15:10:10 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/30 08:11:51 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,34 @@ int	is_builtin(char **command)
 	return (0);
 }
 
-static void failed_write(t_env **env_dup, t_set *set)
+static void	failed_write(t_env **env_dup, t_set *set)
 {
 	ft_putstr_fd(strerror(errno), 2);
 	ft_putstr_fd("\n", 2);
 	ft_free_env_lst(*env_dup);
 	free(env_dup);
 	exit_err(set, 1);
+}
+
+static void	do_builtins2(t_set *set, int index, t_env **env_dup)
+{
+	if (ft_strncmp(set->cmd_set[index]->cmd[0], "export", 7) == 0)
+	{
+		if (set->cmd_set[index]->cmd[1])
+		{
+			if (do_export(ft_tab_len(set->cmd_set[index]->cmd),
+					set->cmd_set[index]->cmd, &set->env_lst) < 0)
+				failed_write(env_dup, set);
+		}
+		else
+		{
+			if (print_env(set, sort_env(env_dup)) < 0)
+				failed_write(env_dup, set);
+			update_ret(&set->env_lst, 0);
+		}
+	}
+	ft_free_env_lst(*env_dup);
+	free(env_dup);
 }
 
 // Execute built-in commands based on cmd_tab (to be edited)
@@ -55,23 +76,7 @@ void	do_builtins(t_set *set, int index)
 	if (ft_strncmp(set->cmd_set[index]->cmd[0], "env", 4) == 0)
 		if (do_env(set, set->env_lst, index) < 0)
 			failed_write(env_dup, set);
-	if (ft_strncmp(set->cmd_set[index]->cmd[0], "export", 7) == 0)
-	{
-		if (set->cmd_set[index]->cmd[1])
-		{
-			if (do_export(ft_tab_len(set->cmd_set[index]->cmd),
-				set->cmd_set[index]->cmd, &set->env_lst) < 0)
-				failed_write(env_dup, set);
-		}
-		else
-		{
-			if (print_env(set, sort_env(env_dup)) < 0)
-				failed_write(env_dup, set);
-			update_ret(&set->env_lst, 0);
-		}
-	}
-	ft_free_env_lst(*env_dup);
-	free(env_dup);
+	do_builtins2(set, index, env_dup);
 	if (ft_strncmp(set->cmd_set[index]->cmd[0], "unset", 6) == 0)
 		do_unset(set->cmd_set[index]->cmd, &set->env_lst);
 	if (ft_strncmp(set->cmd_set[index]->cmd[0], "cd", 3) == 0)

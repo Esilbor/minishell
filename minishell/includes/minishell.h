@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/29 12:07:40 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/30 10:35:23 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,23 +54,23 @@
 typedef enum e_tokens
 {
 	WORD,
-	PIPE, //
-	LESS, //
-	GREAT, //
-	GREAT_GREAT, //
-	LESS_LESS, //
+	PIPE,
+	LESS,
+	GREAT,
+	GREAT_GREAT,
+	LESS_LESS,
 	DOLLAR,
 	DQUOTE,
 	SQUOTE,
-	INPUT, //
-	OUTPUT, //
-	APPEND, //
-	LIMITER, //
+	INPUT,
+	OUTPUT,
+	APPEND,
+	LIMITER,
 	EXPAND,
-	SMERGE, //
-	DMERGE, //
-	WMERGE,//
-	EMERGE, // can add after
+	SMERGE,
+	DMERGE,
+	WMERGE,
+	EMERGE,
 	ISSPACE,
 	QSPACE,
 }	t_tokens;
@@ -113,7 +113,7 @@ typedef struct t_set
 	int				**pipe;
 }	t_set;
 
-extern int g_exit_val;
+extern int	g_exit_val;
 
 /******************************************/
 /***************TO ORDER*******************/
@@ -149,8 +149,8 @@ void		create_heredoc(t_env *env, t_lexer *lex, char *limiter);
 void		fill_heredoc(t_env *env, int fd, char *limiter);
 //void		fill_heredoc(int fd, char *limiter, t_set *set);
 char		*name_heredoc(char *limiter, int index, int k);
-void		modify_limiter_nodes(t_env *env, t_lexer *lst, int index);
-void		init_heredocs(t_env *env, t_cmd **cmd_tab);
+int			modify_limiter_nodes(t_env *env, t_lexer *lst, int index);
+int			init_heredocs(t_env *env, t_cmd **cmd_tab);
 
 int			inputs_are_valid(t_cmd **cmd_tab);
 int			invalid_input(char *filename);
@@ -162,7 +162,7 @@ bool		outputs_are_valid(t_lexer *lex);
 /***************BUILT-IN*******************/
 /******************************************/
 
-int 		do_env(t_set *set, t_env *env, int index);
+int			do_env(t_set *set, t_env *env, int index);
 
 /*do_builtins.c*/
 
@@ -234,7 +234,7 @@ void		ft_handle_signals(void);
 void		ign_sigquit(void);
 void		sig_heredoc_handler(int signum);
 void		signals_simple(void);
-void		ign_sigint(void) ;
+void		ign_sigint(void);
 
 /*	destroyers	*/
 
@@ -277,7 +277,7 @@ void		clean_lexer3(t_lexer **lexer);
 
 /*	expansion_merge.c	*/
 
-void		process_expander_node(t_lexer **lst, t_env *envb);
+int			process_expander_node(t_lexer **lst, t_env *envb);
 void		merge_nodes(t_lexer **lexer);
 t_lexer		*parsing(char *input, t_lexer **lexer, t_env *envb);
 void		ft_expander(t_lexer **lexer, t_env *envb);
@@ -336,7 +336,7 @@ t_lexer		*ft_lexer(char *line, t_env *env);
 /*	lexer_utils_3.c	*/
 
 void		clean_squotes(t_lexer **lexer);
-void		clean_esc(t_lexer **lex, char **esc);
+int			clean_esc(t_lexer **lex, char **esc);
 t_lexer		**clean_empty_nodes(t_lexer **lexer, t_tokens type);
 void		quotes_to_words(t_lexer **lexer);
 

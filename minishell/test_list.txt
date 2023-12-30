@@ -26,6 +26,7 @@ echo "$"HOME
 echo $"HOLA"
 echo $'HOLA'
 echo $DONTEXIST Hola
+echo "$DONTEXIST Hola"
 echo "hola"
 echo 'hola'
 echo ''hola''

@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:12:40 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/29 08:40:18 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/30 08:02:00 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,11 @@ void	ft_add_lex_node(t_lexer **lexer, char *word, t_tokens type)
 		return ;
 	}
 	new_node->word = ft_strdup(word);
+	if (!new_node->word && word[0])
+	{
+		free (new_node);
+		return ;
+	}
 	new_node->type = type;
 	new_node->next = NULL;
 	if (*lexer == NULL)
@@ -97,7 +102,7 @@ t_lexer	*ft_lexer(char *line, t_env *env)
 	}
 	// print_lexer(&lexer, "after ft_fill_lexer");
 	free(epur_line);
-	if (lexer->word[0] == '\0')
+	if (lexer && lexer->word[0] == '\0')
 		lexer = ft_remove_lex_node(&lexer, lexer);
 	clean_empty_nodes(&lexer, WORD);
 	if (!lexer || !lexer->word)

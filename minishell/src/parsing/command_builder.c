@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 12:12:12 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/29 15:40:48 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/30 10:13:11 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_cmd	**fill_cmd_tab(t_lexer *lex, t_cmd **struct_tab, int cmd_nb, int tok_nb)
 		{
 			if (lex->type == WORD || lex->type == EXPAND)
 			{
-				struct_tab[i]->cmd[j] = ft_strdup(lex->word); // TO PROTECT
+				struct_tab[i]->cmd[j] = ft_strdup(lex->word);
 				j++;
 			}
 			struct_tab[i]->cmd[j] = NULL;

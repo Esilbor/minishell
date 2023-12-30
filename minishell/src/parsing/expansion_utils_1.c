@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:36:38 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/28 12:04:53 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/29 18:12:31 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,27 +41,27 @@ t_lexer	*ft_remove_lex_node(t_lexer **lexer, t_lexer *node_to_remove)
 }
 
 // Expand lexer node for environment variable
-t_lexer	*expand_node(t_lexer **lexer, t_lexer *lst, t_env *envb)
-{
-	char	*tmp;
-	t_env	*var;
+// t_lexer	*expand_node(t_lexer **lexer, t_lexer *lst, t_env *envb)
+// {
+// 	char	*tmp;
+// 	t_env	*var;
 
-	var = get_env_node(envb, lst->word);
-	if (var)
-	{
-		tmp = ft_strchr(var->var_str, '=');
-		if (tmp)
-		{
-			tmp++;
-			free(lst->word);
-			lst->word = ft_strdup(tmp);
-			lst->type = WORD;
-		}
-	}
-	else
-		lst = ft_remove_lex_node(lexer, lst);
-	return (lst);
-}
+// 	var = get_env_node(envb, lst->word);
+// 	if (var)
+// 	{
+// 		tmp = ft_strchr(var->var_str, '=');
+// 		if (tmp)
+// 		{
+// 			tmp++;
+// 			free(lst->word);
+// 			lst->word = ft_strdup(tmp);
+// 			lst->type = WORD;
+// 		}
+// 	}
+// 	else
+// 		lst = ft_remove_lex_node(lexer, lst);
+// 	return (lst);
+// }
 
 // Recursively expand lexer node for env variables (not within quotes)
 t_lexer	*expand_node2(char *tmp, t_lexer *node, t_env *envb)
@@ -77,6 +77,12 @@ t_lexer	*expand_node2(char *tmp, t_lexer *node, t_env *envb)
 		tmp_str = ft_strjoin("$", var);
 		free (node->word);
 		node->word = ft_strdup(tmp_str);
+		if (!node->word && tmp_str)
+		{
+			free(var);
+			free(tmp_str);
+			return (NULL);
+		}
 		free (tmp_str);
 		free (var);
 		return (node);
@@ -87,7 +93,14 @@ t_lexer	*expand_node2(char *tmp, t_lexer *node, t_env *envb)
 	if (var)
 		new_str = ft_strjoin(tmp_str, var);
 	else
+	{
 		new_str = ft_strdup(tmp_str);
+		if (!new_str && tmp_str)
+		{
+			free (tmp_str);
+			return (NULL);
+		}
+	}
 	free (var);
 	free (tmp_str);
 	if (ptr)
@@ -97,6 +110,11 @@ t_lexer	*expand_node2(char *tmp, t_lexer *node, t_env *envb)
 	free (node->word);
 	free (new_str);
 	node->word = ft_strdup(tmp_str);
+	if (!node->word && tmp_str)
+	{
+		free (tmp_str);
+		return (NULL);
+	}
 	free (tmp_str);
 	tmp = dol_to_expand(node->word);
 	if (tmp)

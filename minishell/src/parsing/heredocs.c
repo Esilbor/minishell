@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 09:39:05 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/28 12:02:27 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/30 09:26:19 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,8 @@ char	*name_heredoc(char *limiter, int index, int k)
 	tmp2 = NULL;
 	tmp3 = ft_itoa(index);
 	tmp = ft_strdup(limiter);
+	if (!tmp && limiter)
+		return (free (tmp3), NULL);
 	tmp2 = ft_strjoin(tmp, "_");
 	free (tmp);
 	tmp = ft_strjoin(tmp2, tmp3);
@@ -106,7 +108,7 @@ char	*name_heredoc(char *limiter, int index, int k)
 	return (tmp);
 }
 
-void	modify_limiter_nodes(t_env *env, t_lexer *lst, int index)
+int	modify_limiter_nodes(t_env *env, t_lexer *lst, int index)
 {
 	char	*tmp;
 	char	*limiter;
@@ -119,7 +121,11 @@ void	modify_limiter_nodes(t_env *env, t_lexer *lst, int index)
 		if (lst->type == LIMITER)
 		{
 			limiter = ft_strdup(lst->word);
+			if (!limiter && lst->word)
+				return (-1);
 			tmp = name_heredoc(lst->word, index, k);
+			if (!tmp)
+				return (free (limiter), -1);
 			free (lst->word);
 			lst->word = ft_strjoin(".", tmp);
 			free (tmp);
@@ -129,9 +135,10 @@ void	modify_limiter_nodes(t_env *env, t_lexer *lst, int index)
 		}
 		lst = lst->next;
 	}
+	return (0);
 }
 
-void	init_heredocs(t_env *env, t_cmd **cmd_tab)
+int	init_heredocs(t_env *env, t_cmd **cmd_tab)
 {
 	int		i;
 
@@ -139,7 +146,9 @@ void	init_heredocs(t_env *env, t_cmd **cmd_tab)
 	while (cmd_tab[i])
 	{
 		if (cmd_tab[i]->input)
-			modify_limiter_nodes(env, cmd_tab[i]->input, i);
+			if (modify_limiter_nodes(env, cmd_tab[i]->input, i) < 0)
+				return (-1);
 		i++;
 	}
+	return (0);
 }

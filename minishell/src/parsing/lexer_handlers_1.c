@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:02:57 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/28 22:56:01 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/30 10:16:17 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ int	handle_dquotes(char *cmd_line, int *i, t_lexer **head)
 	tmp = ft_strndup(&cmd_line[*i], j - *i + 1);
 	if (cmd_line[j + 1] && cmd_line[j + 1] != ' ')
 	{
-		// ft_printf("cmd_line = [%c]\n", cmd_line[j]);	
 		ft_add_lex_node(head, tmp, DMERGE);
 	}
 	else
@@ -66,13 +65,6 @@ int	handle_dquotes(char *cmd_line, int *i, t_lexer **head)
 		ft_add_lex_node(head, tmp, DQUOTE);
 		ft_add_lex_node(head, "", QSPACE);
 	}
-	// if (cmd_line[j + 1] && cmd_line[j + 1] == ' ')
-	// {
-	// 	j++;
-	// 	handle_space(cmd_line, &j,head);
-	// 	// ft_printf("I DID THIS\n");	
-	// 	j--;
-	// }
 	free(tmp);
 	*i = j + 1;
 	return (0);
@@ -84,7 +76,8 @@ void	handle_spec_chars(char *epur_line, int *j, t_lexer **head)
 	char	*tmp;
 
 	if ((is_spec_char(&epur_line[*j]) == LESS_LESS
-			|| is_spec_char(&epur_line[*j]) == GREAT_GREAT) && epur_line[*j + 1])
+			|| is_spec_char(&epur_line[*j]) == GREAT_GREAT)
+		&& epur_line[*j + 1])
 	{
 		tmp = ft_strndup(&epur_line[*j], 2);
 		ft_add_lex_node(head, tmp, is_spec_char(&epur_line[*j]));
@@ -113,23 +106,22 @@ void	handle_dollar(char *epur_line, int *i, t_lexer **head)
 	while (epur_line[j] && !is_spec_char2(&epur_line[j]) && epur_line[j] != ' ')
 		j++;
 	tmp2 = ft_strndup(&epur_line[*i], j - *i);
-	if (epur_line[j]  /* && is_quote(epur_line[j]) *//*  && epur_line[*i] == '$'  */&& !dol_to_expand(tmp2))
+	if (epur_line[j] && !dol_to_expand(tmp2))
 	{
 		tmp = ft_strndup("\0", 2);
 		ft_add_lex_node(head, tmp, WMERGE);
-		// free(tmp);
 	}
-	else if (epur_line[j] && epur_line[j] != ' ' && is_spec_char2(&epur_line[j]))
+	else if (epur_line[j] && epur_line[j] != ' '
+		&& is_spec_char2(&epur_line[j]))
 	{
 		tmp = ft_strndup(&epur_line[*i], j - *i);
 		ft_add_lex_node(head, tmp, EMERGE);
-		// free(tmp);
 	}
-	else if (!epur_line[j] || epur_line[j] == ' ' || is_spec_char2(&epur_line[j])) // was char2
+	else if (!epur_line[j] || epur_line[j] == ' '
+		|| is_spec_char2(&epur_line[j]))
 	{
 		tmp = ft_strndup(&epur_line[*i], j - *i);
 		ft_add_lex_node(head, tmp, EXPAND);
-		// free(tmp);
 	}
 	free(tmp);
 	free(tmp2);
@@ -143,26 +135,25 @@ void	handle_words_spec_char(char *epur_line, int *i, t_lexer **head)
 	char	*tmp;
 
 	j = *i;
-	while (epur_line[j] && !is_spec_char(&epur_line[j]) && epur_line[j] != ' ' && epur_line[j] != '$')
+	while (epur_line[j] && !is_spec_char(&epur_line[j])
+		&& epur_line[j] != ' ' && epur_line[j] != '$')
 		j++;
-	if (epur_line[j] && epur_line[j] != ' ' && (!is_spec_char4(&epur_line[j]) || epur_line[j] == '$'))
+	if (epur_line[j] && epur_line[j] != ' ' && (!is_spec_char4(&epur_line[j])
+			|| epur_line[j] == '$'))
 	{
-		// ft_printf("i am here **************************\n");
 		tmp = ft_strndup(&epur_line[*i], j - *i);
 		ft_add_lex_node(head, tmp, WMERGE);
 		free(tmp);
 	}
-	else if (!epur_line[j] || epur_line[j] == ' ' || is_spec_char4(&epur_line[j])) // was char3
+	else if (!epur_line[j] || epur_line[j] == ' '
+		|| is_spec_char4(&epur_line[j]))
 	{
 		tmp = ft_strndup(&epur_line[*i], j - *i);
 		ft_add_lex_node(head, tmp, WORD);
 		free(tmp);
-		if (epur_line[j] == ' ' && (epur_line[j + 1] == '\'' || epur_line[j + 1] == '\"'))
-		{
+		if (epur_line[j] == ' ' && (epur_line[j + 1] == '\''
+				|| epur_line[j + 1] == '\"'))
 			ft_add_lex_node(head, "", QSPACE);
-		}
-		// if (epur_line[j] == ' ')
-		// 	handle_space(epur_line, &j, head);
 	}
 	if (is_spec_char3(&epur_line[j]))
 		handle_spec_chars(epur_line, &j, head);
