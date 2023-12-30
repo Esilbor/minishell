@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:13:47 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/26 16:48:21 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/30 21:18:44 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,8 @@ void	ft_pipex(t_set *set)
 	pid_t last_pid;
 
 	i = 0;
+	update_ret(&set->env_lst, g_exit_val);
+	printf("g_exit_val = %d\n", g_exit_val);
 	if (set->cmd_set[i]->cmd[0] && is_single_builtin(set, i))
 	{
 		do_builtins(set, i);

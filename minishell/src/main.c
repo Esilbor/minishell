@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 23:02:12 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/26 16:15:17 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/30 20:48:19 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int	shell_loop(t_set *set, t_cmd **cmd_tab, t_env *envb)
 	
 	while (1)
 	{
+		ft_handle_signals();
 		input = ft_prompt(envb);
 		if (input && input[0] && !shell_parser(input, &lexer, envb, &cmd_tab))
 		{
@@ -52,7 +53,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	if (argc != 1)
 		return (ft_putstr_fd(PINK"better without added sugar\n"RESET, 2), 1);
-	ft_handle_signals();
+	//ft_handle_signals();
 	envb = get_env(envp);
 	shell_loop(set,cmd_tab,envb);
 	return (0);
