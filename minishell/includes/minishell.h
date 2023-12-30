@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/30 10:35:23 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/30 17:54:44 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,9 @@ extern int	g_exit_val;
 /******************************************/
 /***************TO ORDER*******************/
 /******************************************/
+
+void		clean_space_nodes(t_lexer **lexer);
+t_lexer		**expand_cmds(t_lexer **lexer);
 int			fail_to_write_fd(char *s, int fd);
 int			quote_is_space(t_lexer *lex);
 void		remove_space_nodes(t_lexer **lexer);
@@ -235,6 +238,7 @@ void		ign_sigquit(void);
 void		sig_heredoc_handler(int signum);
 void		signals_simple(void);
 void		ign_sigint(void);
+void		signal_heredoc(void);
 
 /*	destroyers	*/
 
@@ -302,7 +306,7 @@ t_lexer		*clean_quotes(t_lexer *node);
 int			handle_squotes(char *cmd_line, int *i, t_lexer **head);
 int			handle_dquotes(char *cmd_line, int *i, t_lexer **head);
 void		handle_spec_chars(char *cmd_line, int *j, t_lexer **head);
-void		handle_dollar(char *cmd_line, int *i, t_lexer **head);
+int			handle_dollar(char *cmd_line, int *i, t_lexer **head);
 void		handle_words_spec_char(char *cmd_line, int *i, t_lexer **head);
 
 /*	expansion_handlers_2.c	*/

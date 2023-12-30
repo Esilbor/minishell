@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:36:38 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/30 10:17:35 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/30 17:40:28 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,21 @@ char	*dol_to_expand(char *str)
 	return (NULL);
 }
 
+static int	allocate_new_str(char *tmp_str, char *var, char **new_str)
+{
+	if (var)
+		*new_str = ft_strjoin(tmp_str, var);
+	else
+	{
+		*new_str = ft_strdup(tmp_str);
+		if (!(*new_str) && tmp_str)
+			return (free (tmp_str), -1);
+	}
+	free (var);
+	free (tmp_str);
+	return (0);
+}
+
 // Recursively expand lexer node for env variables (within double quotes)
 t_lexer	*expand_dquote(char *tmp, t_lexer *node, t_env *envb)
 {
@@ -45,20 +60,12 @@ t_lexer	*expand_dquote(char *tmp, t_lexer *node, t_env *envb)
 	var = extract_var(tmp + 1, &ptr);
 	tmp_str = ft_strpcpy(node->word, tmp);
 	get_env_value(envb, &var);
-	if (var)
-		new_str = ft_strjoin(tmp_str, var);
-	else
-	{
-		new_str = ft_strdup(tmp_str);
-		if (!new_str && tmp_str)
-			return (free (tmp_str), NULL);
-	}
-	free (var);
-	free (tmp_str);
+	if (allocate_new_str(tmp_str, var, &new_str) < 0)
+		return (NULL);
 	if (ptr)
 		tmp_str = ft_strjoin(new_str, ptr);
-	free (node->word);
 	free (new_str);
+	free (node->word);
 	node->word = ft_strdup(tmp_str);
 	if (!node->word && tmp_str)
 		return (free (tmp_str), NULL);
