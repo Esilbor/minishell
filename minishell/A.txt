@@ -1,5 +1,0 @@
-SRC_DIR = ./src/
-C_FILES = $(foreach dir,$(SRC_SUBDIRS),$(wildcard $(SRC_DIR)$(dir)/*.c))
-C_FILES += $(wildcard $(SRC_DIR)*.c) # Don't forget the files in the root of src/
-OBJ = $(C_FILES:$(SRC_DIR)%.c=$(OBJ_DIR)%.o)
-$(OBJ_DIR)%.o : $(SRC_DIR)%.c
