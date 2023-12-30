@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_utils_2.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:36:38 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/25 00:22:12 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/30 18:46:37 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ char	*dol_to_expand(char *str)
 	i = 0;
 	while (str[i] && str[i + 1])
 	{
-		if (str[i] == '$' && (str[i + 1]) != ' ' && str[i + 1] != '"')
+		if (str[i] == '$' && (str[i + 1]) != ' '
+			&& str[i + 1] != '"' && str[i + 1] != '=')
 		{
 			if (i > 0 && str[i - 1] == '\\')
 				i ++;
@@ -47,7 +48,11 @@ t_lexer	*expand_dquote(char *tmp, t_lexer *node, t_env *envb)
 	if (var)
 		new_str = ft_strjoin(tmp_str, var);
 	else
+	{
 		new_str = ft_strdup(tmp_str);
+		if (!new_str && tmp_str)
+			return (free (tmp_str), NULL);
+	}
 	free (var);
 	free (tmp_str);
 	if (ptr)
@@ -55,6 +60,8 @@ t_lexer	*expand_dquote(char *tmp, t_lexer *node, t_env *envb)
 	free (node->word);
 	free (new_str);
 	node->word = ft_strdup(tmp_str);
+	if (!node->word && tmp_str)
+		return (free (tmp_str), NULL);
 	free (tmp_str);
 	tmp = dol_to_expand(node->word);
 	if (tmp)
@@ -70,5 +77,9 @@ t_lexer	*clean_quotes(t_lexer *node)
 	new_str = ft_strndup(&node->word[1], ft_strlen2(node->word) - 2);
 	free (node->word);
 	node->word = new_str;
+	if (!new_str[0])
+	{
+		node->type = ISSPACE;
+	}
 	return (node);
 }

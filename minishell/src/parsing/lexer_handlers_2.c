@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_handlers_2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:05:48 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/14 07:13:23 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/30 18:47:06 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
 
 void	handle_non_quote(char *str, int *i, int *j, char *epur_str)
 {
@@ -30,7 +31,9 @@ void	handle_quote(char *str, int *i, int *j, char *epur_str)
 
 	quote_char = str[*i];
 	if (str[*i] && str[*i + 1] && str[*i + 1] == quote_char)
-		*i += 2;
+	{
+		epur_str[(*j)++] = str[(*i)++];
+	}
 	if (str[*i])
 	{
 		epur_str[(*j)++] = str[(*i)++];

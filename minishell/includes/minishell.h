@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/26 17:09:51 by zaquedev         ###   ########.fr       */
+/*   Updated: 2023/12/30 18:42:14 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,8 @@ typedef enum e_tokens
 	DMERGE,
 	WMERGE,
 	EMERGE,
+	ISSPACE,
+	QSPACE,
 }					t_tokens;
 
 
@@ -251,6 +253,8 @@ void		closes_heredoc(int fd, int dup_stdin);
 /***************BUILT-IN*******************/
 /******************************************/
 
+int			do_env(t_set *set, t_env *env, int index);
+
 /*do_builtins.c*/
 
 void		do_builtins(t_set *set, int index);
@@ -262,9 +266,11 @@ void		do_exit(t_set *set, int index);
 
 /*	cd_echo_pwd_builtins.c	*/
 
-int			do_cd(char **str, t_env **envb);
+//int			do_cd(char **str, t_env **envb);
+int			do_cd(char **str, t_env **envb, t_set *set);
 int			do_echo(t_env **env, char **str);
 int			do_pwd(char **cmd_tab, t_env **env);
+int			fail_to_write_fd(char *s, int fd);
 
 /*	env_display.c	*/
 
@@ -291,7 +297,7 @@ t_env		*get_env(char **envp);
 /*	export_handling_1.c	*/
 
 void		create_var(char **v_tab, char **cmd_tab, t_env **env, int i);
-void		modify_var(t_env *node, char **v_tab, char **cmd_tab, int i);
+int			modify_var(t_env *node, char **v_tab, char **cmd_tab, int i);
 int			update_ret(t_env **env, int ret);
 int			do_export(int cmd_nb, char **cmd_tab, t_env **env);
 
@@ -357,11 +363,13 @@ void		clean_lexer3(t_lexer **lexer);
 
 /*	expansion_merge.c	*/
 
-void		process_expander_node(t_lexer **lst, t_env *envb);
+//void		process_expander_node(t_lexer **lst, t_env *envb);
+int			process_expander_node(t_lexer **lst, t_env *envb);
 void		merge_nodes(t_lexer **lexer);
 t_lexer		*parsing(char *input, t_lexer **lexer, t_env *envb);
 void		ft_expander(t_lexer **lexer, t_env *envb);
 void		lexer_polish(t_lexer **lexer);
+int			quote_is_space(t_lexer *lex);
 
 /*	expansion_utils_1.c	*/
 
@@ -409,15 +417,15 @@ int			ft_fill_lexer(t_lexer **lexer_lst, char *cmd_line);
 
 t_lexer		*ft_last_lexer_node(t_lexer *node);
 void		ft_add_lex_node(t_lexer **lexer, char *word, t_tokens type);
-t_lexer		*syntax_error(t_lexer *lexer, t_lexer **lexer_head);
-t_lexer		*check_valid_input(t_lexer **lexer_head);
-t_lexer		*ft_lexer(char *line);
+t_lexer		*syntax_error(t_lexer *lexer, t_lexer **lexer_head, t_env *env);
+t_lexer		*check_valid_input(t_lexer **lexer_head, t_env *env);
+t_lexer		*ft_lexer(char *line, t_env *env);
 
 /*	lexer_utils_3.c	*/
 
 void		clean_squotes(t_lexer **lexer);
-void		clean_esc(t_lexer **lex, char **esc);
-t_lexer		**clean_empty_nodes(t_lexer **lexer);
+int			clean_esc(t_lexer **lex, char **esc);
+t_lexer		**clean_empty_nodes(t_lexer **lexer, t_tokens type);
 void		quotes_to_words(t_lexer **lexer);
 
 	/*to be commented out */
