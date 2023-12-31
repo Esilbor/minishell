@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:36:38 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/30 22:41:39 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/31 12:09:37 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ char	*extract_var(char *str, char **ptr)
 		{
 			*ptr = &str[1];
 			var = malloc(sizeof(char) * i + 2);
-			if (str[0] == '!' || str[0] == '*' || str[0] == '@' || ft_isdigit(str[0]))
+			if (str[0] == '!' || str[0] == '*' || str[0] == '@'
+				|| ft_isdigit(str[0]))
 				ft_strlcpy(var, str, i + 1);
 			else
 				ft_strlcpy(var, str, i + 2);

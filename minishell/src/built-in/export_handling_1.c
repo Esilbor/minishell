@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 20:27:54 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/31 11:08:00 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/31 12:08:09 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int	do_export(int cmd_nb, char **cmd_tab, t_env **env)
 	ret = 0;
 	while (i < cmd_nb)
 	{
-		if (cmd_is_valid(cmd_tab, i, &ret) /* && assign_or_append(cmd_tab[i]) >= 0 */)
+		if (cmd_is_valid(cmd_tab, i, &ret))
 		{
 			if (process_command(cmd_tab, i, env) < 0)
 				return (-1);
