@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 15:09:16 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/30 09:04:33 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/31 13:34:56 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,38 +31,6 @@ int	fail_to_write_fd(char *s, int fd)
 	}
 	return (0);
 }
-
-// int	do_echo(t_env **env, char **str)
-// {
-// 	int	n_flag;
-// 	int	i;
-// 	int	j;
-// 	int	cmd_nb;
-
-// 	n_flag = 1;
-// 	i = 1;
-// 	j = 1;
-// 	cmd_nb = ft_tab_len(str);
-// 	while (i < cmd_nb && !ft_strncmp(str[i], "-n", 2)
-// 		&& !ft_strccmp(&str[i][j], 'n'))
-// 	{
-// 		n_flag = 0;
-// 		i++;
-// 	}
-// 	while (i < cmd_nb)
-// 	{
-// 		if (fail_to_write_fd(str[i], 1))
-// 			return (update_ret(env, -1));
-// 		if (i < cmd_nb - 1)
-// 			if (fail_to_write_fd(" ", 1))
-// 				return (update_ret(env, -1));
-// 		i++;
-// 	}
-// 	if (n_flag)
-// 		if (fail_to_write_fd("\n", 1))
-// 			return (update_ret(env, -1));
-// 	return (update_ret(env, 0));
-// }
 
 // determine the -n flag's presence and update the index i.
 static int	handle_n_flag(char **str, int *i)

@@ -6,18 +6,9 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 19:51:29 by bbresil           #+#    #+#             */
-/*   Updated: 2023/11/25 00:07:47 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/31 13:36:04 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-//env -i bash
-//env
-//>> il ne reste que PWD= et SHLVL=
-// ne pas gerer _=
-
-//ne pas utiliser ft_printf
-// utiliser write (avec une protection)
-// error message handling
 
 #include "../../includes/minishell.h"
 

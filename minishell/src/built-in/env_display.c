@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 10:23:53 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/29 10:59:47 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/31 12:08:45 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,8 @@ int	print_env(t_set *set, t_env **head)
 // return 0 for assign, 1 for append or -1 if no equal sign
 int	assign_or_append(char *env_var)
 {
-	char	*equal;
 	char	*plus;
 
-	equal = ft_strchr(env_var, '=');
-	if (!equal)
-		return (-1);
 	plus = ft_strchr(env_var, '+');
 	if (plus && *(plus + 1) == '=')
 		return (1);

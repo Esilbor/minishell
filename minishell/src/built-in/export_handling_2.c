@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 10:35:32 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/30 08:33:19 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/31 12:07:27 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,7 @@ t_env	*get_env_node(t_env *lst, char *str)
 	str_len = ft_strlen(str);
 	while (lst)
 	{
-		if (!ft_strncmp(lst->var_str, str, ft_strlen(str))
-			&& lst->var_str[str_len] == '=')
+		if (!ft_strncmp(lst->var_str, str, str_len))
 			return (lst);
 		else
 			lst = lst->next;
