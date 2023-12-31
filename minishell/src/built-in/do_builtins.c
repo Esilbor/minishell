@@ -6,13 +6,11 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 15:11:47 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/31 09:13:30 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/31 13:35:11 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-// faire des writes protegees
 
 int	is_builtin(char **command)
 {

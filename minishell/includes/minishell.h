@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/30 17:54:44 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/31 13:39:22 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,6 @@ void		close_crush_exit(char *msg, t_set *set, int do_exit, int exit_ret);
 
 void		create_heredoc(t_env *env, t_lexer *lex, char *limiter);
 void		fill_heredoc(t_env *env, int fd, char *limiter);
-//void		fill_heredoc(int fd, char *limiter, t_set *set);
 char		*name_heredoc(char *limiter, int index, int k);
 int			modify_limiter_nodes(t_env *env, t_lexer *lst, int index);
 int			init_heredocs(t_env *env, t_cmd **cmd_tab);
