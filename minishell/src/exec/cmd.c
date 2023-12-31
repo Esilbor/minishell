@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:57:33 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/13 12:10:01 by bbresil          ###   ########.fr       */
+/*   Updated: 2023/12/26 16:04:02 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,32 +30,10 @@ static char	*check_cmd_null(char *cmd)
 {
 	if (!cmd || string_empty(cmd))
 	{
-		//write(STDERR, ERR_CMD, ft_strlen(ERR_CMD));
-		//return (NULL);
 		return (ft_putstr_fd("CMD NULL", 2), NULL);
 	}
 	return (cmd);
 }
-
-// int	second_chance(t_set *set, char *cmd) // refaire avec just access et return le char* cmd_path
-// {
-// 	char	**cmd_tab;
-// 	char	*cmd_path;
-
-// 	cmd_tab = NULL;
-// 	if(ft_strchr(cmd, ' '))
-// 		cmd_tab = ft_split(cmd, ' ');
-// 	else
-// 		return (0);
-// 	if (set->paths && (!ft_strchr(cmd_tab[0], '/')))
-// 	{
-// 		cmd_path = set_path_cmd(set, cmd_tab[0]);
-// 		if (!cmd_path)
-// 			exit_err(set, 127);
-// 		execve(cmd_path, cmd_tab, set->envp);
-// 	}
-// 	exit_err(set, 126);
-// }
 
 //return true if cmd is a directory
 bool	is_directory(char *cmd)
@@ -89,23 +67,113 @@ char *set_path_cmd(t_set *set, char *cmd)
 	{
 		tmp = ft_strjoin("/", cmd);
 		if (!tmp)
-			return (ft_putstr_fd("ERR_MALLOC\n", 2), NULL); // free!!!
+			return (free_after_builtin(set),ft_putstr_fd("ERR_MAL\n", 2), NULL); // (1) ---> ?free + close tout ce qui a ete initialise/ malloc avant
 		cmd_tmp = ft_strjoin(set->paths[index], tmp);
 		if (!cmd_tmp)
-		{
-			free(tmp);
-			return (ft_putstr_fd("ERR_MALLOC\n", 2), NULL); // free!!!
-		}
-		if (access(cmd_tmp, X_OK | F_OK) == 0)
-		{
-			free(tmp);
-			return (cmd_tmp);
-		}
+			return (free(tmp),free_after_builtin(set),ft_putstr_fd("ERR_MAL\n", 2), NULL); // (2)
+		if (access(cmd_tmp, X_OK | F_OK) == 0)		
+			return (free(tmp),cmd_tmp);
 		free(tmp);
 		free (cmd_tmp);
 		index++;
 	}
-	// second_chance(set, cmd);
 	print_cmd_not_found(cmd);
 	return (NULL);
 }
+
+
+// free tout ce qui a ete initialise/ malloc avant
+// (1) (2) ---- > free_after_builtin(t_set *set) ?
+/*
+
+	-------------------------------------------------------------------
+	t_set	*init_set(t_set **set, t_cmd **cmd_struct_tab, t_env *envb)
+	-------------------------------------------------------------------
+	
+	--> free_cmd_struct_tab(cmd_tab) // t_cmd **
+	--> free (set) //  t_set
+	--> free (set->paths) // char **
+	--> free (set->envp) // char **
+	--> 
+	
+	---------------------------------------------
+	init_pipe_set(set);
+	---------------------------------------------
+	
+	--> free (set->pipe[0]);
+	--> free (set->pipe[1]);
+	--> free (set->pipe);
+	--> ft_close_pipes (t_set *set)
+
+	--------------------------------
+	void	init_pid_tab(t_set *set)
+	---------------------------------
+
+	--> free (set->pid )
+	--> 
+
+	----------------------------
+	char	**env_to_tab(t_env *lst)
+	---------------------------------
+	--> free(lst)
+	
+
+	free_lexer_list(lexer) --- > shell_parser.c
+		free_lexer_list(&(cmd_tab[i])->output);
+		free_lexer_list(&(cmd_tab[i])->input);
+		? free(cmd_tab[i]->heredoc_path);
+	
+*/
+
+
+
+
+
+// free + close pipes
+// free env
+// free cmd_tab  -- > free_cmd_struct_tab(cmd_tab);
+
+
+
+// void	free_cmd_struct_tab(t_cmd **cmd_tab)
+// void	ft_free_tab(void **tab)
+// void	free_redirections(t_cmd **tab)
+// void	sugar_rush(t_set *set)
+// void	ft_free_env_lst(t_env *env)
+// void	free_lexer_list(t_lexer **head)
+// void	ft_close_pipes(t_set *set)
+// void	free_after_builtin(t_set *set)
+
+/*
+
+	void	sugar_rush(t_set *set)
+	{
+		free(set->pid);
+		free(set->pipe[0]);
+		free(set->pipe[1]);
+		free(set->pipe);
+		ft_free_tab((void **) set->paths);
+		ft_free_tab((void **) set->envp);
+		free_redirections(set->cmd_set);
+		free_cmds((t_cmd **)set->cmd_set);
+		free(set);
+	}
+
+
+
+	void	free_after_builtin(t_set *set)
+	{
+		ft_free_env_lst(set->env_lst);
+		free(set->pipe[0]);
+		free(set->pipe[1]);
+		free(set->pipe);
+		ft_free_tab((void **)set->paths);
+		ft_free_tab((void **)set->envp);
+		free_cmds((t_cmd **)set->cmd_set);
+		free(set->pid);
+		free (set);
+	}
+
+
+
+*/

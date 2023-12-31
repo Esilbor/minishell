@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/31 13:39:22 by esilbor          ###   ########.fr       */
+/*   Updated: 2023/12/31 16:03:01 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,9 @@
 # define PROMPT126 "\001\033[92m\002126_Candy_$hell> \001\033[92m\002"
 # define PROMPT127 "\001\033[92m\002127_Candy_$hell> \001\033[92m\002"
 # define MAX_LL "9223372036854775807"
+
+# define ERR_PIPE "Error on initializing pipe.\n"
+# define ERR_FORK "Error on forking.\n"
 
 # include <string.h>
 # include <stdlib.h>
@@ -109,7 +112,7 @@ typedef struct t_set
 	struct s_env	*env_lst;
 	struct s_cmd	**cmd_set;
 	char			**envp;
-	pid_t			*pid;
+	pid_t			pid;
 	int				**pipe;
 }	t_set;
 
@@ -127,29 +130,54 @@ void		remove_space_nodes(t_lexer **lexer);
 void		handle_space(char *epur_line, int *i, t_lexer **head);
 bool		is_directory(char *cmd);
 void		print_cmd_not_found(char *cmd);
-void		exit_err(t_set *set, int err_nb);
-void		free_redirections(t_cmd **tab);
-void		free_after_builtin(t_set *set);
-void		free_cmds(t_cmd **cmd_tab);
-void		sugar_rush(t_set *set);
-void		ft_wait(t_set *set);
-void		ft_close_and_free(t_set *set);
-void		close_pipe(t_set *set, int index);
-pid_t		ft_fork(t_set *set, int index);
-void		ft_pipex(t_set *set);
-void		init_pipe_set(t_set *set);
-void		init_pid_tab(t_set *set);
-void		ft_execve(t_set *set, int index);
 char		*set_path_cmd(t_set *set, char *cmd);
+
+/* exec.c */
+
+char		**assign_paths(t_set **set, t_env *envb);
+t_set		*init_set(t_set **set, t_cmd **cmd_struct_tab, t_env *envb);
+char		**env_to_tab(t_env *lst);
+void		sugar_rush(t_set *set);
+void		execution(t_set *set, t_cmd **cmd_struct_tab, t_env *envb);
+
+/* free_functs.c */
+
+void		free_redirections(t_cmd **tab);
+void		free_cmds(t_cmd **cmd_tab);
+void		free_cmd_struct_tab(t_cmd **cmd_tab);
+void		free_after_builtin(t_set *set);
+void		exit_err(t_set *set, int err_nb);
+
+/* pipex.c */
+
+void		ft_execve(t_set *set, int index);
+pid_t		ft_fork(t_set *set, int index);
+void		ft_wait(t_set *set);
+bool		is_single_builtin(t_set *set, int index);
+void		ft_pipex(t_set *set);
+
+/* pipex_functs.c */
+
+void		ft_close_pipes(t_set *set);
+void		close_pipe(t_set *set, int index);
+void		init_pipe_set(t_set *set);
+void		ft_error(char *message, t_set *set);
+
+/* pipex_open.c */
+
+int			ft_open_stdin(t_set *set, int index);
+int			ft_open_stdout(t_set *set, int index);
+void		ft_dup2_first(t_set *set, int index, int fd_stdin, int fd_stdout);
+void		ft_dup2_multpl(t_set *set, int index, int fd_stdin, int fd_stdout);
 void		ft_dup2(t_set *set, int index);
-void		close_crush_exit(char *msg, t_set *set, int do_exit, int exit_ret);
 
 /******************************************/
 /***************HEREDOCS*******************/
 /******************************************/
 
 void		create_heredoc(t_env *env, t_lexer *lex, char *limiter);
-void		fill_heredoc(t_env *env, int fd, char *limiter);
+void		fill_heredoc(char	*buf, t_env *env, int fd, char *limiter);
+// void		fill_heredoc(t_env *env, int fd, char *limiter); // Boris version
 char		*name_heredoc(char *limiter, int index, int k);
 int			modify_limiter_nodes(t_env *env, t_lexer *lst, int index);
 int			init_heredocs(t_env *env, t_cmd **cmd_tab);
@@ -159,6 +187,14 @@ int			invalid_input(char *filename);
 void		keep_last_input(t_cmd **cmd_tab);
 void		keep_last_output(t_cmd **cmd_tab);
 bool		outputs_are_valid(t_lexer *lex);
+
+/******************************************/
+/***************HEREDOC_SIGNAL*************/
+/******************************************/
+
+void		sig_heredoc_handler(int signum);
+void		signal_heredoc(void);
+void		closes_heredoc(int fd, int dup_stdin);
 
 /******************************************/
 /***************BUILT-IN*******************/
@@ -180,6 +216,7 @@ void		do_exit(t_set *set, int index);
 int			do_cd(char **str, t_env **envb, t_set *set);
 int			do_echo(t_env **env, char **str);
 int			do_pwd(char **cmd_tab, t_env **env);
+int			fail_to_write_fd(char *s, int fd);
 
 /*	env_display.c	*/
 
@@ -231,28 +268,19 @@ char		*ft_prompt(t_env *envb);
 /*	signals.c	*/
 
 void		sigint_handler(int signum);
-void		sigquit_handler(int signum);
 void		ft_handle_signals(void);
 void		ign_sigquit(void);
 void		sig_heredoc_handler(int signum);
 void		signals_simple(void);
 void		ign_sigint(void);
-void		signal_heredoc(void);
 
 /*	destroyers	*/
 
-void		ft_close_pipes(t_set *set);
+//void		ft_close_pipes(t_set *set);
 void		ft_quit_shell(t_set *set, t_env *envb, t_cmd **cmd_struct_tab);
 void		free_cmd_struct_tab(t_cmd **cmd_struct_tab);
 void		free_shell(t_set *set, char *input, t_cmd **cmd_struct_tab);
 void		candy_crush(t_set *set);
-
-/******************************************/
-/*******************EXEC*******************/
-/******************************************/
-
-t_set		*init_set(t_set **set, t_cmd **cmd_struct_tab, t_env *envb);
-char		**env_to_tab(t_env *lst);
 
 /******************************************/
 /****************PARSING*******************/
@@ -285,6 +313,7 @@ void		merge_nodes(t_lexer **lexer);
 t_lexer		*parsing(char *input, t_lexer **lexer, t_env *envb);
 void		ft_expander(t_lexer **lexer, t_env *envb);
 void		lexer_polish(t_lexer **lexer);
+int			quote_is_space(t_lexer *lex);
 
 /*	expansion_utils_1.c	*/
 
@@ -354,8 +383,8 @@ void		clean_redir(t_lexer **lexer, t_lexer **lex, t_tokens type);
 /******************MAIN********************/
 /******************************************/
 
-void		execution(t_set *set, t_cmd **cmd_struct_tab, t_env *envb);
+//void		execution(t_set *set, t_cmd **cmd_struct_tab, t_env *envb);
 int			shell_parser(char *in, t_lexer **lexr, t_env *envb, t_cmd ***cmd_t);
-int			shell_loop(t_env *envb);
+int			shell_loop(t_set *set, t_cmd **cmd_tab, t_env *envb);
 
 #endif
