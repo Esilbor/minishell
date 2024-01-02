@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 11:28:12 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/30 16:58:55 by zaquedev         ###   ########.fr       */
+/*   Updated: 2024/01/02 18:24:31 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,6 @@ int	do_cd(char **cmd_tab, t_env **envb)
 
 
 */
-
-
 
 static void	set_old_pwd(t_env *oldpwd, t_env *pwd, t_set *set)
 {

@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:13:47 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/30 21:18:44 by zaquedev         ###   ########.fr       */
+/*   Updated: 2024/01/02 18:20:26 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,9 @@ pid_t	ft_fork(t_set *set, int index)
 			ft_close_pipes(set);	
 			ft_execve(set, index);
 		}
-		exit_err(set, 1);
+		exit_err(set, g_exit_val);
+		//exit_err(set, 1);
+		//exit_err(set, update_ret(&set->env_lst, 0));
 	}
 	if (index)
 		close_pipe(set, index);
@@ -105,8 +107,8 @@ void	ft_pipex(t_set *set)
 	pid_t last_pid;
 
 	i = 0;
-	update_ret(&set->env_lst, g_exit_val);
-	printf("g_exit_val = %d\n", g_exit_val);
+	update_ret(&set->env_lst, g_exit_val); // ajout
+	//printf("Dans le fonction ft_pipex ---> g_exit_val = %d\n", g_exit_val);
 	if (set->cmd_set[i]->cmd[0] && is_single_builtin(set, i))
 	{
 		do_builtins(set, i);

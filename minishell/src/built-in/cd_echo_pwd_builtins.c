@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 15:09:16 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/30 17:00:34 by zaquedev         ###   ########.fr       */
+/*   Updated: 2024/01/02 18:14:20 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,10 @@ int	do_echo(t_env **env, char **str)
 		return (update_ret(env, -1));
 	if (n_flag && fail_to_write_fd("\n", 1))
 		return (update_ret(env, -1));
-	return (update_ret(env, 0));
+	//return (update_ret(env, 0));
+	//printf("Dans le fonction do_echo --> g_exit_val  avant update = %d\n", g_exit_val);
+	return (update_ret(env, g_exit_val)); // ajout
+	
 }
 
 int	do_pwd(char **cmd_tab, t_env **env)
@@ -163,4 +166,5 @@ int	do_pwd(char **cmd_tab, t_env **env)
 		return (update_ret(env, 2));
 	}
 	return (update_ret(env, 0));
+	//return (update_ret(env, g_exit_val));
 }

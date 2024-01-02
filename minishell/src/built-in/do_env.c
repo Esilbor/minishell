@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 17:12:45 by zaquedev          #+#    #+#             */
-/*   Updated: 2023/12/30 21:04:48 by zaquedev         ###   ########.fr       */
+/*   Updated: 2024/01/02 16:51:01 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	do_env(t_set *set, t_env *env, int index)
 	{
 		if (print_env(set, &env) < 0)
 			return (update_ret(&env, -1));
-		return (update_ret(&env, 0));
+		return (update_ret(&env, 0)); // g_exit_val = 0; ?
 	}
 	return (update_ret(&env, 127));
 }

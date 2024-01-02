@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 10:23:53 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/30 17:05:48 by zaquedev         ###   ########.fr       */
+/*   Updated: 2024/01/02 16:58:20 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,8 @@ int	print_env(t_set *set, t_env **head)
 	{
 		if (lst->var_str)
 		{
-			if (ft_print_rainbow(lst->var_str) < 0)
+			//if (ft_print_rainbow(lst->var_str) < 0)
+			if (ft_printf("%s\n",lst->var_str) < 0)
 				return (update_ret(head, -1));
 		}
 		else
@@ -173,14 +174,24 @@ int	print_env(t_set *set, t_env **head)
 }
 
 // return 0 for assign, 1 for append or -1 if no equal sign
+// int	assign_or_append(char *env_var)
+// {
+// 	char	*equal;
+// 	char	*plus;
+
+// 	equal = ft_strchr(env_var, '=');
+// 	if (!equal)
+// 		return (-1);
+// 	plus = ft_strchr(env_var, '+');
+// 	if (plus && *(plus + 1) == '=')
+// 		return (1);
+// 	return (0);
+// }
+
 int	assign_or_append(char *env_var)
 {
-	char	*equal;
 	char	*plus;
 
-	equal = ft_strchr(env_var, '=');
-	if (!equal)
-		return (-1);
 	plus = ft_strchr(env_var, '+');
 	if (plus && *(plus + 1) == '=')
 		return (1);

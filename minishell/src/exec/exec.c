@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 09:45:47 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/30 21:22:30 by zaquedev         ###   ########.fr       */
+/*   Updated: 2024/01/02 17:35:13 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ t_set	*init_set(t_set **set, t_cmd **cmd_struct_tab, t_env *envb)
 	//(*set)->pid = NULL;
 	(*set)->pid = 0;
 	//g_exit_val = 0;
-	update_ret(&(*set)->env_lst, g_exit_val);
+	update_ret(&(*set)->env_lst, g_exit_val); // ajout
 	return (*set);
 }
 
@@ -86,6 +86,7 @@ void	sugar_rush(t_set *set)
 	free_redirections(set->cmd_set);
 	free_cmds((t_cmd **)set->cmd_set);
 	free(set);
+	//g_exit_val = 0;
 }
 
 // void	init_pid_tab(t_set *set)
