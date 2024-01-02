@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 11:28:12 by bbresil           #+#    #+#             */
-/*   Updated: 2024/01/02 18:52:01 by zaquedev         ###   ########.fr       */
+/*   Updated: 2024/01/02 20:25:48 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,28 +66,28 @@ static int	handle_cd(t_env **envb, t_set *set, char *path)
 	return (1);
 }
 
-int	do_cd(char **cmd_tab, t_env **envb, t_set *set)
+int    do_cd(char **cmd_tab, t_env **envb, t_set *set)
 {
-	char	*home;
-	char	*tmp;
-	int		ret;
+    char    *home;
+    char    *tmp;
+    int        ret;
 
-	home = &get_env_node(*envb, "HOME")->var_str[5];
-	if (cmd_tab[1] == NULL || (cmd_tab[1][0] == '~' && !cmd_tab[1][1]))
-		return (handle_cd(envb, set, home));
-	else if (cmd_tab[1][0] == '~' && cmd_tab[1][1] == '/')
-	{
-		tmp = ft_strjoin(home, &cmd_tab[1][1]);
-		ret = handle_cd(envb, set, tmp);
-		free(tmp);
-		return (ret);
-	}
-	else if (cmd_tab[1] && !is_directory(cmd_tab[1]))
-	{
-		ft_printf("Candy_$hell:cd: %s:No such file or directory\n", cmd_tab[1]);
-		return (update_ret(envb, 1));
-	}
-	else if (cmd_tab[1])
-		return (handle_cd(envb, set, cmd_tab[1]));
-	return (update_ret(envb, 0));
+    home = &get_env_node(*envb, "HOME")->var_str[5];
+    if (cmd_tab[1] == NULL || (cmd_tab[1][0] == '~' && !cmd_tab[1][1]))
+        return (handle_cd(envb, set, home));
+    else if (cmd_tab[1][0] == '~' && cmd_tab[1][1] == '/')
+    {
+        tmp = ft_strjoin(home, &cmd_tab[1][1]);
+        ret = handle_cd(envb, set, tmp);
+        free(tmp);
+        if (cmd_tab[1] && !is_directory(cmd_tab[1]))
+        {
+            ft_printf("Candy_$hell:cd: %s:No such file or directory\n", cmd_tab[1]);
+            return (update_ret(envb, 1));
+        }
+        return (ret);
+    }
+    else if (cmd_tab[1])
+        return (handle_cd(envb, set, cmd_tab[1]));
+    return (update_ret(envb, 0));
 }
