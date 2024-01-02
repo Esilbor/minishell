@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 09:39:05 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/26 16:32:03 by zaquedev         ###   ########.fr       */
+/*   Updated: 2024/01/02 20:39:32 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@
 // signal_heredoc(); // met la variable globale a 130
 // ft_handle_signals(); // ignor sigquit (ctrl-\)
 
-void	fill_heredoc(char	*buf, t_env *env, int fd, char *limiter) 
+void	fill_heredoc(char *buf, t_env *env, int fd, char *limiter)
 {
-	int		dup_stdin;
-	
+	int	dup_stdin;
+
 	dup_stdin = dup(STDIN_FILENO);
 	update_ret(&env, 0);
 	signal_heredoc();
@@ -57,9 +57,9 @@ void	create_heredoc(t_env *env, t_lexer *lex, char *limiter)
 	if (fd < 0)
 	{
 		ft_putstr_fd("could not open heredoc\n", 2);
-		exit (1);
+		exit(1);
 	}
-	fill_heredoc(buf , env, fd, limiter);
+	fill_heredoc(buf, env, fd, limiter);
 	close(fd);
 }
 
@@ -75,16 +75,16 @@ char	*name_heredoc(char *limiter, int index, int k)
 	tmp3 = ft_itoa(index);
 	tmp = ft_strdup(limiter);
 	tmp2 = ft_strjoin(tmp, "_");
-	free (tmp);
+	free(tmp);
 	tmp = ft_strjoin(tmp2, tmp3);
-	free (tmp2);
-	free (tmp3);
+	free(tmp2);
+	free(tmp3);
 	tmp2 = ft_strjoin(tmp, "_");
-	free (tmp);
+	free(tmp);
 	tmp3 = ft_itoa(k);
 	tmp = ft_strjoin(tmp2, tmp3);
-	free (tmp2);
-	free (tmp3);
+	free(tmp2);
+	free(tmp3);
 	return (tmp);
 }
 
@@ -102,11 +102,11 @@ void	modify_limiter_nodes(t_env *env, t_lexer *lst, int index)
 		{
 			limiter = ft_strdup(lst->word);
 			tmp = name_heredoc(lst->word, index, k);
-			free (lst->word);
+			free(lst->word);
 			lst->word = ft_strjoin(".", tmp);
-			free (tmp);
+			free(tmp);
 			create_heredoc(env, lst, limiter);
-			free (limiter);
+			free(limiter);
 			k++;
 		}
 		lst = lst->next;
@@ -116,7 +116,7 @@ void	modify_limiter_nodes(t_env *env, t_lexer *lst, int index)
 //void	init_heredocs(t_env *env, t_cmd **cmd_tab)
 void	init_heredocs(t_env *env, t_cmd **cmd_tab)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	while (cmd_tab[i])

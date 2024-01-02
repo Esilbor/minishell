@@ -6,12 +6,11 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/26 16:28:22 by zaquedev          #+#    #+#             */
-/*   Updated: 2023/12/26 16:29:23 by zaquedev         ###   ########.fr       */
+/*   Updated: 2024/01/02 20:40:23 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
 
 // closes the standard input (STDIN_FILENO)
 // and sets a global variable g_exit_val to 130
@@ -24,7 +23,7 @@ void	sig_heredoc_handler(int signum)
 	}
 }
 
-void signal_heredoc(void)
+void	signal_heredoc(void)
 {
 	struct sigaction	sa;
 
@@ -33,10 +32,9 @@ void signal_heredoc(void)
 	sigaction(SIGINT, &sa, NULL);
 }
 
-void closes_heredoc(int fd, int dup_stdin)
+void	closes_heredoc(int fd, int dup_stdin)
 {
-	close (fd);
-	close (dup_stdin);
+	close(fd);
+	close(dup_stdin);
 	g_exit_val = 0;
-	
 }

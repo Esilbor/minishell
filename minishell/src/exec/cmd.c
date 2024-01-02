@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:57:33 by bbresil           #+#    #+#             */
-/*   Updated: 2024/01/02 18:52:56 by zaquedev         ###   ########.fr       */
+/*   Updated: 2024/01/02 20:30:43 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,11 @@ void	print_cmd_not_found(char *cmd)
 		ft_putstr_fd("cmd_path not found\n", 2);
 }
 
-char *set_path_cmd(t_set *set, char *cmd)
+char	*set_path_cmd(t_set *set, char *cmd)
 {
-	int index;
-	char *tmp;
-	char *cmd_tmp;
+	int		index;
+	char	*tmp;
+	char	*cmd_tmp;
 
 	cmd = check_cmd_null(cmd);
 	index = 0;
@@ -67,14 +67,16 @@ char *set_path_cmd(t_set *set, char *cmd)
 	{
 		tmp = ft_strjoin("/", cmd);
 		if (!tmp)
-			return (free_after_builtin(set),ft_putstr_fd("ERR_MAL\n", 2), NULL); // (1) ---> ?free + close tout ce qui a ete initialise/ malloc avant
+			return (free_after_builtin(set), ft_putstr_fd("ERR_MAL\n", 2),
+				NULL);
 		cmd_tmp = ft_strjoin(set->paths[index], tmp);
 		if (!cmd_tmp)
-			return (free(tmp),free_after_builtin(set),ft_putstr_fd("ERR_MAL\n", 2), NULL); // (2)
-		if (access(cmd_tmp, X_OK | F_OK) == 0)		
-			return (free(tmp),cmd_tmp);
+			return (free(tmp), free_after_builtin(set),
+				ft_putstr_fd("ERR_MAL\n", 2), NULL);
+		if (access(cmd_tmp, X_OK | F_OK) == 0)
+			return (free(tmp), cmd_tmp);
 		free(tmp);
-		free (cmd_tmp);
+		free(cmd_tmp);
 		index++;
 	}
 	print_cmd_not_found(cmd);
