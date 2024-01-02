@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/26 16:10:34 by zaquedev          #+#    #+#             */
-/*   Updated: 2023/12/26 16:15:11 by zaquedev         ###   ########.fr       */
+/*   Updated: 2024/01/02 18:53:15 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,6 @@ void	free_after_builtin(t_set *set)
 	ft_free_tab((void **)set->paths);
 	ft_free_tab((void **)set->envp);
 	free_cmds((t_cmd **)set->cmd_set);
-	//free(set->pid);
 	free (set);
 }
 

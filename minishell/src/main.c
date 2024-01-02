@@ -6,19 +6,18 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 23:02:12 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/30 20:48:19 by zaquedev         ###   ########.fr       */
+/*   Updated: 2024/01/02 19:13:59 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
 
 //int	shell_loop(t_env *envb)
 int	shell_loop(t_set *set, t_cmd **cmd_tab, t_env *envb)
 {
 	t_lexer	*lexer;
 	char	*input;
-	
+
 	while (1)
 	{
 		ft_handle_signals();
@@ -36,25 +35,24 @@ int	shell_loop(t_set *set, t_cmd **cmd_tab, t_env *envb)
 		else if (input)
 			continue ;
 		else
-			return (ft_printf("exit\n"RESET), rl_clear_history(),ft_free_env_lst(envb),free(set), 2);
+			return (ft_printf("exit\n" RESET), rl_clear_history(),
+				ft_free_env_lst(envb), free(set), 2);
 	}
 	return (0);
 }
-
 
 int	main(int argc, char **argv, char **envp)
 {
 	t_env	*envb;
 	t_set	*set;
 	t_cmd	**cmd_tab;
-	
+
 	set = NULL;
 	cmd_tab = NULL;
 	(void)argv;
 	if (argc != 1)
-		return (ft_putstr_fd(PINK"better without added sugar\n"RESET, 2), 1);
-	//ft_handle_signals();
+		return (ft_putstr_fd(PINK "better without added sugar\n" RESET, 2), 1);
 	envb = get_env(envp);
-	shell_loop(set,cmd_tab,envb);
+	shell_loop(set, cmd_tab, envb);
 	return (0);
 }

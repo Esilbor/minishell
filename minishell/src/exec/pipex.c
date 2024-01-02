@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:13:47 by bbresil           #+#    #+#             */
-/*   Updated: 2024/01/02 18:20:26 by zaquedev         ###   ########.fr       */
+/*   Updated: 2024/01/02 18:50:20 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ pid_t	ft_fork(t_set *set, int index)
 	if (index < set->cmd_nb)
 		if (pipe(set->pipe[index % 2]) == -1)
 			ft_error(ERR_PIPE, set);
-	ign_sigint(); // ignore sigquit (ctrl-\) + sigint (ctrl-c)	
+	ign_sigint();
 	pid = fork();
 	if (pid == -1)
 		ft_error(ERR_FORK, set);
@@ -52,13 +52,11 @@ pid_t	ft_fork(t_set *set, int index)
 			do_builtins(set, index); 
 		else if (set->cmd_set[index]->cmd[0])
 		{
-			signals_simple(); // fonction par defaut
+			signals_simple();
 			ft_close_pipes(set);	
 			ft_execve(set, index);
 		}
 		exit_err(set, g_exit_val);
-		//exit_err(set, 1);
-		//exit_err(set, update_ret(&set->env_lst, 0));
 	}
 	if (index)
 		close_pipe(set, index);
@@ -74,7 +72,6 @@ void	ft_wait(t_set *set)
 	while (set->cmd_nb > 0)
 	{
 		lastpid = wait(&status);
-		//if (set->pid[set->cmd_nb - 1] == lastpid)
 		if (set->pid == lastpid)
 		{
 			if (WIFEXITED(status))
@@ -84,7 +81,7 @@ void	ft_wait(t_set *set)
 		}
 		set->cmd_nb--;		
 	}
-	ft_handle_signals(); // ignor sigquit (ctrl-\)
+	ft_handle_signals();
 	
 }
 
@@ -107,8 +104,6 @@ void	ft_pipex(t_set *set)
 	pid_t last_pid;
 
 	i = 0;
-	update_ret(&set->env_lst, g_exit_val); // ajout
-	//printf("Dans le fonction ft_pipex ---> g_exit_val = %d\n", g_exit_val);
 	if (set->cmd_set[i]->cmd[0] && is_single_builtin(set, i))
 	{
 		do_builtins(set, i);
@@ -118,7 +113,6 @@ void	ft_pipex(t_set *set)
 		while (i  < set->cmd_nb)
 		{
 			last_pid = ft_fork(set, i);
-			//set->pid[i] = last_pid;
 			set->pid = last_pid;
 			i++;
 		}

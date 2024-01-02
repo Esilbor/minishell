@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 17:28:56 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/26 16:05:31 by zaquedev         ###   ########.fr       */
+/*   Updated: 2024/01/02 18:53:43 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,15 +44,12 @@ int	ft_open_stdout(t_set *set, int index)
 void	ft_dup2_first(t_set *set, int index, int fd_stdin, int fd_stdout)
 {
 	if (fd_stdin && dup2(fd_stdin, 0) == -1)
-			exit_err(set, 1);     //exit_err(set, g_exit_val); //
+			exit_err(set, 1);
 	if (fd_stdout != 1 && dup2(fd_stdout, 1) == -1)
 			exit_err(set, 1);
 	if (set->cmd_nb > 1 && fd_stdout == 1)
 	{
-		// ft_printf("I AM THERE *******************************\n");
-		// ft_printf("cmd[%d] = %s\n", index, set->cmd_set[index]->cmd[0]);
-		//signal(SIGPIPE, SIG_IGN);
-		if (dup2(set->pipe[index][1], 1) == -1 || close(set->pipe[index][0]) == -1) // env | ls == SIGPIPE + LEAKS mais cat | ls OK
+		if (dup2(set->pipe[index][1], 1) == -1 || close(set->pipe[index][0]) == -1)
 		{
 			exit_err(set, 1);
 		}
