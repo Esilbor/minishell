@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 20:27:54 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/31 15:52:49 by esilbor          ###   ########.fr       */
+/*   Updated: 2024/01/02 22:21:31 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static int	process_command(char **cmd_tab, int i, t_env **env)
 	if (!value_tab)
 		return (-1);
 	node = get_env_node(*env, value_tab[0]);
-	if (node)
+	if (node && ft_strchr(cmd_tab[i], '='))
 	{
 		if (modify_var(node, value_tab, cmd_tab, i) < 0)
 		{
@@ -88,7 +88,7 @@ static int	process_command(char **cmd_tab, int i, t_env **env)
 			return (-1);
 		}
 	}
-	else
+	else if (!node)
 		create_var(value_tab, cmd_tab, env, i);
 	ft_free_tab((void **)value_tab);
 	return (0);
@@ -103,7 +103,7 @@ int	do_export(int cmd_nb, char **cmd_tab, t_env **env)
 	ret = 0;
 	while (i < cmd_nb)
 	{
-		if (cmd_is_valid(cmd_tab, i, &ret) && assign_or_append(cmd_tab[i]) >= 0)
+		if (cmd_is_valid(cmd_tab, i, &ret))
 		{
 			if (process_command(cmd_tab, i, env) < 0)
 				return (-1);

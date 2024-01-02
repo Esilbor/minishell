@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/31 16:03:01 by esilbor          ###   ########.fr       */
+/*   Updated: 2024/01/02 22:16:09 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,23 +35,23 @@
 # define ERR_PIPE "Error on initializing pipe.\n"
 # define ERR_FORK "Error on forking.\n"
 
-# include <string.h>
-# include <stdlib.h>
-# include <stdbool.h>
-# include <unistd.h>
-# include <stdio.h>
-# include <sys/types.h>
-# include <sys/stat.h>
-# include <fcntl.h>
-# include <sys/wait.h>
-# include <errno.h>
-# include <pthread.h>
-# include <sys/time.h>
-# include <limits.h>
 # include "../libft/libft.h"
-# include <readline/readline.h>
+# include <errno.h>
+# include <fcntl.h>
+# include <limits.h>
+# include <pthread.h>
 # include <readline/history.h>
+# include <readline/readline.h>
 # include <signal.h>
+# include <stdbool.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <string.h>
+# include <sys/stat.h>
+# include <sys/time.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+# include <unistd.h>
 
 // DO NOT MODIFY ORDER OF T_TOKENS
 typedef enum e_tokens
@@ -84,26 +84,26 @@ typedef struct s_lexer
 	t_tokens		type;
 	struct s_lexer	*next;
 	struct s_lexer	*prev;
-}	t_lexer;
+}					t_lexer;
 
 typedef struct s_env
 {
 	char			*var_str;
 	struct s_env	*next;
-}	t_env;
+}					t_env;
 
 typedef struct s_cmd
 {
-	int		index;
-	char	**cmd;
-	bool	append;
-	char	**heredoc_path;
-	t_lexer	*output;
-	t_lexer	*input;
-	int		fd_input;
-	int		fd_output;
+	int				index;
+	char			**cmd;
+	bool			append;
+	char			**heredoc_path;
+	t_lexer			*output;
+	t_lexer			*input;
+	int				fd_input;
+	int				fd_output;
 
-}	t_cmd;
+}					t_cmd;
 
 typedef struct t_set
 {
@@ -114,9 +114,9 @@ typedef struct t_set
 	char			**envp;
 	pid_t			pid;
 	int				**pipe;
-}	t_set;
+}					t_set;
 
-extern int	g_exit_val;
+extern int			g_exit_val;
 
 /******************************************/
 /***************TO ORDER*******************/
@@ -177,7 +177,6 @@ void		ft_dup2(t_set *set, int index);
 
 void		create_heredoc(t_env *env, t_lexer *lex, char *limiter);
 void		fill_heredoc(char	*buf, t_env *env, int fd, char *limiter);
-// void		fill_heredoc(t_env *env, int fd, char *limiter); // Boris version
 char		*name_heredoc(char *limiter, int index, int k);
 int			modify_limiter_nodes(t_env *env, t_lexer *lst, int index);
 int			init_heredocs(t_env *env, t_cmd **cmd_tab);
@@ -316,7 +315,6 @@ void		lexer_polish(t_lexer **lexer);
 int			quote_is_space(t_lexer *lex);
 
 /*	expansion_utils_1.c	*/
-
 t_lexer		*ft_remove_lex_node(t_lexer **lexer, t_lexer *node_to_remove);
 t_lexer		*expand_node(t_lexer **lexer, t_lexer *lst, t_env *envb);
 t_lexer		*expand_node2(char *tmp, t_lexer *node, t_env *envb);
@@ -372,7 +370,7 @@ int			clean_esc(t_lexer **lex, char **esc);
 t_lexer		**clean_empty_nodes(t_lexer **lexer, t_tokens type);
 void		quotes_to_words(t_lexer **lexer);
 
-	/*to be commented out */
+/*to be commented out */
 
 char		*print_token(t_tokens token);
 void		print_lexer(t_lexer **head, char *loc);

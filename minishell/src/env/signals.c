@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 09:59:10 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/30 21:02:32 by zaquedev         ###   ########.fr       */
+/*   Updated: 2024/01/02 22:28:19 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
 
 // Handle SIGINT signal and print a prompt  
 // on affiche le promp
@@ -20,9 +19,9 @@
 // redisplay pour mettre a jour l'affichage
 // ctrl_c ==> SIGINT
 
-int g_exit_val;
+int	g_exit_val;
 
-void	sigint_handler(int signum) 
+void	sigint_handler(int signum)
 {
 	if (signum == SIGINT)
 	{
@@ -43,18 +42,18 @@ void	sigint_handler(int signum)
 
 void	ft_handle_signals(void)
 {
-	struct sigaction	sa; 
-	
+	struct sigaction	sa;
+
 	ft_memset(&sa, 0, sizeof(sa));
-	sa.sa_handler = &sigint_handler; 
-	sigaction(SIGINT, &sa, NULL);	
+	sa.sa_handler = &sigint_handler;
+	sigaction(SIGINT, &sa, NULL);
 	ign_sigquit();
 }
 
 /* 
 *	SIGQUIT signals (ctrl-\) replaced with SIG_IGN
 */
-void	ign_sigquit(void) 
+void	ign_sigquit(void)
 {
 	struct sigaction	sa;
 
@@ -67,7 +66,7 @@ void	ign_sigquit(void)
 *	SIGINT signals (ctrl-c) replaced with SIG_IGN
 */
 
-void	ign_sigint(void) 
+void	ign_sigint(void)
 {
 	struct sigaction	sa;
 
@@ -77,13 +76,12 @@ void	ign_sigint(void)
 }
 
 // fonction par defaut:
-void signals_simple(void)
+void	signals_simple(void)
 {
-	struct sigaction	sa; 
+	struct sigaction	sa;
 
-	ft_memset(&sa, 0, sizeof(sa)); 
+	ft_memset(&sa, 0, sizeof(sa));
 	sa.sa_handler = SIG_DFL;
 	sigaction(SIGQUIT, &sa, NULL);
 	sigaction(SIGINT, &sa, NULL);
-
 }

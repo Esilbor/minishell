@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 09:39:05 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/31 15:56:14 by esilbor          ###   ########.fr       */
+/*   Updated: 2024/01/02 22:11:42 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	create_heredoc(t_env *env, t_lexer *lex, char *limiter)
 	if (fd < 0)
 	{
 		ft_putstr_fd("could not open heredoc\n", 2);
-		exit (1);
+		exit(1);
 	}
 	fill_heredoc(buf, env, fd, limiter);
 	close(fd);
@@ -109,7 +109,7 @@ void	create_heredoc(t_env *env, t_lexer *lex, char *limiter)
 //void	init_heredocs(t_env *env, t_cmd **cmd_tab)
 int	init_heredocs(t_env *env, t_cmd **cmd_tab)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	while (cmd_tab[i])

@@ -6,17 +6,16 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:13:47 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/31 15:08:23 by esilbor          ###   ########.fr       */
+/*   Updated: 2024/01/02 22:10:01 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-
-void ft_execve(t_set *set, int index)
+void	ft_execve(t_set *set, int index)
 {
-	char *cmd_path;
-	
+	char	*cmd_path;
+
 	if (set->paths && (!ft_strchr(set->cmd_set[index]->cmd[0], '/')))
 	{
 		cmd_path = set_path_cmd(set, set->cmd_set[index]->cmd[0]);
@@ -27,7 +26,8 @@ void ft_execve(t_set *set, int index)
 	else
 	{
 		if (access(set->cmd_set[index]->cmd[0], X_OK | F_OK) == 0)
-			execve(set->cmd_set[index]->cmd[0], set->cmd_set[index]->cmd, set->envp);
+			execve(set->cmd_set[index]->cmd[0], set->cmd_set[index]->cmd,
+				set->envp);
 		print_cmd_not_found(set->cmd_set[index]->cmd[0]);
 		exit_err(set, 127);
 	}
@@ -42,22 +42,22 @@ pid_t	ft_fork(t_set *set, int index)
 	if (index < set->cmd_nb)
 		if (pipe(set->pipe[index % 2]) == -1)
 			ft_error(ERR_PIPE, set);
-	ign_sigint(); // ignore sigquit (ctrl-\) + sigint (ctrl-c)	
 	pid = fork();
 	if (pid == -1)
 		ft_error(ERR_FORK, set);
 	if (pid == 0)
 	{
 		ft_dup2(set, index);
-		if (set->cmd_set[index]->cmd[0] && is_builtin(set->cmd_set[index]->cmd) == 1)
-			do_builtins(set, index); 
+		if (set->cmd_set[index]->cmd[0]
+			&& is_builtin(set->cmd_set[index]->cmd) == 1)
+			do_builtins(set, index);
 		else if (set->cmd_set[index]->cmd[0])
 		{
-			signals_simple(); // fonction par defaut
-			ft_close_pipes(set);	
+			signals_simple();
+			ft_close_pipes(set);
 			ft_execve(set, index);
 		}
-		exit_err(set, 1);
+		exit_err(set, g_exit_val);
 	}
 	if (index)
 		close_pipe(set, index);
@@ -67,13 +67,12 @@ pid_t	ft_fork(t_set *set, int index)
 // Waits for child processes to finish.
 void	ft_wait(t_set *set)
 {
-	int status;
-	int lastpid;
+	int	status;
+	int	lastpid;
 
 	while (set->cmd_nb > 0)
 	{
 		lastpid = wait(&status);
-		//if (set->pid[set->cmd_nb - 1] == lastpid)
 		if (set->pid == lastpid)
 		{
 			if (WIFEXITED(status))
@@ -81,15 +80,11 @@ void	ft_wait(t_set *set)
 			else if (WIFSIGNALED(status))
 				update_ret(&set->env_lst, 128 + WTERMSIG(status));
 		}
-		set->cmd_nb--;		
+		set->cmd_nb--;
 	}
-	ft_handle_signals(); // ignor sigquit (ctrl-\)
-	
+	ft_handle_signals();
 }
 
-// Macro: int WIFEXITED (int status) --> when the child erminated with ------------> exit 
-// Macro: int WIFSIGNALED (int status) --> if the child process terminated because it received a signal that was not handled.
-// Macro: int WTERMSIG (int status) ---> it  returns the signal number of the signal that terminated the child process
 bool	is_single_builtin(t_set *set, int index)
 {
 	if (is_builtin(set->cmd_set[index]->cmd) && set->cmd_nb == 1)
@@ -102,22 +97,20 @@ bool	is_single_builtin(t_set *set, int index)
 
 void	ft_pipex(t_set *set)
 {
-	int	i;
-	pid_t last_pid;
+	int		i;
+	pid_t	last_pid;
 
 	i = 0;
-	update_ret(&set->env_lst, g_exit_val);
-	printf("g_exit_val = %d\n", g_exit_val);
 	if (set->cmd_set[i]->cmd[0] && is_single_builtin(set, i))
 	{
 		do_builtins(set, i);
 	}
 	else
 	{
-		while (i  < set->cmd_nb)
+		while (i < set->cmd_nb)
 		{
+			ign_sigint();
 			last_pid = ft_fork(set, i);
-			//set->pid[i] = last_pid;
 			set->pid = last_pid;
 			i++;
 		}

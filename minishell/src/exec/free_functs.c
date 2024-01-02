@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/26 16:10:34 by zaquedev          #+#    #+#             */
-/*   Updated: 2023/12/26 16:15:11 by zaquedev         ###   ########.fr       */
+/*   Updated: 2024/01/02 20:31:35 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,14 @@ void	free_cmds(t_cmd **cmd_tab)
 		j = 0;
 		while (cmd_tab[i]->cmd[j])
 		{
-			free (cmd_tab[i]->cmd[j]);
+			free(cmd_tab[i]->cmd[j]);
 			j++;
 		}
-		free (cmd_tab[i]->cmd);
+		free(cmd_tab[i]->cmd);
 		free(cmd_tab[i]);
 		i++;
 	}
-	free (cmd_tab);
+	free(cmd_tab);
 	cmd_tab = NULL;
 }
 
@@ -75,13 +75,14 @@ void	free_cmd_struct_tab(t_cmd **cmd_tab)
 				j = 0;
 				while (cmd_tab[i]->cmd[j])
 					free(cmd_tab[i]->cmd[j++]);
-				free (cmd_tab[i]->cmd);
+				free(cmd_tab[i]->cmd);
 			}
-			free (cmd_tab[i]);
+			free(cmd_tab[i]);
 		}
-		free (cmd_tab);
+		free(cmd_tab);
 	}
 }
+
 void	free_after_builtin(t_set *set)
 {
 	ft_free_env_lst(set->env_lst);
@@ -91,8 +92,7 @@ void	free_after_builtin(t_set *set)
 	ft_free_tab((void **)set->paths);
 	ft_free_tab((void **)set->envp);
 	free_cmds((t_cmd **)set->cmd_set);
-	//free(set->pid);
-	free (set);
+	free(set);
 }
 
 void	exit_err(t_set *set, int err_nb)

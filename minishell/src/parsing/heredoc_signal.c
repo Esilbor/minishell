@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/26 16:28:22 by zaquedev          #+#    #+#             */
-/*   Updated: 2023/12/31 15:57:02 by esilbor          ###   ########.fr       */
+/*   Updated: 2024/01/02 22:10:36 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	signal_heredoc(void)
 
 void	closes_heredoc(int fd, int dup_stdin)
 {
-	close (fd);
-	close (dup_stdin);
+	close(fd);
+	close(dup_stdin);
 	g_exit_val = 0;
 }

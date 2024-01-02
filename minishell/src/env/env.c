@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 09:28:55 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/21 14:49:30 by esilbor          ###   ########.fr       */
+/*   Updated: 2024/01/02 22:09:36 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,7 @@ char	*ft_prompt(t_env *envb)
 		input = readline(PROMPT127);
 	else
 		input = readline(PROMPT3);
+	if (g_exit_val == 130)
+		update_ret(&envb, g_exit_val);
 	return (input);
 }
