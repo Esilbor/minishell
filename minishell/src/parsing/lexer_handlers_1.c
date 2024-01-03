@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_handlers_1.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:02:57 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/31 15:54:33 by esilbor          ###   ########.fr       */
+/*   Updated: 2024/01/03 16:17:33 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,9 @@ void	handle_spec_chars(char *epur_line, int *j, t_lexer **head)
 {
 	char	*tmp;
 
-	if ((is_spec_char(&epur_line[*j]) == LESS_LESS
-			|| is_spec_char(&epur_line[*j]) == GREAT_GREAT)
-		&& epur_line[*j + 1])
+	if ((is_spec_char(&epur_line[*j]) == LESS_LESS 
+		|| is_spec_char(&epur_line[*j]) == GREAT_GREAT) 
+		&& epur_line[*j	+ 1])
 	{
 		tmp = ft_strndup(&epur_line[*j], 2);
 		ft_add_lex_node(head, tmp, is_spec_char(&epur_line[*j]));
@@ -103,6 +103,7 @@ int	handle_dollar(char *str, int *i, t_lexer **head)
 	char	*tmp2;
 
 	j = *i;
+	tmp = NULL;
 	while (str[j] && !is_spec_char2(&str[j]) && str[j] != ' ')
 		j++;
 	tmp2 = ft_strndup(&str[*i], j - *i);

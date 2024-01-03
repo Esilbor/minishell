@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_builtin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 11:28:12 by bbresil           #+#    #+#             */
-/*   Updated: 2024/01/02 22:24:55 by esilbor          ###   ########.fr       */
+/*   Updated: 2024/01/03 16:06:46 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,13 +79,14 @@ int	do_cd(char **cmd_tab, t_env **envb, t_set *set)
 	{
 		tmp = ft_strjoin(home, &cmd_tab[1][1]);
 		ret = handle_cd(envb, set, tmp);
-		free(tmp);
-		if (cmd_tab[1] && !is_directory(cmd_tab[1]))
+		if (cmd_tab[1] && !is_directory(tmp))
 		{
+			free(tmp);
 			ft_printf("Candy_$hell: cd: %s: No such file or directory\n",
 				cmd_tab[1]);
 			return (update_ret(envb, 1));
 		}
+		free(tmp);
 		return (ret);
 	}
 	else if (cmd_tab[1])

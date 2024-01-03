@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:13:47 by bbresil           #+#    #+#             */
-/*   Updated: 2024/01/02 22:10:01 by esilbor          ###   ########.fr       */
+/*   Updated: 2024/01/03 16:07:35 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	ft_execve(t_set *set, int index)
 {
 	char	*cmd_path;
 
+	cmd_path = NULL;
 	if (set->paths && (!ft_strchr(set->cmd_set[index]->cmd[0], '/')))
 	{
 		cmd_path = set_path_cmd(set, set->cmd_set[index]->cmd[0]);
@@ -31,7 +32,7 @@ void	ft_execve(t_set *set, int index)
 		print_cmd_not_found(set->cmd_set[index]->cmd[0]);
 		exit_err(set, 127);
 	}
-	free (cmd_path);
+	free(cmd_path);
 	exit_err(set, 126);
 }
 
