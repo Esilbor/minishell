@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_handlers_1.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:02:57 by esilbor           #+#    #+#             */
-/*   Updated: 2024/01/03 16:17:33 by zaquedev         ###   ########.fr       */
+/*   Updated: 2024/01/04 05:10:53 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,9 @@ void	handle_spec_chars(char *epur_line, int *j, t_lexer **head)
 {
 	char	*tmp;
 
-	if ((is_spec_char(&epur_line[*j]) == LESS_LESS 
-		|| is_spec_char(&epur_line[*j]) == GREAT_GREAT) 
-		&& epur_line[*j	+ 1])
+	if ((is_spec_char(&epur_line[*j]) == LESS_LESS
+			|| is_spec_char(&epur_line[*j]) == GREAT_GREAT)
+		&& epur_line[*j + 1])
 	{
 		tmp = ft_strndup(&epur_line[*j], 2);
 		ft_add_lex_node(head, tmp, is_spec_char(&epur_line[*j]));
@@ -109,8 +109,8 @@ int	handle_dollar(char *str, int *i, t_lexer **head)
 	tmp2 = ft_strndup(&str[*i], j - *i);
 	if (str[j] && !dol_to_expand(tmp2))
 	{
-		tmp = ft_strndup("\0", 2);
-		ft_add_lex_node(head, tmp, WMERGE);
+		// tmp = ft_strndup("\0", 2);
+		ft_add_lex_node(head, NULL, WMERGE);
 	}
 	else if (str[j] && str[j] != ' ' && is_spec_char2(&str[j]))
 	{
