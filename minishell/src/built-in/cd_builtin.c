@@ -6,11 +6,12 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 11:28:12 by bbresil           #+#    #+#             */
-/*   Updated: 2024/01/05 18:05:42 by zaquedev         ###   ########.fr       */
+/*   Updated: 2024/01/05 20:34:59 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
 /*
 static void	set_old_pwd(t_env *oldpwd, t_env *pwd, t_set *set)
 {
@@ -66,7 +67,7 @@ static int	handle_cd(t_env **envb, t_set *set, char *path)
 	return (1);
 }
 
-int    do_cd(char **cmd_tab, t_env **envb, t_set *set)
+int	do_cd(char **cmd_tab, t_env **envb, t_set *set)
 {
     char    *home;
     char    *tmp;
@@ -82,7 +83,8 @@ int    do_cd(char **cmd_tab, t_env **envb, t_set *set)
         free(tmp);
         if (cmd_tab[1] && !is_directory(cmd_tab[1]))
         {
-            ft_printf("Candy_$hell:cd: %s:No such file or directory\n", cmd_tab[1]);
+            ft_printf("Candy_$hell:cd: %s:No such file or directory\n",
+		cmd_tab[1]);
             return (update_ret(envb, 1));
         }
         return (ret);
@@ -92,8 +94,6 @@ int    do_cd(char **cmd_tab, t_env **envb, t_set *set)
     return (update_ret(envb, 0));
 }
 */
-
-
 
 static void	set_old_pwd(t_env *oldpwd, t_env *pwd, t_set *set)
 {
@@ -135,8 +135,11 @@ static void	update_pwd(t_env **envb, t_set *set)
 
 	pwd = get_env_node(*envb, "PWD");
 	oldpwd = get_env_node(*envb, "OLDPWD");
-	set_old_pwd(oldpwd, pwd, set);
-	set_new_pwd(pwd, set);
+	if (pwd && oldpwd)
+	{
+		set_old_pwd(oldpwd, pwd, set);
+		set_new_pwd(pwd, set);
+	}
 }
 
 static int	handle_cd(t_env **envb, t_set *set, char *path)
