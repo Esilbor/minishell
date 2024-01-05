@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2024/01/02 21:09:11 by zaquedev         ###   ########.fr       */
+/*   Updated: 2024/01/05 17:57:40 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -340,9 +340,9 @@ t_lexer				*clean_quotes(t_lexer *node);
 int					handle_squotes(char *cmd_line, int *i, t_lexer **head);
 int					handle_dquotes(char *cmd_line, int *i, t_lexer **head);
 void				handle_spec_chars(char *cmd_line, int *j, t_lexer **head);
-void				handle_dollar(char *cmd_line, int *i, t_lexer **head);
-void				handle_words_spec_char(char *cmd_line, int *i,
-						t_lexer **head);
+//void				handle_dollar(char *cmd_line, int *i, t_lexer **head);
+int					handle_dollar(char *str, int *i, t_lexer **head);
+void				handle_words_spec_char(char *cmd_line, int *i,t_lexer **head);
 
 /*	expansion_handlers_2.c	*/
 
