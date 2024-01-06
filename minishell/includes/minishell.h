@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2024/01/02 22:16:09 by esilbor          ###   ########.fr       */
+/*   Updated: 2024/01/06 20:53:15 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,19 +118,38 @@ typedef struct t_set
 
 extern int			g_exit_val;
 
+// /******************************************/
+// /***************TO ORDER*******************/
+// /******************************************/
+
+// void		clean_space_nodes(t_lexer **lexer);
+
+// int			fail_to_write_fd(char *s, int fd);
+// int			quote_is_space(t_lexer *lex);
+ 
+// void		handle_space(char *epur_line, int *i, t_lexer **head);
+// bool		is_directory(char *cmd);
+// void		print_cmd_not_found(char *cmd);
+// char		*set_path_cmd(t_set *set, char *cmd);
+
+
 /******************************************/
 /***************TO ORDER*******************/
 /******************************************/
 
-void		clean_space_nodes(t_lexer **lexer);
-t_lexer		**expand_cmds(t_lexer **lexer);
-int			fail_to_write_fd(char *s, int fd);
-int			quote_is_space(t_lexer *lex);
-void		remove_space_nodes(t_lexer **lexer);
-void		handle_space(char *epur_line, int *i, t_lexer **head);
-bool		is_directory(char *cmd);
-void		print_cmd_not_found(char *cmd);
-char		*set_path_cmd(t_set *set, char *cmd);
+void				ft_close_and_free(t_set *set);
+void				close_crush_exit(char *msg, t_set *set, int do_exit,
+						int exit_ret);
+
+/******************************************/
+/*******************EXEC*******************/
+/******************************************/
+
+/* cmd.c */
+
+bool				is_directory(char *cmd);
+void				print_cmd_not_found(char *cmd);
+char				*set_path_cmd(t_set *set, char *cmd);
 
 /* exec.c */
 
@@ -175,25 +194,35 @@ void		ft_dup2(t_set *set, int index);
 /***************HEREDOCS*******************/
 /******************************************/
 
-void		create_heredoc(t_env *env, t_lexer *lex, char *limiter);
-void		fill_heredoc(char	*buf, t_env *env, int fd, char *limiter);
-char		*name_heredoc(char *limiter, int index, int k);
-int			modify_limiter_nodes(t_env *env, t_lexer *lst, int index);
-int			init_heredocs(t_env *env, t_cmd **cmd_tab);
+// void		create_heredoc(t_env *env, t_lexer *lex, char *limiter);
+// void		fill_heredoc(char	*buf, t_env *env, int fd, char *limiter);
+// char		*name_heredoc(char *limiter, int index, int k);
+// int			modify_limiter_nodes(t_env *env, t_lexer *lst, int index);
+// int			init_heredocs(t_env *env, t_cmd **cmd_tab);
 
-int			inputs_are_valid(t_cmd **cmd_tab);
-int			invalid_input(char *filename);
-void		keep_last_input(t_cmd **cmd_tab);
-void		keep_last_output(t_cmd **cmd_tab);
-bool		outputs_are_valid(t_lexer *lex);
+// int			inputs_are_valid(t_cmd **cmd_tab);
+// int			invalid_input(char *filename);
+// void		keep_last_input(t_cmd **cmd_tab);
+// void		keep_last_output(t_cmd **cmd_tab);
+// bool		outputs_are_valid(t_lexer *lex);
 
-/******************************************/
-/***************HEREDOC_SIGNAL*************/
-/******************************************/
+/* heredocs.c */
+
+void				fill_heredoc(char *buf, t_env *env, int fd, char *limiter);
+void				create_heredoc(t_env *env, t_lexer *lex, char *limiter);
+void				init_heredocs(t_env *env, t_cmd **cmd_tab);
+
+/* heredocs.c */
+
+char				*name_heredoc(char *limiter, int index, int k);
+void				modify_limiter_nodes(t_env *env, t_lexer *lst, int index);
+
+/* heredoc_signal */
 
 void		sig_heredoc_handler(int signum);
 void		signal_heredoc(void);
 void		closes_heredoc(int fd, int dup_stdin);
+
 
 /******************************************/
 /***************BUILT-IN*******************/
@@ -234,7 +263,7 @@ void		ft_fill_env(t_env **env, char **envp);
 
 /*	env_management_2.c	*/
 
-unsigned ft_rand(void);
+unsigned int ft_rand(void);
 void		init_colors(char **colors);
 t_env		**sort_env(t_env **head);
 t_env		*get_env(char **envp);
@@ -266,12 +295,11 @@ char		*ft_prompt(t_env *envb);
 
 /*	signals.c	*/
 
-void		sigint_handler(int signum);
-void		ft_handle_signals(void);
-void		ign_sigquit(void);
-void		sig_heredoc_handler(int signum);
-void		signals_simple(void);
-void		ign_sigint(void);
+void				sigint_handler(int signum);
+void				ft_handle_signals(void);
+void				ign_sigquit(void);
+void				ign_sigint(void);
+void				signals_simple(void);
 
 /*	destroyers	*/
 
@@ -313,6 +341,8 @@ t_lexer		*parsing(char *input, t_lexer **lexer, t_env *envb);
 void		ft_expander(t_lexer **lexer, t_env *envb);
 void		lexer_polish(t_lexer **lexer);
 int			quote_is_space(t_lexer *lex);
+ t_lexer	**expand_cmds(t_lexer **lexer);
+ void		remove_space_nodes(t_lexer **lexer);
 
 /*	expansion_utils_1.c	*/
 t_lexer		*ft_remove_lex_node(t_lexer **lexer, t_lexer *node_to_remove);
@@ -334,6 +364,8 @@ int			handle_dquotes(char *cmd_line, int *i, t_lexer **head);
 void		handle_spec_chars(char *cmd_line, int *j, t_lexer **head);
 int			handle_dollar(char *cmd_line, int *i, t_lexer **head);
 void		handle_words_spec_char(char *cmd_line, int *i, t_lexer **head);
+
+// int					handle_dollar(char *str, int *i, t_lexer **head);
 
 /*	expansion_handlers_2.c	*/
 
@@ -376,6 +408,13 @@ char		*print_token(t_tokens token);
 void		print_lexer(t_lexer **head, char *loc);
 void		ft_print_struct_tab(t_cmd **struct_tab);
 void		clean_redir(t_lexer **lexer, t_lexer **lex, t_tokens type);
+
+/* parsing.c */
+int			inputs_are_valid(t_cmd **cmd_tab);
+int			invalid_input(char *filename);
+void		keep_last_input(t_cmd **cmd_tab);
+void		keep_last_output(t_cmd **cmd_tab);
+bool		outputs_are_valid(t_lexer *lex);
 
 /******************************************/
 /******************MAIN********************/

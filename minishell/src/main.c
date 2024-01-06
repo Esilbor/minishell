@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 23:02:12 by esilbor           #+#    #+#             */
-/*   Updated: 2024/01/02 22:18:34 by esilbor          ###   ########.fr       */
+/*   Updated: 2024/01/06 21:01:34 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,18 @@ int	shell_loop(t_set *set, t_cmd **cmd_tab, t_env *envb)
 		input = ft_prompt(envb);
 		if (input && input[0] && !shell_parser(input, &lexer, envb, &cmd_tab))
 		{
-			if (cmd_tab[0]->cmd[0][0])
+			//if (cmd_tab[0]->cmd[0][0])
+			if (cmd_tab[0]->cmd[0])
 			{
 				execution(set, cmd_tab, envb);
 				free(input);
 			}
 			else
 				free_cmd_tab(cmd_tab);
+				//free_cmd_struct_tab(cmd_tab);
+				
+				
+				
 		}
 		else if (input)
 			continue ;
