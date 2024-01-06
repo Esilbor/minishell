@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_builtin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 11:28:12 by bbresil           #+#    #+#             */
-/*   Updated: 2024/01/03 16:06:46 by zaquedev         ###   ########.fr       */
+/*   Updated: 2024/01/06 13:20:49 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,11 @@ static void	update_pwd(t_env **envb, t_set *set)
 
 	pwd = get_env_node(*envb, "PWD");
 	oldpwd = get_env_node(*envb, "OLDPWD");
-	set_old_pwd(oldpwd, pwd, set);
-	set_new_pwd(pwd, set);
+	if (pwd && oldpwd)
+	{
+		set_old_pwd(oldpwd, pwd, set);
+		set_new_pwd(pwd, set);
+	}
 }
 
 static int	handle_cd(t_env **envb, t_set *set, char *path)
