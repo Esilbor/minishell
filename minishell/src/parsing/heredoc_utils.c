@@ -1,16 +1,16 @@
-// /* ************************************************************************** */
-// /*                                                                            */
-// /*                                                        :::      ::::::::   */
-// /*   heredoc_utils.c                                    :+:      :+:    :+:   */
-// /*                                                    +:+ +:+         +:+     */
-// /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
-// /*                                                +#+#+#+#+#+   +#+           */
-// /*   Created: 2023/12/30 17:47:04 by esilbor           #+#    #+#             */
-// /*   Updated: 2023/12/30 18:05:48 by esilbor          ###   ########.fr       */
-// /*                                                                            */
-// /* ************************************************************************** */
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredoc_utils.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/12/30 17:47:04 by esilbor           #+#    #+#             */
+/*   Updated: 2024/01/07 16:44:24 by zaquedev         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
- #include "../../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 // .limiter_index_k
 char	*name_heredoc(char *limiter, int index, int k)
@@ -39,67 +39,40 @@ char	*name_heredoc(char *limiter, int index, int k)
 	return (tmp);
 }
 
-// // Helper function to handle limiter nodes
-// static int	handle_limiter_node(t_lexer *lst, t_env *env, int index, int *k)
-// {
-// 	char	*limiter;
-// 	char	*tmp;
-
-// 	limiter = ft_strdup(lst->word);
-// 	if (!limiter)
-// 		return (-1);
-// 	tmp = name_heredoc(lst->word, index, (*k)++);
-// 	if (!tmp)
-// 	{
-// 		free(limiter);
-// 		return (-1);
-// 	}
-// 	free(lst->word);
-// 	lst->word = ft_strjoin(".", tmp);
-// 	free(tmp);
-// 	create_heredoc(env, lst, limiter);
-// 	free(limiter);
-// 	return (0);
-// }
-
-// int	modify_limiter_nodes(t_env *env, t_lexer *lst, int index)
-// {
-// 	int	k;
-
-// 	k = 1;
-// 	while (lst)
-// 	{
-// 		if (lst->type == LIMITER)
-// 			if (handle_limiter_node(lst, env, index, &k) < 0)
-// 				return (-1);
-// 		lst = lst->next;
-// 	}
-// 	return (0);
-// }
-
-
-
-void	modify_limiter_nodes(t_env *env, t_lexer *lst, int index)
+// Helper function to handle limiter nodes
+static int	handle_limiter_node(t_lexer *lst, t_env *env, int index, int *k)
 {
-	char	*tmp;
 	char	*limiter;
-	int		k;
+	char	*tmp;
+
+	limiter = ft_strdup(lst->word);
+	if (!limiter)
+		return (-1);
+	tmp = name_heredoc(lst->word, index, (*k)++);
+	if (!tmp)
+	{
+		free(limiter);
+		return (-1);
+	}
+	free(lst->word);
+	lst->word = ft_strjoin(".", tmp);
+	free(tmp);
+	create_heredoc(env, lst, limiter);
+	free(limiter);
+	return (0);
+}
+
+int	modify_limiter_nodes(t_env *env, t_lexer *lst, int index)
+{
+	int	k;
 
 	k = 1;
-	tmp = NULL;
 	while (lst)
 	{
 		if (lst->type == LIMITER)
-		{
-			limiter = ft_strdup(lst->word);
-			tmp = name_heredoc(lst->word, index, k);
-			free(lst->word);
-			lst->word = ft_strjoin(".", tmp);
-			free(tmp);
-			create_heredoc(env, lst, limiter);
-			free(limiter);
-			k++;
-		}
+			if (handle_limiter_node(lst, env, index, &k) < 0)
+				return (-1);
 		lst = lst->next;
 	}
+	return (0);
 }
