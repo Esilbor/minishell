@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2024/01/07 16:53:22 by zaquedev         ###   ########.fr       */
+/*   Updated: 2024/01/07 17:17:11 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,6 +208,7 @@ void		do_builtins(t_set *set, int index);
 int			is_builtin(char **command);
 
 /*exit_builtins.c*/
+
 int			exit_parser(char **cmd_tab);
 void		do_exit(t_set *set, int index);
 
@@ -275,7 +276,6 @@ void		signals_simple(void);
 
 /*	destroyers	*/
 
-//void		ft_close_pipes(t_set *set);
 void		ft_quit_shell(t_set *set, t_env *envb, t_cmd **cmd_struct_tab);
 void		free_cmd_struct_tab(t_cmd **cmd_struct_tab);
 void		free_shell(t_set *set, char *input, t_cmd **cmd_struct_tab);
@@ -317,6 +317,7 @@ t_lexer		**expand_cmds(t_lexer **lexer);
 void		remove_space_nodes(t_lexer **lexer);
 
 /*	expansion_utils_1.c	*/
+
 t_lexer		*ft_remove_lex_node(t_lexer **lexer, t_lexer *node_to_remove);
 t_lexer		*expand_node(t_lexer **lexer, t_lexer *lst, t_env *envb);
 t_lexer		*expand_node2(char *tmp, t_lexer *node, t_env *envb);
@@ -336,8 +337,6 @@ int			handle_dquotes(char *cmd_line, int *i, t_lexer **head);
 void		handle_spec_chars(char *cmd_line, int *j, t_lexer **head);
 int			handle_dollar(char *cmd_line, int *i, t_lexer **head);
 void		handle_words_spec_char(char *cmd_line, int *i, t_lexer **head);
-
-// int					handle_dollar(char *str, int *i, t_lexer **head);
 
 /*	expansion_handlers_2.c	*/
 
@@ -382,6 +381,7 @@ void		ft_print_struct_tab(t_cmd **struct_tab);
 void		clean_redir(t_lexer **lexer, t_lexer **lex, t_tokens type);
 
 /* parsing.c */
+
 int			inputs_are_valid(t_cmd **cmd_tab);
 int			invalid_input(char *filename);
 void		keep_last_input(t_cmd **cmd_tab);
