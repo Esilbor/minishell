@@ -1,0 +1,39 @@
+unset HOME
+puis faire cd
+>>SEGFAULT
+
+--------------------------------------
+--------------------------------------
+
+cd ..
+
+creer un dossier C dans un dossier B dans un dossier A
+aller dans C et supprimer A
+faire cd ..
+la commande doit renvoyer une erreur car le dossier de destination n'existe pas
+
+--------------------------------------
+--------------------------------------
+
+> ///
+doit renvoyer la valeur de retour 126
+
+
+--------------------------------------
+--------------------------------------
+
+echo hola > 1 | echo bonjour > 2 | echo hello > 3
+
+ne fait pas bonjour dans 2
+
+--------------------------------------
+--------------------------------------
+
+echo hola > 1 > 1a | echo bonjour > 2 > 2a | echo hello > 3 > 3a
+
+--------------------------------------
+--------------------------------------
+
+< count < count1 cat -e
+
+count est supprime par erreur (ne doit pas faire la diff entre < et <<)
