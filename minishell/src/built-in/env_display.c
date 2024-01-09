@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 10:23:53 by esilbor           #+#    #+#             */
-/*   Updated: 2024/01/04 05:38:00 by esilbor          ###   ########.fr       */
+/*   Updated: 2024/01/09 05:56:18 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	print_env(t_set *set, t_env **head)
 	{
 		if (lst->var_str)
 		{
-			if (ft_printf("%s\n", lst->var_str) != ft_strlen2(lst->var_str) + 1)
+			if (printf("%s\n", lst->var_str) != ft_strlen2(lst->var_str) + 1)
 				return (update_ret(head, -1));
 		}
 		else

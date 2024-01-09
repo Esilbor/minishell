@@ -6,7 +6,7 @@
 /*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:05:48 by esilbor           #+#    #+#             */
-/*   Updated: 2024/01/04 05:23:03 by esilbor          ###   ########.fr       */
+/*   Updated: 2024/01/09 06:09:50 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,11 @@ void	handle_quote(char *str, int *i, int *j, char *epur_str)
 	{
 		epur_str[(*j)++] = str[(*i)++];
 		while (str[*i] && str[*i] != quote_char)
+		{
 			epur_str[(*j)++] = str[(*i)++];
-		if (str[*i] == quote_char)
-			epur_str[(*j)++] = str[(*i)++];
+			if (str[*i] == quote_char)
+				epur_str[(*j)++] = str[(*i)++];
+		}
 	}
 }
 

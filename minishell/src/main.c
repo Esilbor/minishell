@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
+/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 23:02:12 by esilbor           #+#    #+#             */
-/*   Updated: 2024/01/07 16:51:28 by zaquedev         ###   ########.fr       */
+/*   Updated: 2024/01/09 06:14:38 by esilbor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	free_cmd_tab(t_cmd **cmd_tab)
 {
-	//free_redirections(cmd_tab);
+	free_redirections(cmd_tab);
 	free_cmd_struct_tab(cmd_tab);
 }
 
