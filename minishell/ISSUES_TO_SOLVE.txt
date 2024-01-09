@@ -1,3 +1,7 @@
+--------------------------------------
+OK
+--------------------------------------
+
 unset HOME
 puis faire cd
 >>SEGFAULT
@@ -18,7 +22,7 @@ la commande doit renvoyer une erreur car le dossier de destination n'existe pas
 > ///
 doit renvoyer la valeur de retour 126
 
-
+OK
 --------------------------------------
 --------------------------------------
 
@@ -31,10 +35,20 @@ ne fait pas bonjour dans 2
 
 echo hola > 1 > 1a | echo bonjour > 2 > 2a | echo hello > 3 > 3a
 
-LEAKS 
+LEAKS ok
+
+
 --------------------------------------
+OK
 --------------------------------------
 
 < count < count1 cat -e
 
 count est supprime par erreur (ne doit pas faire la diff entre < et <<)
+
+OK
+----------------------------
+
+echo o > 1 > 1a
+
+LEAKS ok

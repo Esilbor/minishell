@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:13:47 by bbresil           #+#    #+#             */
-/*   Updated: 2024/01/07 16:33:35 by zaquedev         ###   ########.fr       */
+/*   Updated: 2024/01/09 15:03:34 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	ft_execve(t_set *set, int index)
 			execve(set->cmd_set[index]->cmd[0], set->cmd_set[index]->cmd,
 				set->envp);
 		print_cmd_not_found(set->cmd_set[index]->cmd[0]);
-		exit_err(set, 127);
+		exit_err(set, 126); //
 	}
 	free(cmd_path);
 	exit_err(set, 126);
