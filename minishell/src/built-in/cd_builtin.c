@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_builtin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 11:28:12 by bbresil           #+#    #+#             */
-/*   Updated: 2024/01/06 13:20:49 by esilbor          ###   ########.fr       */
+/*   Updated: 2024/01/09 12:16:11 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,8 @@ int	do_cd(char **cmd_tab, t_env **envb, t_set *set)
 	char	*tmp;
 	int		ret;
 
-	home = &get_env_node(*envb, "HOME")->var_str[5];
+	if (set_home(cmd_tab, envb, &home))
+		return (update_ret(envb, 1));
 	if (cmd_tab[1] == NULL || (cmd_tab[1][0] == '~' && !cmd_tab[1][1]))
 		return (handle_cd(envb, set, home));
 	else if (cmd_tab[1][0] == '~' && cmd_tab[1][1] == '/')
@@ -89,8 +90,7 @@ int	do_cd(char **cmd_tab, t_env **envb, t_set *set)
 				cmd_tab[1]);
 			return (update_ret(envb, 1));
 		}
-		free(tmp);
-		return (ret);
+		return (free(tmp), ret);
 	}
 	else if (cmd_tab[1])
 		return (handle_cd(envb, set, cmd_tab[1]));

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2024/01/07 17:17:11 by zaquedev         ###   ########.fr       */
+/*   Updated: 2024/01/09 12:15:28 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,6 +215,7 @@ void		do_exit(t_set *set, int index);
 /*	cd_echo_pwd_builtins.c	*/
 
 int			do_cd(char **str, t_env **envb, t_set *set);
+int			set_home(char **cmd_tab, t_env **envb, char **home);
 int			do_echo(t_env **env, char **str);
 int			do_pwd(char **cmd_tab, t_env **env);
 int			fail_to_write_fd(char *s, int fd);

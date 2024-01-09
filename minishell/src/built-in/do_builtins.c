@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   do_builtins.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 15:11:47 by bbresil           #+#    #+#             */
-/*   Updated: 2024/01/04 05:44:10 by esilbor          ###   ########.fr       */
+/*   Updated: 2024/01/09 12:16:27 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,4 +81,20 @@ void	do_builtins(t_set *set, int index)
 		do_cd(set->cmd_set[index]->cmd, &set->env_lst, set);
 	if (ft_strncmp(set->cmd_set[index]->cmd[0], "exit", 5) == 0)
 		do_exit(set, index);
+}
+
+int	set_home(char **cmd_tab, t_env **envb, char **home)
+{
+	t_env	*node;
+
+	node = get_env_node(*envb, "HOME");
+	if (!node)
+	{
+		ft_printf("Candy_$hell: cd: %s: No such file or directory\n",
+			cmd_tab[1]);
+		return (1);
+	}
+	else
+		*home = &node->var_str[5];
+	return (0);
 }

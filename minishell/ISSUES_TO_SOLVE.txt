@@ -31,6 +31,7 @@ ne fait pas bonjour dans 2
 
 echo hola > 1 > 1a | echo bonjour > 2 > 2a | echo hello > 3 > 3a
 
+LEAKS 
 --------------------------------------
 --------------------------------------
 
