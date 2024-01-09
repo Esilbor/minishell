@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:05:45 by bbresil           #+#    #+#             */
-/*   Updated: 2024/01/09 12:15:28 by bbresil          ###   ########.fr       */
+/*   Updated: 2024/01/09 17:45:45 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,7 +181,7 @@ void		ft_dup2(t_set *set, int index);
 
 /* heredocs.c */
 
-void		fill_heredoc(char *buf, t_env *env, int fd, char *limiter);
+int			fill_heredoc(char *buf, t_env *env, int fd, char *limiter);
 void		create_heredoc(t_env *env, t_lexer *lex, char *limiter);
 int			init_heredocs(t_env *env, t_cmd **cmd_tab);
 
