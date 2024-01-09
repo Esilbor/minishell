@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredocs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 09:39:05 by esilbor           #+#    #+#             */
-/*   Updated: 2024/01/07 16:43:40 by zaquedev         ###   ########.fr       */
+/*   Updated: 2024/01/09 17:26:20 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,15 @@ void	fill_heredoc(char	*buf, t_env *env, int fd, char *limiter)
 		write(fd, "\n", 1);
 		free(buf);
 	}
-	dup2(dup_stdin, STDIN_FILENO);
+	if (dup2(dup_stdin, STDIN_FILENO) == -1) //
+		return ;
+	// if (1) //
+	// {
+	// 	printf("i am here\n");
+	// 	free(limiter);
+	// 	free_lexer_list(input_lst)
+	// 	return ;
+	// }
 	closes_heredoc(fd, dup_stdin);
 	ft_handle_signals();
 }

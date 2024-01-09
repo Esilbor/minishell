@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:13:47 by bbresil           #+#    #+#             */
-/*   Updated: 2024/01/09 15:03:34 by bbresil          ###   ########.fr       */
+/*   Updated: 2024/01/09 16:58:11 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	ft_execve(t_set *set, int index)
 			execve(set->cmd_set[index]->cmd[0], set->cmd_set[index]->cmd,
 				set->envp);
 		print_cmd_not_found(set->cmd_set[index]->cmd[0]);
-		exit_err(set, 126); //
+		exit_err(set, 126);
 	}
 	free(cmd_path);
 	exit_err(set, 126);

@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 12:13:29 by bbresil           #+#    #+#             */
-/*   Updated: 2024/01/09 14:58:56 by bbresil          ###   ########.fr       */
+/*   Updated: 2024/01/09 17:01:00 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,6 @@ void	keep_last_output(t_cmd **cmd_tab)
 				if (!outputs_are_valid(lex))
 					exit (1);
 				lex = ft_remove_lex_node(&lex, lex);
-				// lex = lex->next;
 			}
 			cmd_tab[i]->output = lex;
 		}

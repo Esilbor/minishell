@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 11:28:12 by bbresil           #+#    #+#             */
-/*   Updated: 2024/01/09 12:16:11 by bbresil          ###   ########.fr       */
+/*   Updated: 2024/01/09 16:52:35 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,12 @@ static int	handle_cd(t_env **envb, t_set *set, char *path)
 		update_pwd(envb, set);
 		return (update_ret(envb, 0));
 	}
+	else
+	{
+		ft_printf("Candy_$hell: cd: %s: No such directory or file\n",
+			path);
+		return (update_ret(envb, 1));
+	}
 	return (1);
 }
 
@@ -83,7 +89,7 @@ int	do_cd(char **cmd_tab, t_env **envb, t_set *set)
 	{
 		tmp = ft_strjoin(home, &cmd_tab[1][1]);
 		ret = handle_cd(envb, set, tmp);
-		if (cmd_tab[1] && !is_directory(tmp))
+		if (cmd_tab[1] && (!is_directory(tmp)))
 		{
 			free(tmp);
 			ft_printf("Candy_$hell: cd: %s: No such file or directory\n",
