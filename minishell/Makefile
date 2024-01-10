@@ -37,15 +37,6 @@ OBJ = $(C_FILES:$(SRC_DIR)%.c=$(OBJ_DIR)%.o)
 # The main target
 all : $(LIBFT) $(NAME)
 
-# Compiles the beautiful project header
-candy: show_lay_out
-show_lay_out:
-	@echo "\n"
-	@echo "$(RANDOM_COLOR)"
-	@cat $(LAY_OUT_FILE)
-	@echo "\e[0m"
-	@echo "\n"
-
 # Compiles libft
 $(LIBFT) :
 	@make -sC $(LIBFT_PATH)
@@ -73,4 +64,4 @@ fclean : clean
 re : fclean all
 
 # These targets do not create any files
-.PHONY: re clean fclean all candy show_lay_out
+.PHONY: re clean fclean all show_lay_out

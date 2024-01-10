@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   heredocs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 09:39:05 by esilbor           #+#    #+#             */
-/*   Updated: 2024/01/10 15:33:04 by zaquedev         ###   ########.fr       */
+/*   Updated: 2024/01/10 16:26:32 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static int ft_exit(int fd, int dup_stdin)
+static int	ft_exit(int fd, int dup_stdin)
 {
 	printf("exit fill_heredoc\n");
 	close(dup_stdin);
@@ -39,13 +39,13 @@ int	fill_heredoc(char	*buf, t_env *env, int fd, char *limiter)
 		}
 		if (buf[0] && (ft_strlen(limiter) == ft_strlen(buf))
 			&& !ft_strncmp(limiter, buf, ft_strlen(limiter)))
-				break ;
+			break ;
 		ft_putstr_fd(buf, fd);
 		write(fd, "\n", 1);
 		free(buf);
 	}
 	if (dup2(dup_stdin, STDIN_FILENO) == -1)
-		return (free(limiter),ft_exit(fd, dup_stdin));
+		return (free(limiter), ft_exit(fd, dup_stdin));
 	closes_heredoc(fd, dup_stdin);
 	return (0);
 }
@@ -66,7 +66,6 @@ int	create_heredoc(t_env *env, t_lexer *lex, char *limiter)
 	if (fill_heredoc(buf, env, fd, limiter) == 1)
 	{
 		close(fd);
-		//ft_handle_signals();
 		return (-1);
 	}
 	ft_handle_signals();
