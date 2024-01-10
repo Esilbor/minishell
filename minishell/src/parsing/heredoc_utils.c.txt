@@ -6,7 +6,7 @@
 /*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 17:47:04 by esilbor           #+#    #+#             */
-/*   Updated: 2024/01/09 20:03:32 by zaquedev         ###   ########.fr       */
+/*   Updated: 2024/01/07 16:44:24 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,7 @@ static int	handle_limiter_node(t_lexer *lst, t_env *env, int index, int *k)
 	free(lst->word);
 	lst->word = ft_strjoin(".", tmp);
 	free(tmp);
-	if (create_heredoc(env, lst, limiter) == -1)
-	{
-		return (-1);
-	}
+	create_heredoc(env, lst, limiter);
 	free(limiter);
 	return (0);
 }
