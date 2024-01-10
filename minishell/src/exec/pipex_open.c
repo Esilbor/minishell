@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_open.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 17:28:56 by bbresil           #+#    #+#             */
-/*   Updated: 2024/01/09 16:56:43 by bbresil          ###   ########.fr       */
+/*   Updated: 2024/01/10 15:11:07 by zaquedev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,38 +56,6 @@ void	ft_dup2_first(t_set *set, int index, int fd_stdin, int fd_stdout)
 		}
 	}
 }
-
-// void	ft_dup2_multpl(t_set *set, int index, int fd_stdin, int fd_stdout)
-// {
-// 	if (fd_stdin)
-// 	{
-// 		if (dup2(fd_stdin, 0) == -1)
-// 			exit_err(set, 1);
-// 	}
-// 	else
-// 	{
-// 		if (dup2(set->pipe[(index + 1) % 2][0], 0) == -1)
-// 			exit_err(set, 1);
-// 	}
-// 	if ((index + 1) == set->cmd_nb)
-// 	{
-// 		if (dup2(fd_stdout, 1) == -1)
-// 			exit_err(set, 1);
-// 	}
-// 	else
-// 	{
-// 		if (fd_stdout != 1)
-// 		{
-// 			if (dup2(fd_stdout, 1) == -1)
-// 				exit_err(set, 1);
-// 		}
-// 		else if (fd_stdout == 1)
-// 		{
-// 			if (dup2(set->pipe[index % 2][1], 1) == -1)
-// 				exit_err(set, 1);
-// 		}
-// 	}
-// }
 
 void	ft_dup2_multpl(t_set *set, int index, int fd_stdin, int fd_stdout)
 {
