@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 12:13:29 by bbresil           #+#    #+#             */
-/*   Updated: 2024/01/09 17:01:00 by bbresil          ###   ########.fr       */
+/*   Updated: 2024/01/10 12:15:02 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,19 +61,42 @@ void	keep_last_input(t_cmd **cmd_tab)
 			lex = cmd_tab[i]->input;
 			while (lex && lex->next)
 			{
-				if (lex->type == LIMITER)
-				{
-					if (unlink(lex->word) != 0)
-						perror("error deleting file");
-					lex = ft_remove_lex_node(&lex, lex);
-				}
-				lex = lex->next;
+				if (unlink(lex->word) != 0)
+					perror("error deleting file");
+				lex = ft_remove_lex_node(&lex, lex);
 			}
 			cmd_tab[i]->input = lex;
 		}
 		i++;
 	}
 }
+
+// void	keep_last_input(t_cmd **cmd_tab)
+// {
+// 	int		i;
+// 	t_lexer	*lex;
+
+// 	i = 0;
+// 	while (cmd_tab[i])
+// 	{
+// 		if (cmd_tab[i]->input)
+// 		{
+// 			lex = cmd_tab[i]->input;
+// 			while (lex && lex->next)
+// 			{
+// 				if (lex->type == LIMITER)
+// 				{
+// 					if (unlink(lex->word) != 0)
+// 						perror("error deleting file");
+// 					lex = ft_remove_lex_node(&lex, lex);
+// 				}
+// 				lex = lex->next;
+// 			}
+// 			cmd_tab[i]->input = lex;
+// 		}
+// 		i++;
+// 	}
+// }
 
 bool	outputs_are_valid(t_lexer *lex)
 {
