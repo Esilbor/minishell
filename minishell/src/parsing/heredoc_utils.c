@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaquedev <zaquedev@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 17:47:04 by esilbor           #+#    #+#             */
-/*   Updated: 2024/01/09 20:03:32 by zaquedev         ###   ########.fr       */
+/*   Updated: 2024/01/10 13:20:23 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ static int	handle_limiter_node(t_lexer *lst, t_env *env, int index, int *k)
 	}
 	free(lst->word);
 	lst->word = ft_strjoin(".", tmp);
+	if (!lst->word)
+		return (free(tmp), free(limiter), -1);
 	free(tmp);
 	if (create_heredoc(env, lst, limiter) == -1)
 	{

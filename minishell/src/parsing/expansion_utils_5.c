@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_utils_5.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 18:03:11 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/30 18:03:54 by esilbor          ###   ########.fr       */
+/*   Updated: 2024/01/10 13:13:52 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ static t_lexer	*semi_column_case(char *var, t_lexer *node)
 	char	*tmp_str;
 
 	tmp_str = ft_strjoin("$", var);
+	if (!tmp_str && var)
+		return (free(var), NULL);
 	free (node->word);
 	node->word = ft_strdup(tmp_str);
 	if (!node->word && tmp_str)
@@ -57,7 +59,15 @@ static t_lexer	*semi_column_case(char *var, t_lexer *node)
 static void	expand_begining(char *var, char **new_str, char **tmp_str)
 {
 	if (var)
+	{
 		*new_str = ft_strjoin(*tmp_str, var);
+		if (!(*new_str) && *tmp_str)
+		{
+			free(*tmp_str);
+			free(var);
+			return ;
+		}
+	}
 	else
 	{
 		*new_str = ft_strdup(*tmp_str);

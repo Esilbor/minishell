@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_handling_1.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 20:27:54 by bbresil           #+#    #+#             */
-/*   Updated: 2024/01/02 22:21:31 by esilbor          ###   ########.fr       */
+/*   Updated: 2024/01/10 13:00:34 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ int	modify_var(t_env *node, char **v_tab, char **cmd_tab, int i)
 			return (-1);
 		free(node->var_str);
 		node->var_str = ft_strjoin(tmp, v_tab[1]);
+		if (!node->var_str)
+			return (-1);
 		free(tmp);
 	}
 	return (0);

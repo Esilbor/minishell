@@ -6,7 +6,7 @@
 /*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 11:28:12 by bbresil           #+#    #+#             */
-/*   Updated: 2024/01/09 16:52:35 by bbresil          ###   ########.fr       */
+/*   Updated: 2024/01/10 12:59:19 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,10 @@ static void	set_old_pwd(t_env *oldpwd, t_env *pwd, t_set *set)
 	char	*tmp;
 
 	tmp = ft_strjoin("OLD", pwd->var_str);
+	if (!tmp && pwd->var_str)
+		exit_err(set, 1);
+	if (!tmp && pwd->var_str)
+		exit_err(set, 1);
 	free(oldpwd->var_str);
 	oldpwd->var_str = ft_strdup(tmp);
 	if (!oldpwd->var_str)
@@ -34,6 +38,8 @@ static void	set_new_pwd(t_env *pwd, t_set *set)
 
 	tmp = getcwd(NULL, 0);
 	new_pwd = ft_strjoin("PWD=", tmp);
+	if (!new_pwd && tmp)
+		exit_err(set, 1);
 	free(tmp);
 	free(pwd->var_str);
 	pwd->var_str = ft_strdup(new_pwd);

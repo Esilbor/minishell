@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_utils_4.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 17:56:59 by esilbor           #+#    #+#             */
-/*   Updated: 2023/12/30 18:10:16 by esilbor          ###   ########.fr       */
+/*   Updated: 2024/01/10 13:08:29 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	clean_space_nodes2(t_lexer **lexer)
 		{
 			tmp = ft_strdup(previous->word);
 			if (!tmp && previous->word)
-				return (free(tmp), free_lexer_list(lexer), 1);
+				return (free_lexer_list(lexer), 1);
 			free(previous->word);
 			previous->word = ft_strjoin(tmp, " ");
 			free (tmp);

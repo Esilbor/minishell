@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_utils_2.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esilbor <esilbor@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbresil <bbresil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:36:38 by bbresil           #+#    #+#             */
-/*   Updated: 2023/12/31 15:10:35 by esilbor          ###   ########.fr       */
+/*   Updated: 2024/01/10 13:06:33 by bbresil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,11 @@ char	*dol_to_expand(char *str)
 static int	allocate_new_str(char *tmp_str, char *var, char **new_str)
 {
 	if (var)
+	{
 		*new_str = ft_strjoin(tmp_str, var);
+		if (!(*new_str) && tmp_str)
+			return (free (tmp_str), -1);
+	}
 	else
 	{
 		*new_str = ft_strdup(tmp_str);
